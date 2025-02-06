@@ -8,11 +8,11 @@ public:
 	String Model;
 	String Caption;
 
-	constexpr ItemInfo(String caption, String model) noexcept : Model(model), Caption(caption)
+	constexpr ItemInfo(String caption, String model) : Model(model), Caption(caption)
 	{
 	}
 
-	constexpr ItemInfo() noexcept : Model(""), Caption("")
+	constexpr ItemInfo() : Model(""), Caption("")
 	{
 	}
 

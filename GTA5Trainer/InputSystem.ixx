@@ -10,12 +10,12 @@ public:
 	int key;
 	bool isDown;
 
-	constexpr KeyStates() noexcept : key(0), isDown(false)
+	constexpr KeyStates() : key(0), isDown(false)
 	{
 
 	}
 
-	constexpr KeyStates(int key) noexcept : key(key), isDown(false)
+	constexpr KeyStates(int key) : key(key), isDown(false)
 	{
 
 	}
@@ -39,7 +39,7 @@ private:
 
 	KeyStates _keyStates[KeyCodeType];
 public:
-	InputSystem() noexcept
+	InputSystem()
 	{
 		for (uint i = 0; i < KeyCodeType; i++)
 		{
@@ -104,7 +104,7 @@ public:
 
 	bool MenuSwitchPressed() const
 	{
-		return IsKeyDown(KeyCode::F5);
+		return IsKeyDown(KeyCode::F4);
 	}
 };
 

@@ -13,7 +13,7 @@ bool ChangedSkin = false;
 export class ChangeSkin : public TriggerItem
 {
 public:
-	constexpr ChangeSkin(ItemInfo& skinInfo) noexcept : TriggerItem(skinInfo.Caption), SkinInfo(skinInfo)
+	constexpr ChangeSkin(ItemInfo& skinInfo) : TriggerItem(skinInfo.Caption), SkinInfo(skinInfo)
 	{
 	}
 
@@ -21,7 +21,7 @@ private:
 	ItemInfo SkinInfo;
 
 protected:
-	void OnExecute() noexcept override
+	void OnExecute() override
 	{
 		PlaySounds();
 		uint model = MISC::GET_HASH_KEY(SkinInfo.Model);
@@ -58,12 +58,12 @@ protected:
 export class AutoFallBackSkin : public SwitchItem
 {
 public:
-	constexpr AutoFallBackSkin(String caption) noexcept : SwitchItem(caption){
+	constexpr AutoFallBackSkin(String caption) : SwitchItem(caption){
 
 	}
 
 protected:
-	void OnUpdate() noexcept override
+	void OnUpdate() override
 	{
 		FallBackSkin();
 	}

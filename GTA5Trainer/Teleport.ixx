@@ -22,12 +22,12 @@ static constexpr const float GroundCheckHeight[] = {
 export class TeleportMarker : public TriggerItem
 {
 public:
-	constexpr TeleportMarker(String caption) noexcept : TriggerItem(caption)
+	constexpr TeleportMarker(String caption) : TriggerItem(caption)
 	{
 
 	}
 
-	void OnExecute() noexcept override
+	void OnExecute() override
 	{
 		Entity e = PlayerPed();
 		if (PED::IS_PED_IN_ANY_VEHICLE(e, 0))
@@ -86,12 +86,12 @@ private:
 	Vector3 coords;
 
 public:
-	constexpr Teleport(String caption, Vector3& coords) noexcept : TriggerItem(caption)
+	constexpr Teleport(String caption, Vector3& coords) : TriggerItem(caption)
 	{
 
 	}
 
-	void OnExecute() noexcept override
+	void OnExecute() override
 	{
 		Entity e = PlayerPed();
 		if (PED::IS_PED_IN_ANY_VEHICLE(e, 0))
@@ -108,12 +108,12 @@ public:
 export class GetTeleportMarkerCords : public TriggerItem
 {
 public:
-	constexpr GetTeleportMarkerCords(String caption) noexcept : TriggerItem(caption)
+	constexpr GetTeleportMarkerCords(String caption) : TriggerItem(caption)
 	{
 
 	}
 
-	void OnExecute() noexcept override
+	void OnExecute() override
 	{
 		Entity e = PlayerPed();
 		if (PED::IS_PED_IN_ANY_VEHICLE(e, 0))

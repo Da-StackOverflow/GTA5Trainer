@@ -10,11 +10,11 @@ public:
 	byte g;
 	byte b;
 
-	constexpr Color(int colorNum, bool includeAlpha = false) noexcept : Color((uint)colorNum, includeAlpha)
+	constexpr Color(int colorNum, bool includeAlpha = false) : Color((uint)colorNum, includeAlpha)
 	{
 	}
 
-	constexpr Color(uint colorNum, bool includeAlpha = false) noexcept
+	constexpr Color(uint colorNum, bool includeAlpha = false)
 	{
 		a = (byte)(colorNum & 0xff);
 		r = (byte)((colorNum >> 8) & 0xff);
@@ -22,11 +22,11 @@ public:
 		b = includeAlpha ? (byte)((colorNum >> 24) & 0xff) : (byte)255;
 	}
 
-	constexpr Color(byte r, byte g, byte b, byte a = 255) noexcept : a(a), r(r), g(g), b(b)
+	constexpr Color(byte r, byte g, byte b, byte a = 255) : a(a), r(r), g(g), b(b)
 	{
 	}
 
-	constexpr Color() noexcept : a(0), r(0), g(0), b(255)
+	constexpr Color() : a(0), r(0), g(0), b(255)
 	{
 	}
 };

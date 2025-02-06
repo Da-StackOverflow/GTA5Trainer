@@ -91,7 +91,7 @@ export void FreeBuffer(byte* ptr)
 std::ofstream _logger;
 export void InitLog()
 {
-	_logger = std::ofstream("RDR2Trainer.txt", std::ios::app);
+	_logger = std::ofstream("GTA5TrainerLog.txt", std::ios::trunc);
 }
 
 export void Log(String log)
@@ -99,6 +99,7 @@ export void Log(String log)
 	if (_logger.is_open())
 	{
 		_logger << log << std::endl;
+		_logger.flush();
 	}
 }
 

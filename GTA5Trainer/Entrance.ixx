@@ -3,6 +3,7 @@ import "Import.h";
 import Util;
 import InputSystem;
 import Menu;
+import <stdexcept>;
 
 static void Init()
 {
@@ -12,14 +13,21 @@ static void Init()
 
 static void Run()
 {
-	Log("Run");
-	Controller.Init();
-	Log("Controller.Init Finish");
-	while (true)
+	try
 	{
-		Controller.Update();
-		ThreadSleep(0);
+		Log("Start Run");
+		Controller.Init();
+		Log("Controller.Init Finish");
+		while (true)
+		{
+			Controller.Update();
+			ThreadSleep(0);
+		}
 	}
+	catch(const std::exception& e){
+		Log(e.what());
+	}
+
 }
 
 static void Release()
@@ -41,19 +49,24 @@ static void OnInput(uint key, ushort repeats, byte scanCode, int isExtended, int
 const uint Dll_INIT = 1;
 const uint Dll_Release = 0;
 
-export int __stdcall DllMain(HMODULE hModule, uint reason, void* lpReserved)
+int __stdcall DllMain(HMODULE hModule, uint reason, void* lpReserved)
 {
 	switch (reason)
 	{
 		case Dll_INIT:
+		{
 			Init();
 			scriptRegister(hModule, Run);
 			keyboardHandlerRegister(OnInput);
+			break;
+		}
 		case Dll_Release:
+		{
 			keyboardHandlerUnregister(OnInput);
 			scriptUnregister(hModule);
 			Release();
 			break;
+		}
 	}
 	return 1;
 }
