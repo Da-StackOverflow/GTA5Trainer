@@ -15,36 +15,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DllEntrance.cpp">
+    <ClCompile Include="Color.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="keyboard.cpp">
+    <ClCompile Include="Entrance.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="script.cpp">
+    <ClCompile Include="Function.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Invoker.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyCode.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuInit.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcesInfo.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Util.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="enums.h">
+    <ClInclude Include="Base.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="main.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="nativeCaller.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="natives.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="types.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="keyboard.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="script.h">
+    <ClInclude Include="Import.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

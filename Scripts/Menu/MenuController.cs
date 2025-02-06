@@ -1,4 +1,0 @@
-﻿
-internal partial class MenuController
-{
-}

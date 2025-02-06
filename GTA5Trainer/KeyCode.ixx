@@ -1,4 +1,8 @@
-﻿internal enum KeyCode : uint
+export module KeyCode;
+
+import "Base.h";
+
+export enum KeyCode : uint
 {
 	Back = 0x08,
 	Tab = 0x09,
@@ -85,4 +89,4 @@
 	_7 = 0x37,
 	_8 = 0x38,
 	_9 = 0x39,
-}
+};
