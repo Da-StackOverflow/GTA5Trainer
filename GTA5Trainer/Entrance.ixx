@@ -4,27 +4,31 @@ import Util;
 import InputSystem;
 import Menu;
 
-void Init()
+static void Init()
 {
 	InitLog();
+	Log("Init Finish");
 }
 
-void Run()
+static void Run()
 {
+	Log("Run");
 	Controller.Init();
+	Log("Controller.Init Finish");
 	while (true)
 	{
 		Controller.Update();
-		scriptWait(0);
+		ThreadSleep(0);
 	}
 }
 
-void Release()
+static void Release()
 {
+	Log("Release");
 	CloseLog();
 }
 
-void OnInput(uint key, ushort repeats, byte scanCode, int isExtended, int isWithAlt, int wasDownBefore, int isUpNow)
+static void OnInput(uint key, ushort repeats, byte scanCode, int isExtended, int isWithAlt, int wasDownBefore, int isUpNow)
 {
 	if (isUpNow == 1)
 	{
