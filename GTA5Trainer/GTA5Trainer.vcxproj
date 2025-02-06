@@ -69,17 +69,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ChangeSkin.ixx" />
     <ClCompile Include="Color.ixx" />
     <ClCompile Include="Entrance.ixx" />
     <ClCompile Include="Function.ixx" />
+    <ClCompile Include="Weapon.ixx" />
     <ClCompile Include="InputSystem.ixx" />
     <ClCompile Include="Invoker.ixx" />
+    <ClCompile Include="ItemInfo.ixx" />
     <ClCompile Include="KeyCode.ixx" />
     <ClCompile Include="Menu.ixx" />
     <ClCompile Include="MenuInit.ixx" />
-    <ClCompile Include="ResourcesInfo.ixx" />
+    <ClCompile Include="PedModels.ixx" />
+    <ClCompile Include="Teleport.ixx" />
     <ClCompile Include="Util.ixx" />
     <ClCompile Include="Vector.ixx" />
+    <ClCompile Include="Vehicles.ixx" />
+    <ClCompile Include="WeaponInfo.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.h" />

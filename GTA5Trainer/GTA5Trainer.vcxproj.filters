@@ -13,15 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\Scripts">
+      <UniqueIdentifier>{c2dfacc8-f1fb-4283-b334-0e14c8ece986}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Color.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Entrance.ixx">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Function.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="InputSystem.ixx">
@@ -39,14 +39,35 @@
     <ClCompile Include="MenuInit.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ResourcesInfo.ixx">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Util.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Vector.ixx">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PedModels.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemInfo.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponInfo.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangeSkin.ixx">
+      <Filter>源文件\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Teleport.ixx">
+      <Filter>源文件\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.ixx">
+      <Filter>源文件\Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -19,7 +19,7 @@ import "Base.h";
 //	Texture deletion is performed automatically when game reloads scripts
 //	Can be called only in the same thread as natives
 
-IMPORT int createTexture(const char* texFileName);
+IMPORT int createTexture(String texFileName);
 
 // Draw texture
 //	id		-	texture id recieved from createTexture()

@@ -5,6 +5,7 @@
 #define null nullptr
 #define var auto
 #define f64 __declspec(align(8)) float
+#define String const char*
 #define Temp1(n1) template<typename n1>
 #define Temp2(n1, n2) template<typename n1, typename n2>
 #define Temp3(n1, n2, n3) template<typename n1, typename n2, typename n3>

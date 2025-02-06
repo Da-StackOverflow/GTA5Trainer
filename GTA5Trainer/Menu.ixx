@@ -17,7 +17,7 @@ class SubMenu;
 export class MenuItem
 {
 public:
-	constexpr MenuItem(const char* text, float width, float height, const Color& bgColor, const Color& textColor) noexcept : Width(width / 1920.0f), Height(height / 1080.0f), BgColor(bgColor), TextColor(textColor), Text(text), Scale(Vector2(0.0f, height / 1080.0f * 8.0f))
+	constexpr MenuItem(String text, float width, float height, const Color& bgColor, const Color& textColor, float scale) noexcept : Width(width / 1920.0f), Height(height / 1080.0f), BgColor(bgColor), TextColor(textColor), Text(text), Scale(scale)
 	{
 
 	}
@@ -34,30 +34,30 @@ public:
 
 	Vector2 Position;
 	Vector2 TextPosition;
-	Vector2 Scale;
+	float Scale;
 
 	float Width;
 	float Height;
 
 	Color BgColor;
 	Color TextColor;
-	const char* Text;
+	String Text;
 
 	void WaitAndDraw(i64 ms);
 
-	void SetTips(const char* text, int ms = 2500);
+	void SetTips(String text, int ms = 3000);
 
 	virtual void OnDraw(bool active = false) noexcept
 	{
-		DrawString(Text, TextPosition, Scale, TextColor);
-		DrawBG(Position, Width, Height, BgColor);
+		PaintText(Text, TextPosition, Scale, TextColor);
+		PaintBG(Position, Width, Height, BgColor);
 	}
 };
 
 export class Caption : public MenuItem
 {
 public:
-	constexpr Caption(const char* text) noexcept : MenuItem(text, 200, 60, Cyan, Blue)
+	constexpr Caption(String text) noexcept : MenuItem(text, 200, 60, Cyan, Blue, 0.5f)
 	{
 	}
 };
@@ -68,7 +68,7 @@ public:
 	Color BgActiveColor;
 	Color TextActiveColor;
 
-	constexpr ExcuteableItem(const char* text, float width, float height, const Color& bgColor, const Color& textColor, const Color& bgActiveColor, const Color& textActiveColor) noexcept : MenuItem(text, width, height, bgColor, textColor), BgActiveColor(bgActiveColor), TextActiveColor(textActiveColor)
+	constexpr ExcuteableItem(String text, float width, float height, const Color& bgColor, const Color& textColor, const Color& bgActiveColor, const Color& textActiveColor) noexcept : MenuItem(text, width, height, bgColor, textColor, 0.4f), BgActiveColor(bgActiveColor), TextActiveColor(textActiveColor)
 	{
 	}
 
@@ -80,7 +80,7 @@ public:
 export class TriggerItem : public ExcuteableItem
 {
 public:
-	constexpr TriggerItem(const char* text) noexcept : ExcuteableItem(text, 200, 40, White, Blue, Green, Red)
+	constexpr TriggerItem(String text) noexcept : ExcuteableItem(text, 200, 40, White, Blue, Green, Red)
 	{
 
 	}
@@ -89,12 +89,12 @@ public:
 export class SwitchItem : public ExcuteableItem
 {
 private:
-	const char* ActiveString = "[已开启]";
-	const char* InactiveString = "[已关闭]";
+	String ActiveString = "[已开启]";
+	String InactiveString = "[已关闭]";
 
 public:
 
-	constexpr SwitchItem(const char* text) noexcept : ExcuteableItem(text, 200, 40, White, Blue, Green, Red)
+	constexpr SwitchItem(String text) noexcept : ExcuteableItem(text, 200, 40, White, Blue, Green, Red)
 	{
 
 	}
@@ -115,22 +115,22 @@ public:
 
 			if (State)
 			{
-				DrawString(ActiveString, ActiveTextPosition, Scale, TextActiveColor);
+				PaintText(ActiveString, ActiveTextPosition, Scale, TextActiveColor);
 			}
 			else
 			{
-				DrawString(InactiveString, ActiveTextPosition, Scale, TextActiveColor);
+				PaintText(InactiveString, ActiveTextPosition, Scale, TextActiveColor);
 			}
 		}
 		else
 		{
 			if (State)
 			{
-				DrawString(ActiveString, ActiveTextPosition, Scale, StateActiveColor);
+				PaintText(ActiveString, ActiveTextPosition, Scale, StateActiveColor);
 			}
 			else
 			{
-				DrawString(InactiveString, ActiveTextPosition, Scale, StateInactiveColor);
+				PaintText(InactiveString, ActiveTextPosition, Scale, StateInactiveColor);
 			}
 		}
 	}
@@ -186,14 +186,14 @@ private:
 
 	static const int ItemsMaxCountPerPage = 15;
 public:
-	const char* Text;
+	String Text;
 
 	constexpr Menu() noexcept : Text(""), Tittle(""), _items(std::vector<ExcuteableItem>()), _switchItems(std::vector<SwitchItem>()), _activeItemInActivePage(0), _activePage(0), _itemCount(0), _switchItemCount(0)
 	{
 
 	}
 
-	constexpr Menu(const char* tittle) noexcept : Text(tittle), Tittle(tittle), _items(std::vector<ExcuteableItem>()), _switchItems(std::vector<SwitchItem>()), _activeItemInActivePage(0), _activePage(0), _itemCount(0), _switchItemCount(0)
+	constexpr Menu(String tittle) noexcept : Text(tittle), Tittle(tittle), _items(std::vector<ExcuteableItem>()), _switchItems(std::vector<SwitchItem>()), _activeItemInActivePage(0), _activePage(0), _itemCount(0), _switchItemCount(0)
 	{
 
 	}
@@ -303,7 +303,7 @@ export class SubMenu : public ExcuteableItem
 {
 public:
 	Menu menu;
-	SubMenu(const char* text, Menu& m) : ExcuteableItem(text, 200, 40, White, Blue, Green, Red), menu(m)
+	SubMenu(String text, Menu& m) : ExcuteableItem(text, 200, 40, White, Blue, Green, Red), menu(m)
 	{
 		
 	}
@@ -312,13 +312,13 @@ public:
 	{
 		if (active)
 		{
-			DrawString(Text, TextPosition, Scale, TextActiveColor);
-			DrawBG(Position, Width, Height, BgActiveColor);
+			PaintText(Text, TextPosition, Scale, TextActiveColor);
+			PaintBG(Position, Width, Height, BgActiveColor);
 		}
 		else
 		{
-			DrawString(Text, TextPosition, Scale, TextColor);
-			DrawBG(Position, Width, Height, BgColor);
+			PaintText(Text, TextPosition, Scale, TextColor);
+			PaintBG(Position, Width, Height, BgColor);
 		}
 	}
 	void OnExecute() noexcept override;
@@ -329,42 +329,48 @@ export class MenuController
 public:
 	void Init();
 
-	void Update()
-	{
-		OnDraw();
-		OnInput();
-		OnExecuteHookFunction();
-	}
+	void Update();
+
 	MenuController() : _nextCanInputTime(0), _statusTextMaxTicks(0), _statusText("")
 	{
 	}
 
-	void PushMenu(const Menu& menu)
+	inline void PushMenu(const Menu& menu)
 	{
 		_menuStack.push(menu);
 	}
 
-	void PopMenu()
+	inline void PopMenu()
 	{
 		_menuStack.pop();
 	}
 
-	void Register(const Menu& menu)
+	inline void Register(const Menu& menu)
 	{
 		_menuList.insert_or_assign(menu.Text, menu);
 	}
 
-	Menu* GetMenu(const char* id)
+	inline bool IsMenuExist(String id)
 	{
-		return &_menuList[id];
+		return _menuList.find(id) != _menuList.end();
 	}
 
-	Menu* GetActiveMenu()
+	Menu& GetMenu(String id)
 	{
-		return _menuStack.empty() ? &_menuStack.top() : null;
+		return _menuList[id];
 	}
 
-	void SetTips(const char* text, i64 ms)
+	inline Menu& GetActiveMenu()
+	{
+		return _menuStack.top();
+	}
+
+	inline bool HaveActiveMenu()
+	{
+		return _menuStack.empty();
+	}
+
+	void SetTips(String text, i64 ms = 3000)
 	{
 		_statusText = text;
 		_statusTextMaxTicks = GetTimeTicks() + ms;
@@ -416,16 +422,23 @@ public:
 	}
 private:
 	std::stack<Menu> _menuStack;
-	std::unordered_map<const char*, Menu> _menuList;
-	const char* _statusText;
+	std::unordered_map<String, Menu> _menuList;
+	String _statusText;
 	i64 _nextCanInputTime;
 	i64 _statusTextMaxTicks;
+
+	void OnUpdate()
+	{
+		OnDraw();
+		OnInput();
+		OnExecuteHookFunction();
+	}
 
 	void DrawTips()
 	{
 		if (GetTimeTicks() < _statusTextMaxTicks)
 		{
-			DrawString(_statusText, 0.5f, 0.5f, 0.5f, 0.5f, White);
+			PaintText(_statusText, 0.5f, 0.5f, 0.5f, White);
 		}
 	}
 
@@ -445,10 +458,9 @@ private:
 
 	void OnDraw()
 	{
-		var menu = GetActiveMenu();
-		if (menu != null)
+		if (HaveActiveMenu())
 		{
-			menu->OnDraw();
+			GetActiveMenu().OnDraw();
 		}
 		DrawTips();
 	}
@@ -459,10 +471,9 @@ private:
 		{
 			return;
 		}
-		var menu = GetActiveMenu();
-		if (menu != null)
+		if (HaveActiveMenu())
 		{
-			var waitTime = ExcuteInput(*menu);
+			var waitTime = ExcuteInput(GetActiveMenu());
 			InputWait(waitTime);
 		}
 	}
@@ -493,7 +504,7 @@ void MenuItem::WaitAndDraw(i64 ms)
 	Controller.WaitAndDraw(ms);
 }
 
-void MenuItem::SetTips(const char* text, int ms)
+void MenuItem::SetTips(String text, int ms)
 {
 	Controller.SetTips(text, ms);
 }
