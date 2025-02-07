@@ -5,7 +5,7 @@ import Function;
 import Util;
 import Menu;
 import ItemInfo;
-import WeaponsInfo;
+import WeaponsInfos;
 
 export class GetAllWeapons : public TriggerItem
 {
@@ -16,9 +16,9 @@ public:
 
 	void OnExecute() override
 	{
-		for (int i = 0; i < sizeof(WeaponsInfo) / sizeof(WeaponsInfo[0]); i++)
+		for (int i = 0; i < sizeof(WeaponsInfos) / sizeof(WeaponsInfos[0]); i++)
 		{
-			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PlayerPed(), MISC::GET_HASH_KEY(WeaponsInfo[i].Model), 9999, 0);
+			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PlayerPed(), MISC::GET_HASH_KEY(WeaponsInfos[i].Model), 9999, 0);
 		}
 			
 	}
@@ -29,7 +29,7 @@ export class GetWeapon : public TriggerItem
 private:
 	ItemInfo weaponInfo;
 public:
-	constexpr GetWeapon(ItemInfo& weaponInfo) : TriggerItem(weaponInfo.Caption)
+	constexpr GetWeapon(const ItemInfo& weaponInfo) : TriggerItem(weaponInfo.Caption)
 	{
 	}
 

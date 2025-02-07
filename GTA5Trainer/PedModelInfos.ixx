@@ -1,9 +1,9 @@
-export module PedModels;
+export module PedModelInfos;
 
 import "Base.h";
 import 	ItemInfo;
 
-export constexpr const ItemInfo PedModels[] = {
+export constexpr const ItemInfo PedModelInfos[] = {
 	ItemInfo(L"麦克", "player_zero"),
 	ItemInfo(L"富兰克林", "player_one"),
 	ItemInfo(L"崔佛", "player_two"),

@@ -52,7 +52,7 @@ static void OnInput(uint key, ushort repeats, byte scanCode, int isExtended, int
 const uint Dll_INIT = 1;
 const uint Dll_Release = 0;
 
-int __stdcall DllMain(HMODULE hModule, uint reason, void* lpReserved)
+export int __stdcall DllMain(HMODULE hModule, uint reason, void* lpReserved)
 {
 	switch (reason)
 	{

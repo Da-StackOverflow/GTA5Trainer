@@ -4,7 +4,7 @@ import "Base.h";
 import Function;
 import Util;
 import Menu;
-import PedModels;
+import PedModelInfos;
 import ItemInfo;
 
 
@@ -23,7 +23,6 @@ private:
 protected:
 	void OnExecute() override
 	{
-		PlaySounds();
 		uint model = MISC::GET_HASH_KEY(SkinInfo.Model);
 		if (STREAMING::IS_MODEL_IN_CDIMAGE(model) && STREAMING::IS_MODEL_VALID(model))
 		{

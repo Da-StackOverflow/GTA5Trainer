@@ -108,7 +108,7 @@ private:
 
 public:
 
-	constexpr SwitchItem(WString text) : ExcuteableItem(text, White, Blue, Green, Red)
+	constexpr SwitchItem(WString text) : ExcuteableItem(text, White, Blue, Green, Red), StateActiveColor(Green), StateInactiveColor(Red)
 	{
 
 	}

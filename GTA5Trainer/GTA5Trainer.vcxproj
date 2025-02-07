@@ -73,6 +73,7 @@
     <ClCompile Include="Color.ixx" />
     <ClCompile Include="Entrance.ixx" />
     <ClCompile Include="Function.ixx" />
+    <ClCompile Include="Vehicle.ixx" />
     <ClCompile Include="Weapon.ixx" />
     <ClCompile Include="InputSystem.ixx" />
     <ClCompile Include="Invoker.ixx" />
@@ -80,12 +81,12 @@
     <ClCompile Include="KeyCode.ixx" />
     <ClCompile Include="Menu.ixx" />
     <ClCompile Include="MenuInit.ixx" />
-    <ClCompile Include="PedModels.ixx" />
+    <ClCompile Include="PedModelInfos.ixx" />
     <ClCompile Include="Teleport.ixx" />
     <ClCompile Include="Util.ixx" />
     <ClCompile Include="Vector.ixx" />
-    <ClCompile Include="Vehicles.ixx" />
-    <ClCompile Include="WeaponInfo.ixx" />
+    <ClCompile Include="VehicleInfos.ixx" />
+    <ClCompile Include="WeaponsInfos.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.h" />

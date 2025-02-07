@@ -36,9 +36,6 @@
     <ClCompile Include="Menu.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="MenuInit.ixx">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Util.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -48,16 +45,16 @@
     <ClCompile Include="Function.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="PedModels.ixx">
+    <ClCompile Include="PedModelInfos.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ItemInfo.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="WeaponInfo.ixx">
+    <ClCompile Include="WeaponsInfos.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Vehicles.ixx">
+    <ClCompile Include="VehicleInfos.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ChangeSkin.ixx">
@@ -67,6 +64,12 @@
       <Filter>源文件\Scripts</Filter>
     </ClCompile>
     <ClCompile Include="Weapon.ixx">
+      <Filter>源文件\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuInit.ixx">
+      <Filter>源文件\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicle.ixx">
       <Filter>源文件\Scripts</Filter>
     </ClCompile>
   </ItemGroup>

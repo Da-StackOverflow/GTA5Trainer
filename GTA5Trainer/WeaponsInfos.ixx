@@ -1,9 +1,9 @@
-export module WeaponsInfo;
+export module WeaponsInfos;
 
 import "Base.h";
 import ItemInfo;
 
-export constexpr const ItemInfo WeaponsInfo[] = {
+export constexpr const ItemInfo WeaponsInfos[] = {
 	ItemInfo(L"µ¶", "WEAPON_KNIFE"),
 	ItemInfo(L"¾¯¹÷", "WEAPON_NIGHTSTICK"),
 	ItemInfo(L"´¸×Ó", "WEAPON_HAMMER"),

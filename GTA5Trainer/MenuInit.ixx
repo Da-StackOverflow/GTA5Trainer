@@ -3,11 +3,15 @@ import Menu;
 import Util;
 import Function;
 import InputSystem;
-import ChangeSkin;
-import PedModels;
 import ItemInfo;
+import PedModelInfos;
+import WeaponsInfos;
+import VehicleInfos;
+import ChangeSkin;
 import Teleport;
 import Weapon;
+import Vehicle;
+
 
 static Menu* GetOrCreatePlayerChangeSkinMenu()
 {
@@ -20,9 +24,9 @@ static Menu* GetOrCreatePlayerChangeSkinMenu()
 		var newMenu = new Menu(L"改变玩家模型");
 		Controller->Register(newMenu);
 		newMenu->AddItem(new AutoFallBackSkin(L"自动换回默认模型"));
-		for (var i = 0; i < sizeof(PedModels) / sizeof(ItemInfo); i++)
+		for (var i = 0; i < sizeof(PedModelInfos) / sizeof(ItemInfo); i++)
 		{
-			newMenu->AddItem(new ChangeSkin(PedModels[i]));
+			newMenu->AddItem(new ChangeSkin(PedModelInfos[i]));
 		}
 		return newMenu;
 	}
@@ -76,6 +80,25 @@ static Menu* GetOrCreatePlayerMenu()
 	}
 }
 
+static Menu* GetOrCreateGetWeaponMenu()
+{
+	if (Controller->IsMenuExist(L"获取武器"))
+	{
+		return Controller->GetMenu(L"获取武器");
+	}
+	else
+	{
+		var newMenu = new Menu(L"获取武器");
+		newMenu->AddItem(new GetAllWeapons(L"获取所有武器"));
+		for (var i = 0; i < sizeof(WeaponsInfos) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new GetWeapon(WeaponsInfos[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
 static Menu* GetOrCreateWeaponMenu()
 {
 	if (Controller->IsMenuExist(L"武器系统"))
@@ -85,6 +108,26 @@ static Menu* GetOrCreateWeaponMenu()
 	else
 	{
 		var newMenu = new Menu(L"武器系统");
+		newMenu->AddItem(new SubMenu(L"获取武器", GetOrCreateGetWeaponMenu()));
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnVehicleMenu()
+{
+	if (Controller->IsMenuExist(L"生成车辆"))
+	{
+		return Controller->GetMenu(L"生成车辆");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成车辆");
+		newMenu->AddItem(new SetSpawnCarAndWarpInFlag(L"设置生成车辆后立即进入到车里"));
+		for (var i = 0; i < sizeof(VehicleInfos) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(VehicleInfos[i]));
+		}
 		Controller->Register(newMenu);
 		return newMenu;
 	}
@@ -99,6 +142,7 @@ static Menu* GetOrCreateVehicleMenu()
 	else
 	{
 		var newMenu = new Menu(L"车辆系统");
+		newMenu->AddItem(new SubMenu(L"生成车辆", GetOrCreateSpawnVehicleMenu()));
 		Controller->Register(newMenu);
 		return newMenu;
 	}
