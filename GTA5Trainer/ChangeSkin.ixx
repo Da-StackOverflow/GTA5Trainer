@@ -13,7 +13,7 @@ bool ChangedSkin = false;
 export class ChangeSkin : public TriggerItem
 {
 public:
-	constexpr ChangeSkin(ItemInfo& skinInfo) : TriggerItem(skinInfo.Caption), SkinInfo(skinInfo)
+	constexpr ChangeSkin(const ItemInfo& skinInfo) : TriggerItem(skinInfo.Caption), SkinInfo(skinInfo)
 	{
 	}
 
@@ -58,7 +58,7 @@ protected:
 export class AutoFallBackSkin : public SwitchItem
 {
 public:
-	constexpr AutoFallBackSkin(String caption) : SwitchItem(caption){
+	constexpr AutoFallBackSkin(WString caption) : SwitchItem(caption){
 
 	}
 
@@ -83,7 +83,7 @@ private:
 			{
 				if (model != MISC::GET_HASH_KEY("player_zero") && model != MISC::GET_HASH_KEY("player_one") && model != MISC::GET_HASH_KEY("player_two"))
 				{
-					SetTips("角色变成正常模型");
+					SetTips(L"角色变成正常模型");
 					ThreadSleep(1000);
 
 					model = MISC::GET_HASH_KEY("player_zero");

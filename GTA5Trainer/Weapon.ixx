@@ -10,7 +10,7 @@ import WeaponsInfo;
 export class GetAllWeapons : public TriggerItem
 {
 public:
-	constexpr GetAllWeapons(String caption) : TriggerItem(caption)
+	constexpr GetAllWeapons(WString caption) : TriggerItem(caption)
 	{
 	}
 

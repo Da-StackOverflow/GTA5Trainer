@@ -1,7 +1,6 @@
 export module Vector;
 
 import "Base.h";
-import <string>;
 
 export struct Vector2
 {
@@ -49,6 +48,9 @@ public:
 	}
 };
 
+
+wchar_t _toStringBuffer[100]{ 0 };
+
 export struct Vector3
 {
 	f64 x;
@@ -93,13 +95,6 @@ export struct Vector3
 	constexpr Vector3 operator-(const Vector3& p) const
 	{
 		return Vector3(x - p.x, y - p.y, z - p.z);
-	}
-
-	String ToString() const
-	{
-		char buffer[100]{0};
-		sprintf_s(buffer, "(%.3f, %.3f, %.3f)", x, y, z);
-		return buffer;
 	}
 };
 

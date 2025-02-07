@@ -17,7 +17,7 @@ class SubMenu;
 export class MenuItem
 {
 public:
-	constexpr MenuItem(String text, float width, float height, const Color& bgColor, const Color& textColor, float scale) : Width(width / 1920.0f), Height(height / 1080.0f), BgColor(bgColor), TextColor(textColor), Text(text), Scale(scale), Position(Vector2(width / 1920.0f / 2.0f, height / 1080.0f / 2.0f)), TextPosition(Vector2(0.01f, height / 1080.0f / 8.0f))
+	constexpr MenuItem(WString text, float width, float height, const Color& bgColor, const Color& textColor, float scale) : Width(width / 1920.0f), Height(height / 1080.0f), BgColor(bgColor), TextColor(textColor), Text(text), Scale(scale), Position(Vector2(width / 1920.0f / 2.0f, height / 1080.0f / 2.0f)), TextPosition(Vector2(0.01f, height / 1080.0f / 8.0f))
 	{
 
 	}
@@ -41,11 +41,11 @@ public:
 
 	Color BgColor;
 	Color TextColor;
-	String Text;
+	WString Text;
 
 	void WaitAndDraw(i64 ms);
 
-	void SetTips(String text, int ms = 3000);
+	void SetTips(WString text, int ms = 3000);
 
 	virtual void OnDraw(bool active = false)
 	{
@@ -57,7 +57,7 @@ public:
 export class Caption : public MenuItem
 {
 public:
-	constexpr Caption(String text) : MenuItem(text, 400, 80, Cyan, Blue, 0.4f)
+	constexpr Caption(WString text) : MenuItem(text, 400, 80, Cyan, Blue, 0.4f)
 	{
 	}
 };
@@ -68,19 +68,33 @@ public:
 	Color BgActiveColor;
 	Color TextActiveColor;
 
-	constexpr ExcuteableItem(String text, const Color& bgColor, const Color& textColor, const Color& bgActiveColor, const Color& textActiveColor) : MenuItem(text, 400, 40, bgColor, textColor, 0.3f), BgActiveColor(bgActiveColor), TextActiveColor(textActiveColor)
+	constexpr ExcuteableItem(WString text, const Color& bgColor, const Color& textColor, const Color& bgActiveColor, const Color& textActiveColor) : MenuItem(text, 400, 40, bgColor, textColor, 0.3f), BgActiveColor(bgActiveColor), TextActiveColor(textActiveColor)
 	{
 	}
 
 	virtual void OnExecute()
 	{
 	}
+
+	void OnDraw(bool active = false) override
+	{
+		if (active)
+		{
+			PaintText(Text, TextPosition, Scale, TextActiveColor);
+			PaintBG(Position, Width, Height, BgActiveColor);
+		}
+		else
+		{
+			PaintText(Text, TextPosition, Scale, TextColor);
+			PaintBG(Position, Width, Height, BgColor);
+		}
+	}
 };
 
 export class TriggerItem : public ExcuteableItem
 {
 public:
-	constexpr TriggerItem(String text) : ExcuteableItem(text, White, Blue, Green, Red)
+	constexpr TriggerItem(WString text) : ExcuteableItem(text, White, Blue, Green, Red)
 	{
 
 	}
@@ -89,12 +103,12 @@ public:
 export class SwitchItem : public ExcuteableItem
 {
 private:
-	String ActiveString = "[已开启]";
-	String InactiveString = "[已关闭]";
+	WString ActiveString = L"[已开启]";
+	WString InactiveString = L"[已关闭]";
 
 public:
 
-	constexpr SwitchItem(String text) : ExcuteableItem(text, White, Blue, Green, Red)
+	constexpr SwitchItem(WString text) : ExcuteableItem(text, White, Blue, Green, Red)
 	{
 
 	}
@@ -177,8 +191,8 @@ protected:
 export class Menu
 {
 private:
-	std::vector<ExcuteableItem> _items;
-	std::vector<SwitchItem> _switchItems;
+	std::vector<ExcuteableItem*> _items;
+	std::vector<SwitchItem*> _switchItems;
 	int _activeItemInActivePage;
 	int _activePage;
 	int _itemCount;
@@ -186,40 +200,51 @@ private:
 
 	static const int ItemsMaxCountPerPage = 15;
 public:
-	String Text;
+	WString Text;
 
-	constexpr Menu() : Text(""), Title(""), _items(std::vector<ExcuteableItem>()), _switchItems(std::vector<SwitchItem>()), _activeItemInActivePage(0), _activePage(0), _itemCount(0), _switchItemCount(0)
+	constexpr Menu() : Text(L""), Title(L""), _activeItemInActivePage(0), _activePage(0), _itemCount(0), _switchItemCount(0)
 	{
 		
 	}
 
-	constexpr Menu(String caption) : Text(caption), Title(caption), _items(std::vector<ExcuteableItem>()), _switchItems(std::vector<SwitchItem>()), _activeItemInActivePage(0), _activePage(0), _itemCount(0), _switchItemCount(0)
+	constexpr Menu(WString caption) : Text(caption), Title(caption), _activeItemInActivePage(0), _activePage(0), _itemCount(0), _switchItemCount(0)
 	{
 		
+	}
+
+	~Menu()
+	{
+		_switchItems.clear();
+		for (var item : _items)
+		{
+			delete item;
+		}
+		_items.clear();
+		Log(Text, " Release");
 	}
 
 	Caption Title;
 
 
-	void AddItem(TriggerItem& item)
+	void AddItem(TriggerItem* item)
 	{
 		int index = _items.size() % ItemsMaxCountPerPage;
-		item.Position = Vector2(item.Width / 2.0f, item.Height * index + Title.Height);
-		item.TextPosition = Vector2(0.01f, item.Position.y - item.Height / 4.0f);
-		item.BgColor = (_items.size() & 1) == 0 ? White : Yellow;
+		item->Position = Vector2(item->Width / 2.0f, item->Height * index + Title.Height);
+		item->TextPosition = Vector2(0.01f, item->Position.y - item->Height / 4.0f);
+		item->BgColor = (_items.size() & 1) == 0 ? White : Yellow;
 		_items.push_back(item);
 		_itemCount++;
 	}
 
-	void AddItem(SubMenu& item);
+	void AddItem(SubMenu* item);
 
-	void AddItem(SwitchItem& item)
+	void AddItem(SwitchItem* item)
 	{
 		int index = _items.size() % ItemsMaxCountPerPage;
-		item.Position = Vector2(item.Width / 2.0f, item.Height * index + Title.Height);
-		item.TextPosition = Vector2(0.01f, item.Position.y - item.Height / 4.0f);
-		item.BgColor = (_items.size() & 1) == 0 ? White : Yellow;
-		item.ActiveTextPosition = Vector2(0.15f, item.TextPosition.y);
+		item->Position = Vector2(item->Width / 2.0f, item->Height * index + Title.Height);
+		item->TextPosition = Vector2(0.01f, item->Position.y - item->Height / 4.0f);
+		item->BgColor = (_items.size() & 1) == 0 ? White : Yellow;
+		item->ActiveTextPosition = Vector2(0.15f, item->TextPosition.y);
 		_items.push_back(item);
 		_switchItems.push_back(item);
 		_itemCount++;
@@ -240,7 +265,7 @@ public:
 		int index = 0;
 		for (int i = _activePage * ItemsMaxCountPerPage; i < end; i++)
 		{
-			_items[i].OnDraw(_activeItemInActivePage == index);
+			_items[i]->OnDraw(_activeItemInActivePage == index);
 			index++;
 		}
 	}
@@ -249,7 +274,7 @@ public:
 	{
 		for (int i = 0; i < _switchItemCount; i++)
 		{
-			_switchItems[i].Update();
+			_switchItems[i]->Update();
 		}
 	}
 
@@ -262,7 +287,7 @@ public:
 		switch (key)
 		{
 			case KeyCode::Return:
-				_items[ActiveItemIndex()].OnExecute();
+				_items[ActiveItemIndex()]->OnExecute();
 				break;
 			case KeyCode::Up:
 				if (_activePage != pageCount - 1)
@@ -302,24 +327,10 @@ public:
 export class SubMenu : public ExcuteableItem
 {
 public:
-	Menu menu;
-	SubMenu(String text, Menu& m) : ExcuteableItem(text, White, Blue, Green, Red), menu(m)
+	Menu* menu;
+	SubMenu(WString text, Menu* m) : ExcuteableItem(text, White, Blue, Green, Red), menu(m)
 	{
 		
-	}
-
-	void OnDraw(bool active = false) override
-	{
-		if (active)
-		{
-			PaintText(Text, TextPosition, Scale, TextActiveColor);
-			PaintBG(Position, Width, Height, BgActiveColor);
-		}
-		else
-		{
-			PaintText(Text, TextPosition, Scale, TextColor);
-			PaintBG(Position, Width, Height, BgColor);
-		}
 	}
 	void OnExecute() override;
 };
@@ -331,11 +342,27 @@ public:
 
 	void Update();
 
-	MenuController() : _nextCanInputTime(0), _statusTextMaxTicks(0), _statusText("")
+	MenuController() : _nextCanInputTime(0), _statusTextMaxTicks(0), _statusText(L"")
 	{
+		Log("MenuController Init");
 	}
 
-	inline void PushMenu(const Menu& menu)
+	~MenuController()
+	{
+		while (!_menuStack.empty())
+		{
+			_menuStack.pop();
+		}
+
+		for (var& menu : _menuList)
+		{
+			delete menu.second;
+		}
+		_menuList.clear();
+		Log("MenuController Release");
+	}
+
+	inline void PushMenu(Menu* menu)
 	{
 		_menuStack.push(menu);
 	}
@@ -345,22 +372,22 @@ public:
 		_menuStack.pop();
 	}
 
-	inline void Register(const Menu& menu)
+	inline void Register(Menu* menu)
 	{
-		_menuList.insert_or_assign(menu.Text, menu);
+		_menuList.insert_or_assign(menu->Text, menu);
 	}
 
-	inline bool IsMenuExist(String id)
+	inline bool IsMenuExist(WString id)
 	{
 		return _menuList.find(id) != _menuList.end();
 	}
 
-	Menu& GetMenu(String id)
+	Menu* GetMenu(WString id)
 	{
 		return _menuList[id];
 	}
 
-	inline Menu& GetActiveMenu()
+	inline Menu* GetActiveMenu()
 	{
 		return _menuStack.top();
 	}
@@ -370,16 +397,16 @@ public:
 		return !_menuStack.empty();
 	}
 
-	void SetTips(String text, i64 ms = 3000)
+	void SetTips(WString text, i64 ms = 3000)
 	{
 		_statusText = text;
 		_statusTextMaxTicks = GetTimeTicks() + ms;
 	}
-	int ExcuteInput(Menu& menu)
+	int ExcuteInput(Menu* menu)
 	{
 		if (Input.IsAccept())
 		{
-			menu.OnInput(KeyCode::Return);
+			menu->OnInput(KeyCode::Return);
 			return 150;
 		}
 		else if (Input.IsBack())
@@ -389,22 +416,22 @@ public:
 		}
 		else if (Input.IsUp())
 		{
-			menu.OnInput(KeyCode::Up);
+			menu->OnInput(KeyCode::Up);
 			return 150;
 		}
 		else if (Input.IsDown())
 		{
-			menu.OnInput(KeyCode::Down);
+			menu->OnInput(KeyCode::Down);
 			return 150;
 		}
 		else if (Input.IsLeft())
 		{
-			menu.OnInput(KeyCode::Left);
+			menu->OnInput(KeyCode::Left);
 			return 150;
 		}
 		else if (Input.IsRight())
 		{
-			menu.OnInput(KeyCode::Right);
+			menu->OnInput(KeyCode::Right);
 			return 150;
 		}
 		return 0;
@@ -421,9 +448,9 @@ public:
 		}
 	}
 private:
-	std::stack<Menu> _menuStack;
-	std::unordered_map<String, Menu> _menuList;
-	String _statusText;
+	std::stack<Menu*> _menuStack;
+	std::unordered_map<WString, Menu*> _menuList;
+	WString _statusText;
 	i64 _nextCanInputTime;
 	i64 _statusTextMaxTicks;
 
@@ -460,7 +487,7 @@ private:
 	{
 		if (HaveActiveMenu())
 		{
-			GetActiveMenu().OnDraw();
+			GetActiveMenu()->OnDraw();
 		}
 		DrawTips();
 	}
@@ -482,34 +509,34 @@ private:
 	{
 		for (var& menuPair : _menuList)
 		{
-			menuPair.second.OnSwitchItemUpdate();
+			menuPair.second->OnSwitchItemUpdate();
 		}
 	}
 };
 
-export MenuController Controller = MenuController();
+export MenuController* Controller = nullptr;
 
-void Menu::AddItem(SubMenu& item)
+void Menu::AddItem(SubMenu* item)
 {
 	int index = _items.size() % ItemsMaxCountPerPage;
-	item.Position = Vector2(item.Width / 2.0f, item.Height * index + Title.Height);
-	item.TextPosition = Vector2(0.01f, item.Position.y - item.Height / 4.0f);
-	item.BgColor = (_items.size() & 1) == 0 ? White : Yellow;
+	item->Position = Vector2(item->Width / 2.0f, item->Height * index + Title.Height);
+	item->TextPosition = Vector2(0.01f, item->Position.y - item->Height / 4.0f);
+	item->BgColor = (_items.size() & 1) == 0 ? White : Yellow;
 	_items.push_back(item);
 	_itemCount++;
 }
 
 void MenuItem::WaitAndDraw(i64 ms)
 {
-	Controller.WaitAndDraw(ms);
+	Controller->WaitAndDraw(ms);
 }
 
-void MenuItem::SetTips(String text, int ms)
+void MenuItem::SetTips(WString text, int ms)
 {
-	Controller.SetTips(text, ms);
+	Controller->SetTips(text, ms);
 }
 
 void SubMenu::OnExecute()
 {
-	Controller.PushMenu(menu);
+	Controller->PushMenu(menu);
 }

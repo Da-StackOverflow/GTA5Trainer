@@ -8,6 +8,7 @@ import <stdexcept>;
 static void Init()
 {
 	InitLog();
+	Controller = new MenuController();
 	Log("Init Finish");
 }
 
@@ -16,11 +17,9 @@ static void Run()
 	try
 	{
 		Log("Start Run");
-		Controller.Init();
-		Log("Controller.Init Finish");
 		while (true)
 		{
-			Controller.Update();
+			Controller->Update();
 			ThreadSleep(0);
 		}
 	}
@@ -32,7 +31,11 @@ static void Run()
 
 static void Release()
 {
-	Log("Release");
+	Log("Start Release");
+	delete Controller;
+	Controller = null;
+	FreeStoredStringBuffer();
+	Log("Release Finish");
 	CloseLog();
 }
 

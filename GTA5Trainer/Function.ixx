@@ -1205,12 +1205,12 @@ export namespace CAM
 	// 
 	// Full list of cam shake types by DurtyFree: https://github.com/DurtyFree/gta-v-data-dumps/blob/master/camShakeTypesCompact.json
 	export inline void ANIMATED_SHAKE_SCRIPT_GLOBAL(String p0, String p1, String p2, float p3) { InvokeV(0xC2EAE3FB8CDBED31, p0, p1, p2, p3); } // 0xC2EAE3FB8CDBED31 0xCB75BD9C b323
-	// In drunk_controller.c4, sub_309
+	// In drunk_Controller->c4, sub_309
 	// if (CAM::IS_SCRIPT_GLOBAL_SHAKING()) {
 	//     CAM::STOP_SCRIPT_GLOBAL_SHAKING(0);
 	// }
 	export inline bool IS_SCRIPT_GLOBAL_SHAKING() { return Invoke<bool>(0xC912AF078AF19212); } // 0xC912AF078AF19212 0x6AEFE6A5 b323
-	// In drunk_controller.c4, sub_309
+	// In drunk_Controller->c4, sub_309
 	// if (CAM::IS_SCRIPT_GLOBAL_SHAKING()) {
 	//     CAM::STOP_SCRIPT_GLOBAL_SHAKING(0);
 	// }
@@ -1302,7 +1302,7 @@ export namespace CAM
 	// Full list of cam shake types by DurtyFree: https://github.com/DurtyFree/gta-v-data-dumps/blob/master/camShakeTypesCompact.json
 	export inline void SHAKE_GAMEPLAY_CAM(String shakeName, float intensity) { InvokeV(0xFD55E49555E017CF, shakeName, intensity); } // 0xFD55E49555E017CF 0xF2EFE660 b323
 	export inline bool IS_GAMEPLAY_CAM_SHAKING() { return Invoke<bool>(0x016C090630DF1F89); } // 0x016C090630DF1F89 0x3457D681 b323
-	// Sets the amplitude for the gameplay (i.e. 3rd or 1st) camera to shake. Used in script "drunk_controller.ysc.c4" to simulate making the player drunk.
+	// Sets the amplitude for the gameplay (i.e. 3rd or 1st) camera to shake. Used in script "drunk_Controller->ysc.c4" to simulate making the player drunk.
 	export inline void SET_GAMEPLAY_CAM_SHAKE_AMPLITUDE(float amplitude) { InvokeV(0xA87E00932DB4D85D, amplitude); } // 0xA87E00932DB4D85D 0x9219D44A b323
 	export inline void STOP_GAMEPLAY_CAM_SHAKING(bool p0) { InvokeV(0x0EF93E9F3D08C178, p0); } // 0x0EF93E9F3D08C178 0xFD569E4E b323
 	// Forces gameplay cam to specified ped as if you were the ped or spectating it
@@ -2796,7 +2796,7 @@ export namespace GRAPHICS
 	export inline void SET_TAKEN_PHOTO_IS_MUGSHOT(bool toggle) { InvokeV(0x1BBC135A4D25EDDE, toggle); } // 0x1BBC135A4D25EDDE b323
 	export inline void SET_ARENA_THEME_AND_VARIATION_FOR_TAKEN_PHOTO(Any p0, int p1) { InvokeV(0xF3F776ADA161E47D, p0, p1); } // 0xF3F776ADA161E47D b1604
 	export inline void SET_ON_ISLAND_X_FOR_TAKEN_PHOTO(Any p0) { InvokeV(0xADD6627C4D325458, p0); } // 0xADD6627C4D325458 b2189
-	// 1 match in 1 script. cellphone_controller.
+	// 1 match in 1 script. cellphone_Controller->
 	// p0 is -1 in scripts.
 	export inline bool SAVE_HIGH_QUALITY_PHOTO(int unused) { return Invoke<bool>(0x3DEC726C25A11BAC, unused); } // 0x3DEC726C25A11BAC 0x3B15D33C b323
 	export inline int GET_STATUS_OF_SAVE_HIGH_QUALITY_PHOTO() { return Invoke<int>(0x0C0C4E81E1AC60A0); } // 0x0C0C4E81E1AC60A0 0xEC5D0317 b323
@@ -2812,7 +2812,7 @@ export namespace GRAPHICS
 	// 2 matches across 2 scripts. Only showed in appcamera & appmedia. Both were 0.
 	export inline bool QUEUE_OPERATION_TO_CREATE_SORTED_LIST_OF_PHOTOS(Any p0) { return Invoke<bool>(0x2A893980E96B659A, p0); } // 0x2A893980E96B659A 0x199FABF0 b323
 	// 3 matches across 3 scripts. First 2 were 0, 3rd was 1. Possibly a bool.
-	// appcamera, appmedia, and cellphone_controller.
+	// appcamera, appmedia, and cellphone_Controller->
 	export inline int GET_STATUS_OF_SORTED_LIST_OPERATION(Any p0) { return Invoke<int>(0xF5BED327CEA362B1, p0); } // 0xF5BED327CEA362B1 0x596B900D b323
 	export inline void CLEAR_STATUS_OF_SORTED_LIST_OPERATION() { InvokeV(0x4AF92ACD3141D96C); } // 0x4AF92ACD3141D96C 0xC9EF81ED b323
 	// This function is hard-coded to always return 0.
@@ -5243,7 +5243,7 @@ export namespace HUD
 	export inline void PAUSE_MENU_SET_BUSY_SPINNER(bool p0, int position, int spinnerIndex) { InvokeV(0xC78E239AC5B2DDB9, p0, position, spinnerIndex); } // 0xC78E239AC5B2DDB9 0x6C67131A b323
 	export inline void PAUSE_MENU_SET_WARN_ON_TAB_CHANGE(bool p0) { InvokeV(0xF06EBB91A81E09E3, p0); } // 0xF06EBB91A81E09E3 0x11D09737 b323
 	export inline bool IS_FRONTEND_READY_FOR_CONTROL() { return Invoke<bool>(0x3BAB9A4E4F2FF5C7); } // 0x3BAB9A4E4F2FF5C7 0xD3BF3ABD b323
-	// Disables frontend (works in custom frontends, not sure about regular pause menu) navigation keys on keyboard. Not sure about controller. Does not disable mouse controls. No need to call this every tick.
+	// Disables frontend (works in custom frontends, not sure about regular pause menu) navigation keys on keyboard. Not sure about Controller-> Does not disable mouse controls. No need to call this every tick.
 	// 
 	// To enable the keys again, use `0x14621BB1DF14E2B2`.
 	export inline void TAKE_CONTROL_OF_FRONTEND() { InvokeV(0xEC9264727EEC0F28); } // 0xEC9264727EEC0F28 0xC06B763D b323
@@ -7890,7 +7890,7 @@ export namespace NETWORK
 	// fm_horde_controler.c
 	// network_explode_vehicle(net_to_veh(*uParam0), 1, 0, *uParam0);
 	// 
-	// fm_mission_controller.c, has 6 hits so not going to list them.
+	// fm_mission_Controller->c, has 6 hits so not going to list them.
 	// 
 	// Side note, setting the first parameter to 0 seems to mute sound or so?
 	// 
@@ -9351,7 +9351,7 @@ export namespace PED
 	export inline bool CAN_KNOCK_PED_OFF_VEHICLE(Ped ped) { return Invoke<bool>(0x51AC07A44D4F5B8A, ped); } // 0x51AC07A44D4F5B8A 0xC9D098B3 b323
 	export inline void KNOCK_PED_OFF_VEHICLE(Ped ped) { InvokeV(0x45BBCBA77C29A841, ped); } // 0x45BBCBA77C29A841 0xACDD0674 b323
 	export inline void SET_PED_COORDS_NO_GANG(Ped ped, float posX, float posY, float posZ) { InvokeV(0x87052FE446E07247, ped, posX, posY, posZ); } // 0x87052FE446E07247 0x9561AD98 b323
-	// from fm_mission_controller.c4 (variable names changed for clarity):
+	// from fm_mission_Controller->c4 (variable names changed for clarity):
 	// 
 	// int groupID = PLAYER::GET_PLAYER_GROUP(PLAYER::PLAYER_ID());
 	// PED::GET_GROUP_SIZE(group, &unused, &groupSize);
@@ -13001,7 +13001,7 @@ export namespace TASK
 	export inline void TASK_PLAY_ANIM_ADVANCED(Ped ped, String animDict, String animName, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float animEnterSpeed, float animExitSpeed, int duration, Any flag, float animTime, int rotOrder, int ikFlags) { InvokeV(0x83CDB10EA29B370B, ped, animDict, animName, posX, posY, posZ, rotX, rotY, rotZ, animEnterSpeed, animExitSpeed, duration, flag, animTime, rotOrder, ikFlags); } // 0x83CDB10EA29B370B 0x3DDEB0E6 b323
 	// Full list of animation dictionaries and anims by DurtyFree: https://github.com/DurtyFree/gta-v-data-dumps/blob/master/animDictsCompact.json
 	export inline void STOP_ANIM_TASK(Entity entity, String animDictionary, String animationName, float blendDelta) { InvokeV(0x97FF36A1D40EA00A, entity, animDictionary, animationName, blendDelta); } // 0x97FF36A1D40EA00A 0x2B520A57 b323
-	// From fm_mission_controller.c:
+	// From fm_mission_Controller->c:
 	// reserve_network_mission_objects(get_num_reserved_mission_objects(0) + 1);
 	//            vVar28 = {0.094f, 0.02f, -0.005f};
 	//             vVar29 = {-92.24f, 63.64f, 150.24f};

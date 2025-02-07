@@ -5,14 +5,14 @@ import "Base.h";
 export struct ItemInfo
 {
 public:
+	WString Caption;
 	String Model;
-	String Caption;
 
-	constexpr ItemInfo(String caption, String model) : Model(model), Caption(caption)
+	constexpr ItemInfo(WString caption, String model) : Model(model), Caption(caption)
 	{
 	}
 
-	constexpr ItemInfo() : Model(""), Caption("")
+	constexpr ItemInfo() : Model(""), Caption(L"")
 	{
 	}
 

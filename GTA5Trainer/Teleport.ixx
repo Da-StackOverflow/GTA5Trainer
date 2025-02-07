@@ -6,7 +6,7 @@ import Util;
 import Menu;
 import Vector;
 
-static constexpr const float GroundCheckHeight[] = {
+export constexpr const float GroundCheckHeight[] = {
 	0.0f, 50.0f, 100.0f,150.0f, 200.0f, 250.0f, 300.0f, 350.0f, 400.0f, 450.0f, 500.0f, 550.0f,
 	600.0f, 650.0f, 700.0f, 750.0f, 800.0f, 850.0f, 900.0f, 950.0f, 1000.0f,
 	1050.0f, 1100.0f, 1150.0f, 1200.0f, 1250.0f, 1300.0f, 1350.0f, 1400.0f, 1450.0f,
@@ -22,7 +22,7 @@ static constexpr const float GroundCheckHeight[] = {
 export class TeleportMarker : public TriggerItem
 {
 public:
-	constexpr TeleportMarker(String caption) : TriggerItem(caption)
+	constexpr TeleportMarker(WString caption) : TriggerItem(caption)
 	{
 
 	}
@@ -51,7 +51,7 @@ public:
 		}
 		if (!blipFound)
 		{
-			SetTips("请先在地图上设置标记点");
+			SetTips(L"请先在地图上设置标记点");
 			return;
 		}
 
@@ -76,7 +76,7 @@ public:
 
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(e, coords.x, coords.y, coords.z, 0, 0, 1);
 		ThreadSleep(0);
-		SetTips("成功传送");
+		SetTips(L"成功传送");
 	}
 };
 
@@ -86,7 +86,7 @@ private:
 	Vector3 coords;
 
 public:
-	constexpr Teleport(String caption, Vector3& coords) : TriggerItem(caption)
+	constexpr Teleport(WString caption, float x, float y, float z) : TriggerItem(caption), coords(x, y, z)
 	{
 
 	}
@@ -101,14 +101,14 @@ public:
 
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(e, coords.x, coords.y, coords.z, false, false, true);
 		ThreadSleep(0);
-		SetTips("成功传送");
+		SetTips(L"成功传送");
 	}
 };
 
 export class GetTeleportMarkerCords : public TriggerItem
 {
 public:
-	constexpr GetTeleportMarkerCords(String caption) : TriggerItem(caption)
+	constexpr GetTeleportMarkerCords(WString caption) : TriggerItem(caption)
 	{
 
 	}
@@ -137,7 +137,7 @@ public:
 		}
 		if (!blipFound)
 		{
-			SetTips("请先在地图上设置标记点");
+			SetTips(L"请先在地图上设置标记点");
 			return;
 		}
 
@@ -159,7 +159,7 @@ public:
 		{
 			coords.z = 1000.0f;
 		}
-		SetTips(coords.ToString());
+		SetTips(ToString(coords));
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(e, preCoords.x, preCoords.y, preCoords.z, false, false, true);
 	}
 };
