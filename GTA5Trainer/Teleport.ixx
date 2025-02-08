@@ -163,3 +163,23 @@ public:
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(e, preCoords.x, preCoords.y, preCoords.z, false, false, true);
 	}
 };
+
+export class GetTeleportCurrentCords : public TriggerItem
+{
+public:
+	constexpr GetTeleportCurrentCords(WString caption) : TriggerItem(caption)
+	{
+
+	}
+
+	void OnExecute() override
+	{
+		Entity e = PlayerPed();
+		if (PED::IS_PED_IN_ANY_VEHICLE(e, 0))
+		{
+			e = PED::GET_VEHICLE_PED_IS_USING(e);
+		}
+		Vector3 coords = ENTITY::GET_ENTITY_COORDS(e, true);
+		SetTips(ToString(coords));
+	}
+};

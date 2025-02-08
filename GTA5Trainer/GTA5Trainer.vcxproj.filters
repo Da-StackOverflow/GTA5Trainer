@@ -57,9 +57,6 @@
     <ClCompile Include="VehicleInfos.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ChangeSkin.ixx">
-      <Filter>源文件\Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="Teleport.ixx">
       <Filter>源文件\Scripts</Filter>
     </ClCompile>
@@ -70,6 +67,9 @@
       <Filter>源文件\Scripts</Filter>
     </ClCompile>
     <ClCompile Include="Vehicle.ixx">
+      <Filter>源文件\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.ixx">
       <Filter>源文件\Scripts</Filter>
     </ClCompile>
   </ItemGroup>

@@ -69,10 +69,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ChangeSkin.ixx" />
     <ClCompile Include="Color.ixx" />
     <ClCompile Include="Entrance.ixx" />
     <ClCompile Include="Function.ixx" />
+    <ClCompile Include="Player.ixx" />
     <ClCompile Include="Vehicle.ixx" />
     <ClCompile Include="Weapon.ixx" />
     <ClCompile Include="InputSystem.ixx" />

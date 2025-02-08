@@ -7,7 +7,7 @@ import ItemInfo;
 import PedModelInfos;
 import WeaponsInfos;
 import VehicleInfos;
-import ChangeSkin;
+import Player;
 import Teleport;
 import Weapon;
 import Vehicle;
@@ -23,7 +23,7 @@ static Menu* GetOrCreatePlayerChangeSkinMenu()
 	{
 		var newMenu = new Menu(L"改变玩家模型");
 		Controller->Register(newMenu);
-		newMenu->AddItem(new AutoFallBackSkin(L"自动换回默认模型"));
+		newMenu->AddItem(new FallBackSkinWhenDead(L"自动换回默认模型"));
 		for (var i = 0; i < sizeof(PedModelInfos) / sizeof(ItemInfo); i++)
 		{
 			newMenu->AddItem(new ChangeSkin(PedModelInfos[i]));
@@ -43,7 +43,8 @@ static Menu* GetOrCreatePlayerTeleportMenu()
 		var newMenu = new Menu(L"传送");
 		Controller->Register(newMenu);
 		newMenu->AddItem(new TeleportMarker(L"传送到地图标记点"));
-		newMenu->AddItem(new GetTeleportMarkerCords(L"显示地图标记点信息"));
+		newMenu->AddItem(new GetTeleportCurrentCords(L"显示当前玩家位置坐标"));
+		newMenu->AddItem(new GetTeleportMarkerCords(L"显示地图标记点坐标"));
 		newMenu->AddItem(new Teleport(L"麦克家", -852.4f, 160.0f, 65.6f));
 		newMenu->AddItem(new Teleport(L"富兰克林家", 7.9f, 548.1f, 175.5f));
 		newMenu->AddItem(new Teleport(L"崔佛的拖车", 1985.7f, 3812.2f, 32.2f));
@@ -64,6 +65,45 @@ static Menu* GetOrCreatePlayerTeleportMenu()
 	}
 }
 
+static Menu* GetOrCreateAddCashMenu()
+{
+	if (Controller->IsMenuExist(L"增加金钱"))
+	{
+		return Controller->GetMenu(L"增加金钱");
+	}
+	else
+	{
+		var newMenu = new Menu(L"增加金钱");
+		Controller->Register(newMenu);
+		newMenu->AddItem(new AddCash(L"给麦克增加一万", 0, 10000));
+		newMenu->AddItem(new AddCash(L"给麦克增加一百万", 0, 1000000));
+		newMenu->AddItem(new AddCash(L"给富兰克林增加一万", 1, 10000));
+		newMenu->AddItem(new AddCash(L"给富兰克林增加一百万", 1, 1000000));
+		newMenu->AddItem(new AddCash(L"给崔佛增加一万", 2, 10000));
+		newMenu->AddItem(new AddCash(L"给崔佛增加一百万", 2, 1000000));
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateWantedMenu()
+{
+	if (Controller->IsMenuExist(L"通缉等级修改"))
+	{
+		return Controller->GetMenu(L"通缉等级修改");
+	}
+	else
+	{
+		var newMenu = new Menu(L"通缉等级修改");
+		Controller->Register(newMenu);
+		newMenu->AddItem(new ClearWanted(L"清除通缉等级"));
+		newMenu->AddItem(new ModifyWantedLevel(L"增加1颗星", 1));
+		newMenu->AddItem(new ModifyWantedLevel(L"减少1颗星", 1));
+		newMenu->AddItem(new NeverWanted(L"不再受通缉"));
+		newMenu->AddItem(new PoliceIgnore(L"警察忽视玩家"));
+		return newMenu;
+	}
+}
+
 static Menu* GetOrCreatePlayerMenu()
 {
 	if (Controller->IsMenuExist(L"玩家系统"))
@@ -75,7 +115,18 @@ static Menu* GetOrCreatePlayerMenu()
 		var newMenu = new Menu(L"玩家系统");
 		Controller->Register(newMenu);
 		newMenu->AddItem(new SubMenu(L"传送", GetOrCreatePlayerTeleportMenu()));
+		newMenu->AddItem(new FixPlayer(L"恢复生命"));
+		newMenu->AddItem(new SubMenu(L"增加金钱", GetOrCreateAddCashMenu()));
+		newMenu->AddItem(new SubMenu(L"通缉等级修改", GetOrCreateWantedMenu()));
+		newMenu->AddItem(new PlayerInvincible(L"无敌"));
+		newMenu->AddItem(new UnlimitedAbility(L"无限体力"));
+		newMenu->AddItem(new NoNoise(L"无声"));
+		newMenu->AddItem(new FastSwim(L"快速游泳"));
+		newMenu->AddItem(new FastRun(L"快速跑"));
+		newMenu->AddItem(new SuperJump(L"超级跳"));
 		newMenu->AddItem(new SubMenu(L"改变玩家模型", GetOrCreatePlayerChangeSkinMenu()));
+		newMenu->AddItem(new FallBackSkinWhenDead(L"当玩家死亡后自动恢复成默认皮肤"));
+		newMenu->AddItem(new FallBackSkin(L"恢复成默认皮肤"));
 		return newMenu;
 	}
 }
