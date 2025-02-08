@@ -10,31 +10,25 @@ public:
 	byte g;
 	byte b;
 
-	constexpr Color(int colorNum, bool includeAlpha = false) : Color((uint)colorNum, includeAlpha)
+	constexpr Color(uint colorNum) : a(255), r((byte)((colorNum >> 16) & 0xff)), g((byte)((colorNum >> 8) & 0xff)), b((byte)(colorNum & 0xff))
 	{
 	}
 
-	constexpr Color(uint colorNum, bool includeAlpha = false)
-	{
-		a = (byte)(colorNum & 0xff);
-		r = (byte)((colorNum >> 8) & 0xff);
-		g = (byte)((colorNum >> 16) & 0xff);
-		b = includeAlpha ? (byte)((colorNum >> 24) & 0xff) : (byte)255;
-	}
-
-	constexpr Color(byte r, byte g, byte b, byte a = 255) : a(a), r(r), g(g), b(b)
+	constexpr Color(byte r, byte g, byte b) : a(255), r(r), g(g), b(b)
 	{
 	}
 
-	constexpr Color() : a(0), r(0), g(0), b(255)
+	constexpr Color() : a(255), r(255), g(255), b(255)
 	{
 	}
 };
 
-export const Color Red = Color(255, 0, 0);
-export const Color Green = Color(0, 255, 0);
-export const Color Blue = Color(0, 0, 255);
-export const Color Yellow = Color(255, 255, 0);
+export const Color Red = Color(0xff4f6c);
+export const Color Lime = Color(0x65ef63);
+export const Color Green = Color(0x35b52a);
+export const Color Blue = Color(0x4fadff);
+export const Color Yellow = Color(0xffa14f);
 export const Color White = Color(255, 255, 255);
 export const Color Black = Color(0, 0, 0);
 export const Color Cyan = Color(0, 255, 255);
+export const Color Gold = Color(0xf38300ul);

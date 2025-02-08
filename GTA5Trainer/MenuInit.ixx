@@ -45,22 +45,12 @@ static Menu* GetOrCreatePlayerTeleportMenu()
 		newMenu->AddItem(new TeleportMarker(L"传送到地图标记点"));
 		newMenu->AddItem(new GetTeleportCurrentCords(L"显示当前玩家位置坐标"));
 		newMenu->AddItem(new GetTeleportMarkerCords(L"显示地图标记点坐标"));
-		newMenu->AddItem(new Teleport(L"麦克家", -852.4f, 160.0f, 65.6f));
-		newMenu->AddItem(new Teleport(L"富兰克林家", 7.9f, 548.1f, 175.5f));
-		newMenu->AddItem(new Teleport(L"崔佛的拖车", 1985.7f, 3812.2f, 32.2f));
-		newMenu->AddItem(new Teleport(L"机场入口", -1034.6f, -2733.6f, 13.8f));
-		newMenu->AddItem(new Teleport(L"机场跑道", -1336.0f, -3044.0f, 13.9f));
-		newMenu->AddItem(new Teleport(L"梅利威瑟的基地", 338.2f, -2715.9f, 38.5f));
-		newMenu->AddItem(new Teleport(L"沉船", 760.4f, -2943.2f, 5.8f));
-		newMenu->AddItem(new Teleport(L"脱衣舞俱乐部", 127.4f, -1307.7f, 29.2f));
-		newMenu->AddItem(new Teleport(L"ELBURRO HEIGHTS", 1384.0f, -2057.1f, 52.0f));
-		newMenu->AddItem(new Teleport(L"摩天轮", -1670.7f, -1125.0f, 13.0f));
-		newMenu->AddItem(new Teleport(L"丘马什", -3192.6f, 1100.0f, 20.2f));
-		newMenu->AddItem(new Teleport(L"风力发电场", 2354.0f, 1830.3f, 101.1f));
-		newMenu->AddItem(new Teleport(L"军事基地", -2047.4f, 3132.1f, 32.8f));
-		newMenu->AddItem(new Teleport(L"麦肯奇机场", 2121.7f, 4796.3f, 41.1f));
-		newMenu->AddItem(new Teleport(L"沙漠机场", 1747.0f, 3273.7f, 41.1f));
-		newMenu->AddItem(new Teleport(L"乞里耶德山", 425.4f, 5614.3f, 766.5f));
+		newMenu->AddItem(new Teleport(L"武装国度", 16.652f, -1116.532f, 29.791f));
+		newMenu->AddItem(new Teleport(L"改车店", 1182.520f, 2651.934f, 37.810f));
+		newMenu->AddItem(new Teleport(L"乞里耶德山", 499.739f, 5589.924f, 794.821f));
+		newMenu->AddItem(new Teleport(L"花园银行顶部",-79.241f, -821.336f, 326.175f));
+		newMenu->AddItem(new Teleport(L"在建大楼顶部", -148.989f, -962.854f, 269.135f));
+		newMenu->AddItem(new Teleport(L"塔吊顶部", -119.054f, -976.211f, 296.197f));
 		return newMenu;
 	}
 }
@@ -119,7 +109,7 @@ static Menu* GetOrCreatePlayerMenu()
 		newMenu->AddItem(new SubMenu(L"增加金钱", GetOrCreateAddCashMenu()));
 		newMenu->AddItem(new SubMenu(L"通缉等级修改", GetOrCreateWantedMenu()));
 		newMenu->AddItem(new PlayerInvincible(L"无敌"));
-		newMenu->AddItem(new UnlimitedAbility(L"无限体力"));
+		newMenu->AddItem(new UnlimitedAbility(L"无限特殊能力"));
 		newMenu->AddItem(new NoNoise(L"无声"));
 		newMenu->AddItem(new FastSwim(L"快速游泳"));
 		newMenu->AddItem(new FastRun(L"快速跑"));

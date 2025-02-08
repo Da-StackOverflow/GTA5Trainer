@@ -46,6 +46,7 @@ public:
 	void WaitAndDraw(i64 ms);
 
 	void SetTips(WString text, int ms = 3000);
+	void SetTips(String text, int ms = 3000);
 
 	virtual void OnDraw(bool active = false)
 	{
@@ -57,7 +58,7 @@ public:
 export class Caption : public MenuItem
 {
 public:
-	constexpr Caption(WString text) : MenuItem(text, 400, 80, Cyan, Blue, 0.4f)
+	constexpr Caption(WString text) : MenuItem(text, 400, 80, Blue, White, 0.4f)
 	{
 	}
 };
@@ -94,7 +95,7 @@ public:
 export class TriggerItem : public ExcuteableItem
 {
 public:
-	constexpr TriggerItem(WString text) : ExcuteableItem(text, White, Blue, Green, Red)
+	constexpr TriggerItem(WString text) : ExcuteableItem(text, White, White, Gold, White)
 	{
 
 	}
@@ -108,7 +109,7 @@ private:
 
 public:
 
-	constexpr SwitchItem(WString text) : ExcuteableItem(text, White, Blue, Green, Red), StateActiveColor(Green), StateInactiveColor(Red)
+	constexpr SwitchItem(WString text) : ExcuteableItem(text, White, White, Gold, White), StateActiveColor(Green), StateInactiveColor(White)
 	{
 
 	}
@@ -230,8 +231,8 @@ public:
 	{
 		int index = _items.size() % ItemsMaxCountPerPage;
 		item->Position = Vector2(item->Width / 2.0f, item->Height * index + Title.Height);
-		item->TextPosition = Vector2(0.01f, item->Position.y - item->Height / 4.0f);
-		item->BgColor = (_items.size() & 1) == 0 ? White : Yellow;
+		item->TextPosition = Vector2(0.01f, item->Position.y - item->Height / 3.0f);
+		item->BgColor = (_items.size() & 1) == 0 ? Green : Lime;
 		_items.push_back(item);
 		_itemCount++;
 	}
@@ -242,9 +243,9 @@ public:
 	{
 		int index = _items.size() % ItemsMaxCountPerPage;
 		item->Position = Vector2(item->Width / 2.0f, item->Height * index + Title.Height);
-		item->TextPosition = Vector2(0.01f, item->Position.y - item->Height / 4.0f);
-		item->BgColor = (_items.size() & 1) == 0 ? White : Yellow;
-		item->ActiveTextPosition = Vector2(0.15f, item->TextPosition.y);
+		item->TextPosition = Vector2(0.01f, item->Position.y - item->Height / 3.0f);
+		item->BgColor = (_items.size() & 1) == 0 ? Green : Lime;
+		item->ActiveTextPosition = Vector2(0.17f, item->TextPosition.y);
 		_items.push_back(item);
 		_switchItems.push_back(item);
 		_itemCount++;
@@ -328,7 +329,7 @@ export class SubMenu : public ExcuteableItem
 {
 public:
 	Menu* menu;
-	SubMenu(WString text, Menu* m) : ExcuteableItem(text, White, Blue, Green, Red), menu(m)
+	SubMenu(WString text, Menu* m) : ExcuteableItem(text, White, White, Gold, White), menu(m)
 	{
 		
 	}
@@ -402,6 +403,13 @@ public:
 		_statusText = text;
 		_statusTextMaxTicks = GetTimeTicks() + ms;
 	}
+
+	void SetTips(String text, i64 ms = 3000)
+	{
+		_statusText2 = text;
+		_statusTextMaxTicks2 = GetTimeTicks() + ms;
+	}
+
 	int ExcuteInput(Menu* menu)
 	{
 		if (Input.IsAccept())
@@ -442,7 +450,7 @@ public:
 		bool waited = false;
 		while (GetTimeTicks() < time || !waited)
 		{
-			scriptWait(1);
+			ThreadSleep(1);
 			waited = true;
 			OnDraw();
 		}
@@ -451,8 +459,10 @@ private:
 	std::stack<Menu*> _menuStack;
 	std::unordered_map<WString, Menu*> _menuList;
 	WString _statusText;
+	String _statusText2;
 	i64 _nextCanInputTime;
 	i64 _statusTextMaxTicks;
+	i64 _statusTextMaxTicks2;
 
 	void OnUpdate()
 	{
@@ -466,6 +476,14 @@ private:
 		if (GetTimeTicks() < _statusTextMaxTicks)
 		{
 			PaintText(_statusText, 0.5f, 0.5f, 0.5f, White);
+		}
+	}
+
+	void DrawTips2()
+	{
+		if (GetTimeTicks() < _statusTextMaxTicks2)
+		{
+			PaintText(_statusText2, 0.5f, 0.5f, 0.5f, White);
 		}
 	}
 
@@ -490,6 +508,7 @@ private:
 			GetActiveMenu()->OnDraw();
 		}
 		DrawTips();
+		DrawTips2();
 	}
 
 	void OnInput()
@@ -520,8 +539,8 @@ void Menu::AddItem(SubMenu* item)
 {
 	int index = _items.size() % ItemsMaxCountPerPage;
 	item->Position = Vector2(item->Width / 2.0f, item->Height * index + Title.Height);
-	item->TextPosition = Vector2(0.01f, item->Position.y - item->Height / 4.0f);
-	item->BgColor = (_items.size() & 1) == 0 ? White : Yellow;
+	item->TextPosition = Vector2(0.01f, item->Position.y - item->Height / 3.0f);
+	item->BgColor = (_items.size() & 1) == 0 ? Green : Lime;
 	_items.push_back(item);
 	_itemCount++;
 }
@@ -532,6 +551,11 @@ void MenuItem::WaitAndDraw(i64 ms)
 }
 
 void MenuItem::SetTips(WString text, int ms)
+{
+	Controller->SetTips(text, ms);
+}
+
+void MenuItem::SetTips(String text, int ms)
 {
 	Controller->SetTips(text, ms);
 }

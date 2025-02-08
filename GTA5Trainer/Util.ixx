@@ -98,17 +98,17 @@ export String GetStoredString(WString str)
 	return _buffer + it->second;
 }
 
-wchar_t _tostringBuffer[1024]{ 0 };
+char _tostringBuffer[1024]{ 0 };
 
-export WString ToString(float x, float y, float z)
+export String ToString(float x, float y, float z)
 {
-	swprintf_s(_tostringBuffer, L"(%.3f, %.3f, %.3f)", x, y, z);
+	sprintf_s(_tostringBuffer, "(%.3f, %.3f, %.3f)", x, y, z);
 	return _tostringBuffer;
 }
 
-export WString ToString(Vector3& vec)
+export String ToString(Vector3& vec)
 {
-	swprintf_s(_tostringBuffer, L"(%.3f, %.3f, %.3f)", vec.x, vec.y, vec.z);
+	sprintf_s(_tostringBuffer, "(%.3f, %.3f, %.3f)", vec.x, vec.y, vec.z);
 	return _tostringBuffer;
 }
 
@@ -229,9 +229,10 @@ export void PaintText(WString text, Vector2& position, float scale, const Color&
 	HUD::SET_TEXT_FONT(0);
 	HUD::SET_TEXT_SCALE(0.0, scale);
 	HUD::SET_TEXT_COLOR(color.r, color.g, color.b, color.a);
-	HUD::SET_TEXT_CENTRE(0);
-	HUD::SET_TEXT_DROPSHADOW(0, 0, 0, 0, 0);
-	HUD::SET_TEXT_EDGE(0, 0, 0, 0, 0);
+	//HUD::SET_TEXT_CENTRE(0);
+	//HUD::SET_TEXT_DROPSHADOW((int)(scale * 10 + 3), 0, 0, 0, 0);
+	//HUD::SET_TEXT_EDGE(0, 0, 0, 0, 0);
+	HUD::SET_TEXT_OUTLINE();
 	HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(GetStoredString(text));
 	HUD::END_TEXT_COMMAND_DISPLAY_TEXT(position.x, position.y);
@@ -242,11 +243,26 @@ export void PaintText(WString text, float x, float y, float scale, const Color& 
 	HUD::SET_TEXT_FONT(0);
 	HUD::SET_TEXT_SCALE(0.0, scale);
 	HUD::SET_TEXT_COLOR(color.r, color.g, color.b, color.a);
-	HUD::SET_TEXT_CENTRE(0);
-	HUD::SET_TEXT_DROPSHADOW(0, 0, 0, 0, 0);
-	HUD::SET_TEXT_EDGE(0, 0, 0, 0, 0);
+	//HUD::SET_TEXT_CENTRE(0);
+	//HUD::SET_TEXT_DROPSHADOW((int)(scale * 10 + 3), 0, 0, 0, 0);
+	//HUD::SET_TEXT_EDGE(0, 0, 0, 0, 0);
+	HUD::SET_TEXT_OUTLINE();
 	HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(GetStoredString(text));
+	HUD::END_TEXT_COMMAND_DISPLAY_TEXT(x, y);
+}
+
+export void PaintText(String text, float x, float y, float scale, const Color& color)
+{
+	HUD::SET_TEXT_FONT(0);
+	HUD::SET_TEXT_SCALE(0.0, scale);
+	HUD::SET_TEXT_COLOR(color.r, color.g, color.b, color.a);
+	//HUD::SET_TEXT_CENTRE(0);
+	//HUD::SET_TEXT_DROPSHADOW((int)(scale * 10 + 3), 0, 0, 0, 0);
+	//HUD::SET_TEXT_EDGE(0, 0, 0, 0, 0);
+	HUD::SET_TEXT_OUTLINE();
+	HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
+	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
 	HUD::END_TEXT_COMMAND_DISPLAY_TEXT(x, y);
 }
 

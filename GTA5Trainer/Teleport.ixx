@@ -159,7 +159,7 @@ public:
 		{
 			coords.z = 1000.0f;
 		}
-		SetTips(ToString(coords));
+		SetTips(ToString(coords), 10000);
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(e, preCoords.x, preCoords.y, preCoords.z, false, false, true);
 	}
 };
@@ -180,6 +180,6 @@ public:
 			e = PED::GET_VEHICLE_PED_IS_USING(e);
 		}
 		Vector3 coords = ENTITY::GET_ENTITY_COORDS(e, true);
-		SetTips(ToString(coords));
+		SetTips(ToString(coords), 10000);
 	}
 };
