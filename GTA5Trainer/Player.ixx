@@ -251,14 +251,6 @@ protected:
 		}
 	}
 
-	//void OnUpdate() override
-	//{
-	//	if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
-	//	{
-	//		PLAYER::SET_PLAYER_INVINCIBLE(PlayerID(), true);
-	//	}
-	//}
-
 	void OnInactive() override
 	{
 		if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
@@ -284,14 +276,6 @@ protected:
 			PLAYER::SET_POLICE_IGNORE_PLAYER(PlayerID(), true);
 		}
 	}
-
-	//void OnUpdate() override
-	//{
-	//	if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
-	//	{
-	//		PLAYER::SET_POLICE_IGNORE_PLAYER(PlayerID(), true);
-	//	}
-	//}
 
 	void OnInactive() override
 	{
@@ -337,14 +321,6 @@ protected:
 		}
 	}
 
-	//void OnUpdate() override
-	//{
-	//	if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
-	//	{
-	//		PLAYER::SET_PLAYER_NOISE_MULTIPLIER(PlayerID(), 0.0f);
-	//	}
-	//}
-
 	void OnInactive() override
 	{
 		if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
@@ -371,14 +347,6 @@ protected:
 		}
 	}
 
-	//void OnUpdate() override
-	//{
-	//	if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
-	//	{
-	//		PLAYER::SET_SWIM_MULTIPLIER_FOR_PLAYER(PlayerID(), 1.49f);
-	//	}
-	//}
-
 	void OnInactive() override
 	{
 		if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
@@ -404,14 +372,6 @@ protected:
 			PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PlayerID(), 1.49f);
 		}
 	}
-
-	//void OnUpdate() override
-	//{
-	//	if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
-	//	{
-	//		PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PlayerID(), 1.49f);
-	//	}
-	//}
 
 	void OnInactive() override
 	{

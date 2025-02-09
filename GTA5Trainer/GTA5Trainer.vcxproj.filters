@@ -72,6 +72,18 @@
     <ClCompile Include="Player.ixx">
       <Filter>源文件\Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="Misc.ixx">
+      <Filter>源文件\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.ixx">
+      <Filter>源文件\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Weather.ixx">
+      <Filter>源文件\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="WeatherInfos.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.h">

@@ -7,10 +7,14 @@ import ItemInfo;
 import PedModelInfos;
 import WeaponsInfos;
 import VehicleInfos;
+import WeatherInfos;
 import Player;
 import Teleport;
 import Weapon;
 import Vehicle;
+import Misc;
+import Time;
+import Weather;
 
 
 static Menu* GetOrCreatePlayerChangeSkinMenu()
@@ -150,6 +154,279 @@ static Menu* GetOrCreateWeaponMenu()
 	{
 		var newMenu = new Menu(L"武器系统");
 		newMenu->AddItem(new SubMenu(L"获取武器", GetOrCreateGetWeaponMenu()));
+		newMenu->AddItem(new GetAllWeapons(L"获取所有武器"));
+		newMenu->AddItem(new DropCurrentWeapon(L"移除当前武器"));
+		newMenu->AddItem(new RemoveAllWeapon(L"移除所有武器"));
+		newMenu->AddItem(new NoReload(L"不用重新装填子弹"));
+		newMenu->AddItem(new FireAmmo(L"火焰子弹"));
+		newMenu->AddItem(new ExplosiveAmmo(L"爆炸子弹"));
+		newMenu->AddItem(new ExplosiveMelee(L"爆炸近战武器"));
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnCarMenu()
+{
+	if (Controller->IsMenuExist(L"生成汽车"))
+	{
+		return Controller->GetMenu(L"生成汽车");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成汽车");
+		
+		for (var i = 0; i < sizeof(Car) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(Car[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnHelicopterMenu()
+{
+	if (Controller->IsMenuExist(L"生成直升机"))
+	{
+		return Controller->GetMenu(L"生成直升机");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成直升机");
+
+		for (var i = 0; i < sizeof(Helicopter) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(Helicopter[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnBikeMenu()
+{
+	if (Controller->IsMenuExist(L"生成摩托车"))
+	{
+		return Controller->GetMenu(L"生成摩托车");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成摩托车");
+
+		for (var i = 0; i < sizeof(Bike) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(Bike[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnPlaneMenu()
+{
+	if (Controller->IsMenuExist(L"生成飞机"))
+	{
+		return Controller->GetMenu(L"生成飞机");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成飞机");
+
+		for (var i = 0; i < sizeof(Plane) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(Plane[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnAmphibiousAutomobileMenu()
+{
+	if (Controller->IsMenuExist(L"生成水陆两栖车"))
+	{
+		return Controller->GetMenu(L"生成水陆两栖车");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成水陆两栖车");
+
+		for (var i = 0; i < sizeof(AmphibiousAutomobile) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(AmphibiousAutomobile[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnTrailerMenu()
+{
+	if (Controller->IsMenuExist(L"生成拖车"))
+	{
+		return Controller->GetMenu(L"生成拖车");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成拖车");
+
+		for (var i = 0; i < sizeof(Trailer) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(Trailer[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnSubmarineMenu()
+{
+	if (Controller->IsMenuExist(L"生成潜水艇"))
+	{
+		return Controller->GetMenu(L"生成潜水艇");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成潜水艇");
+
+		for (var i = 0; i < sizeof(Submarine) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(Submarine[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnQuadbikeMenu()
+{
+	if (Controller->IsMenuExist(L"生成四轮摩托车"))
+	{
+		return Controller->GetMenu(L"生成四轮摩托车");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成四轮摩托车");
+
+		for (var i = 0; i < sizeof(Quadbike) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(Quadbike[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnAmphibiousQuadbikeMenu()
+{
+	if (Controller->IsMenuExist(L"生成水陆四轮摩托车"))
+	{
+		return Controller->GetMenu(L"生成水陆四轮摩托车");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成水陆四轮摩托车");
+
+		for (var i = 0; i < sizeof(AmphibiousQuadbike) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(AmphibiousQuadbike[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnBlimpMenu()
+{
+	if (Controller->IsMenuExist(L"生成飞艇"))
+	{
+		return Controller->GetMenu(L"生成飞艇");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成飞艇");
+
+		for (var i = 0; i < sizeof(Blimp) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(Blimp[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnBicycleMenu()
+{
+	if (Controller->IsMenuExist(L"生成自行车"))
+	{
+		return Controller->GetMenu(L"生成自行车");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成自行车");
+
+		for (var i = 0; i < sizeof(Bicycle) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(Bicycle[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnTrainMenu()
+{
+	if (Controller->IsMenuExist(L"生成火车"))
+	{
+		return Controller->GetMenu(L"生成火车");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成火车");
+
+		for (var i = 0; i < sizeof(RailwayTrain) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(RailwayTrain[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnBoatMenu()
+{
+	if (Controller->IsMenuExist(L"生成船"))
+	{
+		return Controller->GetMenu(L"生成船");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成船");
+
+		for (var i = 0; i < sizeof(Boat) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(Boat[i]));
+		}
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateSpawnSubmarinecarMenu()
+{
+	if (Controller->IsMenuExist(L"生成潜水车"))
+	{
+		return Controller->GetMenu(L"生成潜水车");
+	}
+	else
+	{
+		var newMenu = new Menu(L"生成潜水车");
+
+		for (var i = 0; i < sizeof(Submarinecar) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new SpawnCar(Submarinecar[i]));
+		}
 		Controller->Register(newMenu);
 		return newMenu;
 	}
@@ -165,10 +442,20 @@ static Menu* GetOrCreateSpawnVehicleMenu()
 	{
 		var newMenu = new Menu(L"生成车辆");
 		newMenu->AddItem(new SetSpawnCarAndWarpInFlag(L"设置生成车辆后立即进入到车里"));
-		for (var i = 0; i < sizeof(VehicleInfos) / sizeof(ItemInfo); i++)
-		{
-			newMenu->AddItem(new SpawnCar(VehicleInfos[i]));
-		}
+		newMenu->AddItem(new SubMenu(L"生成潜水车", GetOrCreateSpawnSubmarinecarMenu()));
+		newMenu->AddItem(new SubMenu(L"生成汽车", GetOrCreateSpawnCarMenu()));
+		newMenu->AddItem(new SubMenu(L"生成直升机", GetOrCreateSpawnHelicopterMenu()));
+		newMenu->AddItem(new SubMenu(L"生成摩托车", GetOrCreateSpawnBikeMenu()));
+		newMenu->AddItem(new SubMenu(L"生成飞机", GetOrCreateSpawnPlaneMenu()));
+		newMenu->AddItem(new SubMenu(L"生成船", GetOrCreateSpawnBoatMenu()));
+		newMenu->AddItem(new SubMenu(L"生成水陆两栖车", GetOrCreateSpawnAmphibiousAutomobileMenu()));
+		newMenu->AddItem(new SubMenu(L"生成拖车", GetOrCreateSpawnTrailerMenu()));
+		newMenu->AddItem(new SubMenu(L"生成潜水艇", GetOrCreateSpawnSubmarineMenu()));
+		newMenu->AddItem(new SubMenu(L"生成四轮摩托车", GetOrCreateSpawnQuadbikeMenu()));
+		newMenu->AddItem(new SubMenu(L"生成水陆四轮摩托车", GetOrCreateSpawnAmphibiousQuadbikeMenu()));
+		newMenu->AddItem(new SubMenu(L"生成飞艇", GetOrCreateSpawnBlimpMenu()));
+		newMenu->AddItem(new SubMenu(L"生成自行车", GetOrCreateSpawnBicycleMenu()));
+		newMenu->AddItem(new SubMenu(L"生成火车", GetOrCreateSpawnTrainMenu()));
 		Controller->Register(newMenu);
 		return newMenu;
 	}
@@ -184,6 +471,31 @@ static Menu* GetOrCreateVehicleMenu()
 	{
 		var newMenu = new Menu(L"车辆系统");
 		newMenu->AddItem(new SubMenu(L"生成车辆", GetOrCreateSpawnVehicleMenu()));
+		newMenu->AddItem(new RandomPaintCar(L"改变车辆颜色"));
+		newMenu->AddItem(new FixCar(L"修理车辆"));
+		newMenu->AddItem(new SafeBelt(L"安全带"));
+		newMenu->AddItem(new InvincibleCar(L"车辆无敌"));
+		newMenu->AddItem(new InvincibleWheel(L"防弹车轮"));
+		newMenu->AddItem(new SpeedBoost(L"车辆加速"));
+		newMenu->AddItem(new VehicleRockets(L"车载火箭炮"));
+		Controller->Register(newMenu);
+		return newMenu;
+	}
+}
+
+static Menu* GetOrCreateChangeWeatherMenu()
+{
+	if (Controller->IsMenuExist(L"改变天气"))
+	{
+		return Controller->GetMenu(L"改变天气");
+	}
+	else
+	{
+		var newMenu = new Menu(L"改变天气");
+		for (int i = 0; i < sizeof(WeatherInfos) / sizeof(ItemInfo); i++)
+		{
+			newMenu->AddItem(new ChangeWeather(WeatherInfos[i]));
+		}
 		Controller->Register(newMenu);
 		return newMenu;
 	}
@@ -198,6 +510,9 @@ static Menu* GetOrCreateWeatherMenu()
 	else
 	{
 		var newMenu = new Menu(L"天气系统");
+		newMenu->AddItem(new SubMenu(L"改变天气", GetOrCreateChangeWeatherMenu()));
+		newMenu->AddItem(new StandCurrentWeather(L"保持当前天气"));
+		newMenu->AddItem(new SetWind(L"生成大风"));
 		Controller->Register(newMenu);
 		return newMenu;
 	}
@@ -212,6 +527,10 @@ static Menu* GetOrCreateTimeMenu()
 	else
 	{
 		var newMenu = new Menu(L"时间系统");
+		newMenu->AddItem(new TimeModify(L"前进一小时", 1));
+		newMenu->AddItem(new TimeModify(L"后退一小时", -1));
+		newMenu->AddItem(new TimePause(L"暂停时间"));
+		newMenu->AddItem(new TimeSynced(L"真实时间"));
 		Controller->Register(newMenu);
 		return newMenu;
 	}
@@ -226,6 +545,13 @@ static Menu* GetOrCreateMiscMenu()
 	else
 	{
 		var newMenu = new Menu(L"其他系统");
+		newMenu->AddItem(new MoonGravity(L"月球引力"));
+		newMenu->AddItem(new RandomCops(L"随机警察"));
+		newMenu->AddItem(new RandomTrains(L"随机火车"));
+		newMenu->AddItem(new RandomBoats(L"随机船"));
+		newMenu->AddItem(new RandomGarbageTrucks(L"随机垃圾车"));
+		newMenu->AddItem(new NextRadioTrack(L"下一首车载音乐"));
+		newMenu->AddItem(new HideHud(L"隐藏Hud"));
 		Controller->Register(newMenu);
 		return newMenu;
 	}

@@ -58,8 +58,21 @@ public:
 export class Caption : public MenuItem
 {
 public:
-	constexpr Caption(WString text) : MenuItem(text, 400, 80, Blue, White, 0.4f)
+	int CurrentPage;
+	int MaxPage;
+	char Buffer[32];
+	constexpr Caption(WString text) : MenuItem(text, 400, 80, Blue, White, 0.4f), CurrentPage(1), MaxPage(1)
 	{
+	}
+
+	void OnDraw(bool active = false) override
+	{
+		MenuItem::OnDraw(active);
+		if (MaxPage > 1)
+		{
+			sprintf_s(Buffer, 32, "%02d/%02d", CurrentPage, MaxPage);
+			PaintText(Buffer, TextPosition.x + 0.16f, TextPosition.y, Scale, TextColor);
+		}
 	}
 };
 
@@ -235,6 +248,7 @@ public:
 		item->BgColor = (_items.size() & 1) == 0 ? Green : Lime;
 		_items.push_back(item);
 		_itemCount++;
+		Title.MaxPage = _itemCount / ItemsMaxCountPerPage + (_itemCount % ItemsMaxCountPerPage != 0 ? 1 : 0);
 	}
 
 	void AddItem(SubMenu* item);
@@ -250,6 +264,7 @@ public:
 		_switchItems.push_back(item);
 		_itemCount++;
 		_switchItemCount++;
+		Title.MaxPage = _itemCount / ItemsMaxCountPerPage + (_itemCount % ItemsMaxCountPerPage != 0 ? 1 : 0);
 	}
 
 	int ActiveItemIndex() const
@@ -313,10 +328,12 @@ public:
 			case KeyCode::Left:
 				_activePage = (_activePage + pageCount - 1) % pageCount;
 				_activeItemInActivePage = 0;
+				Title.CurrentPage = _activePage + 1;
 				break;
 			case KeyCode::Right:
 				_activePage = (_activePage + 1) % pageCount;
 				_activeItemInActivePage = 0;
+				Title.CurrentPage = _activePage + 1;
 				break;
 			case KeyCode::Back:
 				break;
@@ -327,13 +344,30 @@ public:
 
 export class SubMenu : public ExcuteableItem
 {
+private:
+	WString Caption2 = L">>";
 public:
 	Menu* menu;
+	Vector2 Caption2Position;
+
 	SubMenu(WString text, Menu* m) : ExcuteableItem(text, White, White, Gold, White), menu(m)
 	{
 		
 	}
 	void OnExecute() override;
+
+	void OnDraw(bool active = false) override
+	{
+		ExcuteableItem::OnDraw(active);
+		if (active)
+		{
+			PaintText(Caption2, Caption2Position, Scale, TextActiveColor);
+		}
+		else
+		{
+			PaintText(Caption2, Caption2Position, Scale, TextActiveColor);
+		}
+	}
 };
 
 export class MenuController
@@ -541,8 +575,10 @@ void Menu::AddItem(SubMenu* item)
 	item->Position = Vector2(item->Width / 2.0f, item->Height * index + Title.Height);
 	item->TextPosition = Vector2(0.01f, item->Position.y - item->Height / 3.0f);
 	item->BgColor = (_items.size() & 1) == 0 ? Green : Lime;
+	item->Caption2Position = Vector2(0.19f, item->TextPosition.y);
 	_items.push_back(item);
 	_itemCount++;
+	Title.MaxPage = _itemCount / ItemsMaxCountPerPage + (_itemCount % ItemsMaxCountPerPage != 0 ? 1 : 0);
 }
 
 void MenuItem::WaitAndDraw(i64 ms)

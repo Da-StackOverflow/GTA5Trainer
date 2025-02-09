@@ -7,6 +7,7 @@ import "Base.h";
 #ifndef Import_h
 #define Import_h
 
+
 #pragma comment(lib, "ScriptHookV.lib")
 
 #define IMPORT __declspec(dllimport)

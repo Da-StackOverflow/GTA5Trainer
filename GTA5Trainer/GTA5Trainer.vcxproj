@@ -72,7 +72,9 @@
     <ClCompile Include="Color.ixx" />
     <ClCompile Include="Entrance.ixx" />
     <ClCompile Include="Function.ixx" />
+    <ClCompile Include="Misc.ixx" />
     <ClCompile Include="Player.ixx" />
+    <ClCompile Include="Time.ixx" />
     <ClCompile Include="Vehicle.ixx" />
     <ClCompile Include="Weapon.ixx" />
     <ClCompile Include="InputSystem.ixx" />
@@ -87,6 +89,8 @@
     <ClCompile Include="Vector.ixx" />
     <ClCompile Include="VehicleInfos.ixx" />
     <ClCompile Include="WeaponsInfos.ixx" />
+    <ClCompile Include="Weather.ixx" />
+    <ClCompile Include="WeatherInfos.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.h" />

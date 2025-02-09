@@ -11,6 +11,7 @@ import <random>;
 import <unordered_map>;
 import <string>;
 
+
 static std::random_device rd;
 static std::mt19937 generator(rd());
 static std::uniform_real_distribution<float> distribution(0, 1);
@@ -109,6 +110,12 @@ export String ToString(float x, float y, float z)
 export String ToString(Vector3& vec)
 {
 	sprintf_s(_tostringBuffer, "(%.3f, %.3f, %.3f)", vec.x, vec.y, vec.z);
+	return _tostringBuffer;
+}
+
+export String ToString(int hour, int minute)
+{
+	sprintf_s(_tostringBuffer, "%02d:%02d", hour, minute);
 	return _tostringBuffer;
 }
 

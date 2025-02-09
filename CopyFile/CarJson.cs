@@ -1,4 +1,5 @@
 ﻿
+[Serializable]
 public class Car
 {
 	public string? Name { get; set; }
@@ -25,9 +26,9 @@ public class Car
 	public bool HasSirens { get; set; }
 	public List<string?>? Weapons { get; set; }
 	public List<string?>? ModKits { get; set; }
-	public DimensionsMin? DimensionsMin { get; set; }
-	public DimensionsMax? DimensionsMax { get; set; }
-	public BoundingCenter? BoundingCenter { get; set; }
+	public Dimensions? DimensionsMin { get; set; }
+	public Dimensions? DimensionsMax { get; set; }
+	public Dimensions? BoundingCenter { get; set; }
 	public double BoundingSphereRadius { get; set; }
 	public object? Rewards { get; set; }
 	public double MaxBraking { get; set; }
@@ -56,6 +57,7 @@ public class Car
 	public List<Bone>? Bones { get; set; }
 }
 
+[Serializable]
 public class DisplayName
 {
 	public long Hash { get; set; }
@@ -75,6 +77,7 @@ public class DisplayName
 	public string? Mexican { get; set; }
 }
 
+[Serializable]
 public class ManufacturerDisplayName
 {
 	public long Hash { get; set; }
@@ -94,27 +97,15 @@ public class ManufacturerDisplayName
 	public string? Mexican { get; set; }
 }
 
-public class DimensionsMin
+[Serializable]
+public class Dimensions
 {
 	public double X { get; set; }
 	public double Y { get; set; }
 	public double Z { get; set; }
 }
 
-public class DimensionsMax
-{
-	public double X { get; set; }
-	public double Y { get; set; }
-	public double Z { get; set; }
-}
-
-public class BoundingCenter
-{
-	public double X { get; set; }
-	public double Y { get; set; }
-	public double Z { get; set; }
-}
-
+[Serializable]
 public class DefaultColor
 {
 	public int DefaultPrimaryColor { get; set; }
@@ -125,6 +116,7 @@ public class DefaultColor
 	public int DefaultDashboardColor { get; set; }
 }
 
+[Serializable]
 public class Bone
 {
 	public int BoneIndex { get; set; }
