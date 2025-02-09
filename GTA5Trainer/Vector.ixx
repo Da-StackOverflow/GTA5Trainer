@@ -48,9 +48,6 @@ public:
 	}
 };
 
-
-wchar_t _toStringBuffer[100]{ 0 };
-
 export struct Vector3
 {
 	f64 x;
