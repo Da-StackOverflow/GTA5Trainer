@@ -36,14 +36,6 @@ inline R Invoke(ulong hash, Ts... args)
 	return *reinterpret_cast<R*>(nativeCall());
 }
 
-export Temp2(R, ... Ts)
-inline void InvokeV(ulong hash, Ts... args)
-{
-	nativeInit(hash);
-	PushArgs(args...);
-	nativeCall();
-}
-
 export Temp1(... Ts)
 inline void InvokeV(ulong hash, Ts... args)
 {
