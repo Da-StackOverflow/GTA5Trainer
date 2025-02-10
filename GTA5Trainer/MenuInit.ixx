@@ -8,6 +8,7 @@ import PedModelInfos;
 import WeaponsInfos;
 import VehicleInfos;
 import WeatherInfos;
+import WeaponComponents;
 import Player;
 import Teleport;
 import Weapon;
@@ -108,17 +109,20 @@ static Menu* GetOrCreatePlayerMenu()
 	{
 		var newMenu = new Menu(L"玩家系统");
 		Controller->Register(newMenu);
-		newMenu->AddItem(new SubMenu(L"传送", GetOrCreatePlayerTeleportMenu()));
+		newMenu->AddItem(new SubMenu(L"传送", GetOrCreatePlayerTeleportMenu));
 		newMenu->AddItem(new FixPlayer(L"恢复生命"));
-		newMenu->AddItem(new SubMenu(L"增加金钱", GetOrCreateAddCashMenu()));
-		newMenu->AddItem(new SubMenu(L"通缉等级修改", GetOrCreateWantedMenu()));
+		newMenu->AddItem(new RestoreStamina(L"恢复体力"));
+		newMenu->AddItem(new SubMenu(L"增加金钱", GetOrCreateAddCashMenu));
+		newMenu->AddItem(new SubMenu(L"通缉等级修改", GetOrCreateWantedMenu));
 		newMenu->AddItem(new PlayerInvincible(L"无敌"));
 		newMenu->AddItem(new UnlimitedAbility(L"无限特殊能力"));
+		newMenu->AddItem(new UnlimitedStamina(L"无限体力"));
+		newMenu->AddItem(new UnlimitedBreath(L"无限氧气"));
 		newMenu->AddItem(new NoNoise(L"无声"));
 		newMenu->AddItem(new FastSwim(L"快速游泳"));
 		newMenu->AddItem(new FastRun(L"快速跑"));
 		newMenu->AddItem(new SuperJump(L"超级跳"));
-		newMenu->AddItem(new SubMenu(L"改变玩家模型", GetOrCreatePlayerChangeSkinMenu()));
+		newMenu->AddItem(new SubMenu(L"改变玩家模型", GetOrCreatePlayerChangeSkinMenu));
 		newMenu->AddItem(new FallBackSkinWhenDead(L"当玩家死亡后自动恢复成默认皮肤"));
 		newMenu->AddItem(new FallBackSkin(L"恢复成默认皮肤"));
 		return newMenu;
@@ -144,6 +148,88 @@ static Menu* GetOrCreateGetWeaponMenu()
 	}
 }
 
+static TriggerItem* CreateUpdateWeaponItem()
+{
+	return new UpdateWeapon();
+}
+
+static void RefreshUpdateWeaponItem(int index, TriggerItem* item)
+{
+	var obj = (UpdateWeapon*)item;
+	Hash weaponHash = 0;
+	if (WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::PLAYER_PED_ID(), &weaponHash, true))
+	{
+		for (var& pair : WeaponComponents)
+		{
+			if (MISC::GET_HASH_KEY(pair.first) == weaponHash)
+			{
+				var& info = pair.second[index];
+				obj->ComponentInfo = info;
+				obj->Text = info.Caption;
+				return;
+			}
+		}
+	}
+}
+
+static Menu* GetOrCreateUpdateWeaponMenu()
+{
+	if (Controller->IsMenuExist(L"升级武器"))
+	{
+		var menu = (ExtendMenu*)Controller->GetMenu(L"升级武器");
+		Hash weaponHash = 0;
+		bool find = false;
+		if (WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::PLAYER_PED_ID(), &weaponHash, true))
+		{
+			for (var& pair : WeaponComponents)
+			{
+				if (MISC::GET_HASH_KEY(pair.first) == weaponHash)
+				{
+					menu->SetMaxItemNum((int)pair.second.size());
+					find = true;
+					break;
+				}
+			}
+			if (!find)
+			{
+				menu->SetMaxItemNum(0);
+			}
+		}
+		else
+		{
+			menu->SetMaxItemNum(0);
+		}
+		return menu;
+	}
+	else
+	{
+		var newMenu = new ExtendMenu(L"升级武器", CreateUpdateWeaponItem, RefreshUpdateWeaponItem);
+		Hash weaponHash = 0;
+		bool find = false;
+		if (WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::PLAYER_PED_ID(), &weaponHash, true))
+		{
+			for (var& pair : WeaponComponents)
+			{
+				if (MISC::GET_HASH_KEY(pair.first) == weaponHash)
+				{
+					newMenu->SetMaxItemNum((int)pair.second.size());
+					find = true;
+					break;
+				}
+			}
+			if (!find)
+			{
+				newMenu->SetMaxItemNum(0);
+			}
+		}
+		else
+		{
+			newMenu->SetMaxItemNum(0);
+		}
+		return newMenu;
+	}
+}
+
 static Menu* GetOrCreateWeaponMenu()
 {
 	if (Controller->IsMenuExist(L"武器系统"))
@@ -153,7 +239,8 @@ static Menu* GetOrCreateWeaponMenu()
 	else
 	{
 		var newMenu = new Menu(L"武器系统");
-		newMenu->AddItem(new SubMenu(L"获取武器", GetOrCreateGetWeaponMenu()));
+		newMenu->AddItem(new SubMenu(L"获取武器", GetOrCreateGetWeaponMenu));
+		newMenu->AddItem(new SubMenu(L"升级武器", GetOrCreateUpdateWeaponMenu));
 		newMenu->AddItem(new GetAllWeapons(L"获取所有武器"));
 		newMenu->AddItem(new DropCurrentWeapon(L"移除当前武器"));
 		newMenu->AddItem(new RemoveAllWeapon(L"移除所有武器"));
@@ -442,20 +529,20 @@ static Menu* GetOrCreateSpawnVehicleMenu()
 	{
 		var newMenu = new Menu(L"生成车辆");
 		newMenu->AddItem(new SetSpawnCarAndWarpInFlag(L"设置生成车辆后立即进入到车里"));
-		newMenu->AddItem(new SubMenu(L"生成潜水车", GetOrCreateSpawnSubmarinecarMenu()));
-		newMenu->AddItem(new SubMenu(L"生成汽车", GetOrCreateSpawnCarMenu()));
-		newMenu->AddItem(new SubMenu(L"生成直升机", GetOrCreateSpawnHelicopterMenu()));
-		newMenu->AddItem(new SubMenu(L"生成摩托车", GetOrCreateSpawnBikeMenu()));
-		newMenu->AddItem(new SubMenu(L"生成飞机", GetOrCreateSpawnPlaneMenu()));
-		newMenu->AddItem(new SubMenu(L"生成船", GetOrCreateSpawnBoatMenu()));
-		newMenu->AddItem(new SubMenu(L"生成水陆两栖车", GetOrCreateSpawnAmphibiousAutomobileMenu()));
-		newMenu->AddItem(new SubMenu(L"生成拖车", GetOrCreateSpawnTrailerMenu()));
-		newMenu->AddItem(new SubMenu(L"生成潜水艇", GetOrCreateSpawnSubmarineMenu()));
-		newMenu->AddItem(new SubMenu(L"生成四轮摩托车", GetOrCreateSpawnQuadbikeMenu()));
-		newMenu->AddItem(new SubMenu(L"生成水陆四轮摩托车", GetOrCreateSpawnAmphibiousQuadbikeMenu()));
-		newMenu->AddItem(new SubMenu(L"生成飞艇", GetOrCreateSpawnBlimpMenu()));
-		newMenu->AddItem(new SubMenu(L"生成自行车", GetOrCreateSpawnBicycleMenu()));
-		newMenu->AddItem(new SubMenu(L"生成火车", GetOrCreateSpawnTrainMenu()));
+		newMenu->AddItem(new SubMenu(L"生成潜水车", GetOrCreateSpawnSubmarinecarMenu));
+		newMenu->AddItem(new SubMenu(L"生成汽车", GetOrCreateSpawnCarMenu));
+		newMenu->AddItem(new SubMenu(L"生成直升机", GetOrCreateSpawnHelicopterMenu));
+		newMenu->AddItem(new SubMenu(L"生成摩托车", GetOrCreateSpawnBikeMenu));
+		newMenu->AddItem(new SubMenu(L"生成飞机", GetOrCreateSpawnPlaneMenu));
+		newMenu->AddItem(new SubMenu(L"生成船", GetOrCreateSpawnBoatMenu));
+		newMenu->AddItem(new SubMenu(L"生成水陆两栖车", GetOrCreateSpawnAmphibiousAutomobileMenu));
+		newMenu->AddItem(new SubMenu(L"生成拖车", GetOrCreateSpawnTrailerMenu));
+		newMenu->AddItem(new SubMenu(L"生成潜水艇", GetOrCreateSpawnSubmarineMenu));
+		newMenu->AddItem(new SubMenu(L"生成四轮摩托车", GetOrCreateSpawnQuadbikeMenu));
+		newMenu->AddItem(new SubMenu(L"生成水陆四轮摩托车", GetOrCreateSpawnAmphibiousQuadbikeMenu));
+		newMenu->AddItem(new SubMenu(L"生成飞艇", GetOrCreateSpawnBlimpMenu));
+		newMenu->AddItem(new SubMenu(L"生成自行车", GetOrCreateSpawnBicycleMenu));
+		newMenu->AddItem(new SubMenu(L"生成火车", GetOrCreateSpawnTrainMenu));
 		Controller->Register(newMenu);
 		return newMenu;
 	}
@@ -470,7 +557,7 @@ static Menu* GetOrCreateVehicleMenu()
 	else
 	{
 		var newMenu = new Menu(L"车辆系统");
-		newMenu->AddItem(new SubMenu(L"生成车辆", GetOrCreateSpawnVehicleMenu()));
+		newMenu->AddItem(new SubMenu(L"生成车辆", GetOrCreateSpawnVehicleMenu));
 		newMenu->AddItem(new RandomPaintCar(L"改变车辆颜色"));
 		newMenu->AddItem(new FixCar(L"修理车辆"));
 		newMenu->AddItem(new SafeBelt(L"安全带"));
@@ -510,7 +597,7 @@ static Menu* GetOrCreateWeatherMenu()
 	else
 	{
 		var newMenu = new Menu(L"天气系统");
-		newMenu->AddItem(new SubMenu(L"改变天气", GetOrCreateChangeWeatherMenu()));
+		newMenu->AddItem(new SubMenu(L"改变天气", GetOrCreateChangeWeatherMenu));
 		newMenu->AddItem(new StandCurrentWeather(L"保持当前天气"));
 		newMenu->AddItem(new SetWind(L"生成大风"));
 		Controller->Register(newMenu);
@@ -552,6 +639,7 @@ static Menu* GetOrCreateMiscMenu()
 		newMenu->AddItem(new RandomGarbageTrucks(L"随机垃圾车"));
 		newMenu->AddItem(new NextRadioTrack(L"下一首车载音乐"));
 		newMenu->AddItem(new HideHud(L"隐藏Hud"));
+		newMenu->AddItem(new AchieveAllAchievements(L"达成所有成就"));
 		Controller->Register(newMenu);
 		return newMenu;
 	}
@@ -566,12 +654,12 @@ static Menu* GetOrCreateMainMenu()
 	else
 	{
 		var newMenu = new Menu(L"内置修改器1.0 By Da");
-		newMenu->AddItem(new SubMenu(L"玩家系统", GetOrCreatePlayerMenu()));
-		newMenu->AddItem(new SubMenu(L"武器系统", GetOrCreateWeaponMenu()));
-		newMenu->AddItem(new SubMenu(L"车辆系统", GetOrCreateVehicleMenu()));
-		newMenu->AddItem(new SubMenu(L"天气系统", GetOrCreateWeatherMenu()));
-		newMenu->AddItem(new SubMenu(L"时间系统", GetOrCreateTimeMenu()));
-		newMenu->AddItem(new SubMenu(L"其他系统", GetOrCreateMiscMenu()));
+		newMenu->AddItem(new SubMenu(L"玩家系统", GetOrCreatePlayerMenu));
+		newMenu->AddItem(new SubMenu(L"武器系统", GetOrCreateWeaponMenu));
+		newMenu->AddItem(new SubMenu(L"车辆系统", GetOrCreateVehicleMenu));
+		newMenu->AddItem(new SubMenu(L"天气系统", GetOrCreateWeatherMenu));
+		newMenu->AddItem(new SubMenu(L"时间系统", GetOrCreateTimeMenu));
+		newMenu->AddItem(new SubMenu(L"其他系统", GetOrCreateMiscMenu));
 		Controller->Register(newMenu);
 		return newMenu;
 	}

@@ -204,7 +204,7 @@ protected:
 
 export class Menu
 {
-private:
+protected:
 	std::vector<ExcuteableItem*> _items;
 	std::vector<SwitchItem*> _switchItems;
 	int _activeItemInActivePage;
@@ -218,12 +218,12 @@ public:
 
 	constexpr Menu() : Text(L""), Title(L""), _activeItemInActivePage(0), _activePage(0), _itemCount(0), _switchItemCount(0)
 	{
-		
+
 	}
 
 	constexpr Menu(WString caption) : Text(caption), Title(caption), _activeItemInActivePage(0), _activePage(0), _itemCount(0), _switchItemCount(0)
 	{
-		
+
 	}
 
 	~Menu()
@@ -341,18 +341,18 @@ public:
 	}
 };
 
-
+typedef Menu* (*CreateOrGetMenuFunc)();
 export class SubMenu : public ExcuteableItem
 {
 private:
 	WString Caption2 = L">>";
 public:
-	Menu* menu;
+	CreateOrGetMenuFunc _createOrGetMenuFunc;
 	Vector2 Caption2Position;
 
-	SubMenu(WString text, Menu* m) : ExcuteableItem(text, White, White, Gold, White), menu(m)
+	SubMenu(WString text, CreateOrGetMenuFunc createOrGetMenuFunc) : ExcuteableItem(text, White, White, Gold, White), _createOrGetMenuFunc(createOrGetMenuFunc)
 	{
-		
+
 	}
 	void OnExecute() override;
 
@@ -366,6 +366,87 @@ public:
 		else
 		{
 			PaintText(Caption2, Caption2Position, Scale, TextActiveColor);
+		}
+	}
+};
+
+typedef TriggerItem* (*CreateItemFunc)();
+typedef void (*RefreshItemFunc)(int, TriggerItem*);
+
+export class ExtendMenu : public Menu
+{
+private:
+	CreateItemFunc _createItemFunc;
+	RefreshItemFunc _refreshItemFunc;
+	std::vector<ExcuteableItem*> _cachedItems;
+public:
+	ExtendMenu(WString caption, CreateItemFunc createItemFunc, RefreshItemFunc refreshItemFunc) : Menu(caption), _createItemFunc(createItemFunc), _refreshItemFunc(refreshItemFunc)
+	{
+
+	}
+
+	ExtendMenu(WString caption) : Menu(caption)
+	{
+
+	}
+
+	~ExtendMenu()
+	{
+		for (var item : _cachedItems)
+		{
+			delete item;
+		}
+		_cachedItems.clear();
+		_createItemFunc = null;
+		_refreshItemFunc = null;
+	}
+
+	void SetCreateItemFunc(CreateItemFunc createItemFunc)
+	{
+		_createItemFunc = createItemFunc;
+	}
+
+	void SetRefreshItemFunc(RefreshItemFunc refreshItemFunc)
+	{
+		_refreshItemFunc = refreshItemFunc;
+	}
+
+	void SetMaxItemNum(int num)
+	{
+		_activeItemInActivePage = 0;
+		_activePage = 0;
+
+		if (num < _items.size())
+		{
+			var numToCache = _items.size() - num;
+			for (int i = 0; i < numToCache; i++)
+			{
+				_cachedItems.push_back(_items.back());
+				_items.pop_back();
+				_itemCount--;
+				Title.MaxPage = _itemCount / ItemsMaxCountPerPage + (_itemCount % ItemsMaxCountPerPage != 0 ? 1 : 0);
+			}
+		}
+		else if (num > _items.size())
+		{
+			var numToCreate = num - _items.size();
+			for (int i = 0; i < numToCreate; i++)
+			{
+				if (_cachedItems.empty())
+				{
+					AddItem(_createItemFunc());
+				}
+				else
+				{
+					var item = (TriggerItem*)_cachedItems.back();
+					_cachedItems.pop_back();
+					AddItem(item);
+				}
+			}
+		}
+		for (int i = 0; i < _items.size(); i++)
+		{
+			_refreshItemFunc(i, (TriggerItem*)_items[i]);
 		}
 	}
 };
@@ -598,5 +679,5 @@ void MenuItem::SetTips(String text, int ms)
 
 void SubMenu::OnExecute()
 {
-	Controller->PushMenu(menu);
+	Controller->PushMenu(_createOrGetMenuFunc());
 }

@@ -484,3 +484,48 @@ protected:
 		}
 	}
 };
+
+export class RestoreStamina : public TriggerItem
+{
+public:
+	constexpr RestoreStamina(WString caption) : TriggerItem(caption)
+	{
+
+	}
+
+protected:
+	void OnExecute() override
+	{
+		PLAYER::RESTORE_PLAYER_STAMINA(PlayerID(), 100.0f);
+	}
+};
+
+export class UnlimitedStamina : public SwitchItem
+{
+public:
+	constexpr UnlimitedStamina(WString caption) : SwitchItem(caption)
+	{
+
+	}
+
+protected:
+	void OnUpdate() override
+	{
+		PLAYER::RESTORE_PLAYER_STAMINA(PlayerID(), 100.0f);
+	}
+};
+
+export class UnlimitedBreath : public SwitchItem
+{
+public:
+	constexpr UnlimitedBreath(WString caption) : SwitchItem(caption)
+	{
+
+	}
+
+protected:
+	void OnUpdate() override
+	{
+		PLAYER::SET_PLAYER_UNDERWATER_BREATH_PERCENT_REMAINING(PlayerID(), 100.0f);
+	}
+};

@@ -140,3 +140,24 @@ protected:
 		HUD::HIDE_HUD_AND_RADAR_THIS_FRAME();
 	}
 };
+
+export class AchieveAllAchievements : public TriggerItem
+{
+public:
+	constexpr AchieveAllAchievements(WString caption) : TriggerItem(caption)
+	{
+
+	}
+
+protected:
+	void OnExecute() override
+	{
+		for (int i = 1; i <= 77; i++)
+		{
+			if (!PLAYER::HAS_ACHIEVEMENT_BEEN_PASSED(i))
+			{
+				PLAYER::GIVE_ACHIEVEMENT_TO_PLAYER(i);
+			}
+		}
+	}
+};

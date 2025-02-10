@@ -146,3 +146,22 @@ public:
 		}
 	}
 };
+
+export class UpdateWeapon : public TriggerItem
+{
+public:
+	constexpr UpdateWeapon() : TriggerItem(L"")
+	{
+	}
+
+	ItemInfo ComponentInfo;
+
+	void OnExecute() override
+	{
+		Hash weaponHash = 0;
+		if (WEAPON::GET_CURRENT_PED_WEAPON(PlayerPed(), &weaponHash, true))
+		{
+			WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPed(), weaponHash, MISC::GET_HASH_KEY(ComponentInfo.Model));
+		}
+	}
+};
