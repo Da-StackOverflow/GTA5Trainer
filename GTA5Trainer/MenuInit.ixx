@@ -157,7 +157,7 @@ static Menu* GetOrCreateWeaponMenu()
 		newMenu->AddItem(new GetAllWeapons(L"获取所有武器"));
 		newMenu->AddItem(new DropCurrentWeapon(L"移除当前武器"));
 		newMenu->AddItem(new RemoveAllWeapon(L"移除所有武器"));
-		newMenu->AddItem(new NoReload(L"不用重新装填子弹"));
+		newMenu->AddItem(new UnlimitedAmmo(L"无限子弹"));
 		newMenu->AddItem(new FireAmmo(L"火焰子弹"));
 		newMenu->AddItem(new ExplosiveAmmo(L"爆炸子弹"));
 		newMenu->AddItem(new ExplosiveMelee(L"爆炸近战武器"));

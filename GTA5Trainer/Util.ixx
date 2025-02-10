@@ -119,16 +119,25 @@ export String ToString(int hour, int minute)
 	return _tostringBuffer;
 }
 
+bool isDevMode = true;
 std::ofstream* _logger = null;
 char* _logBuffer = null;
 export void InitLog()
 {
+	if (!isDevMode)
+	{
+		return;
+	}
 	_logBuffer = new char[1024]{0};
 	_logger = new std::ofstream("GTA5TrainerLog.txt", std::ios::trunc);
 }
 
 export void Log(String log)
 {
+	if (!isDevMode)
+	{
+		return;
+	}
 	if (_logger->is_open())
 	{
 		*_logger << log << std::endl;
@@ -138,6 +147,10 @@ export void Log(String log)
 
 export void Log(String log, String log2)
 {
+	if (!isDevMode)
+	{
+		return;
+	}
 	if (_logger->is_open())
 	{
 		*_logger << log << log2 << std::endl;
@@ -147,6 +160,10 @@ export void Log(String log, String log2)
 
 export void Log(WString log)
 {
+	if (!isDevMode)
+	{
+		return;
+	}
 	if (_logger->is_open())
 	{
 		int size = WideCharToMultiByte(CP_UTF8, 0, log, -1, null, 0, null, null);
@@ -158,6 +175,10 @@ export void Log(WString log)
 
 export void Log(WString log, String log2)
 {
+	if (!isDevMode)
+	{
+		return;
+	}
 	if (_logger->is_open())
 	{
 		int size = WideCharToMultiByte(CP_UTF8, 0, log, -1, null, 0, null, null);
@@ -172,6 +193,10 @@ export void Log(WString log, String log2)
 
 export void Log(int log)
 {
+	if (!isDevMode)
+	{
+		return;
+	}
 	if (_logger->is_open())
 	{
 		*_logger << log << std::endl;
@@ -181,6 +206,10 @@ export void Log(int log)
 
 export void Log(float log)
 {
+	if (!isDevMode)
+	{
+		return;
+	}
 	if (_logger->is_open())
 	{
 		*_logger << log << std::endl;
@@ -190,6 +219,10 @@ export void Log(float log)
 
 export void Log(i64 log)
 {
+	if (!isDevMode)
+	{
+		return;
+	}
 	if (_logger->is_open())
 	{
 		*_logger << log << std::endl;
@@ -199,6 +232,10 @@ export void Log(i64 log)
 
 export void Log(double log)
 {
+	if (!isDevMode)
+	{
+		return;
+	}
 	if (_logger->is_open())
 	{
 		*_logger << log << std::endl;
@@ -208,6 +245,10 @@ export void Log(double log)
 
 export void Log(ulong log)
 {
+	if (!isDevMode)
+	{
+		return;
+	}
 	if (_logger->is_open())
 	{
 		*_logger << log << std::endl;
@@ -217,6 +258,10 @@ export void Log(ulong log)
 
 export void CloseLog()
 {
+	if (!isDevMode)
+	{
+		return;
+	}
 	if (_logger != null)
 	{
 		_logger->flush();

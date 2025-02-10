@@ -69,10 +69,10 @@ public:
 	}
 };
 
-export class NoReload : public SwitchItem
+export class UnlimitedAmmo : public SwitchItem
 {
 public:
-	constexpr NoReload(WString caption) : SwitchItem(caption)
+	constexpr UnlimitedAmmo(WString caption) : SwitchItem(caption)
 	{
 	}
 
