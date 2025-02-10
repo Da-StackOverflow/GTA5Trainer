@@ -236,6 +236,8 @@ protected:
 
 export class PlayerInvincible : public SwitchItem
 {
+private:
+	Ped _lastPlayerPed = -1;
 public:
 	constexpr PlayerInvincible(WString caption) : SwitchItem(caption)
 	{
@@ -248,6 +250,20 @@ protected:
 		if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
 		{
 			PLAYER::SET_PLAYER_INVINCIBLE(PlayerID(), true);
+			_lastPlayerPed = PlayerPed();
+		}
+	}
+
+	void OnUpdate() override
+	{
+		if (_lastPlayerPed == PlayerPed())
+		{
+			return;
+		}
+		if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
+		{
+			PLAYER::SET_PLAYER_INVINCIBLE(PlayerID(), true);
+			_lastPlayerPed = PlayerPed();
 		}
 	}
 
@@ -257,11 +273,14 @@ protected:
 		{
 			PLAYER::SET_PLAYER_INVINCIBLE(PlayerID(), false);
 		}
+		_lastPlayerPed = -1;
 	}
 };
 
 export class PoliceIgnore : public SwitchItem
 {
+private:
+	Ped _lastPlayerPed = -1;
 public:
 	constexpr PoliceIgnore(WString caption) : SwitchItem(caption)
 	{
@@ -274,6 +293,20 @@ protected:
 		if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
 		{
 			PLAYER::SET_POLICE_IGNORE_PLAYER(PlayerID(), true);
+			_lastPlayerPed = PlayerPed();
+		}
+	}
+
+	void OnUpdate() override
+	{
+		if (_lastPlayerPed == PlayerPed())
+		{
+			return;
+		}
+		if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
+		{
+			PLAYER::SET_POLICE_IGNORE_PLAYER(PlayerID(), true);
+			_lastPlayerPed = PlayerPed();
 		}
 	}
 
@@ -283,6 +316,7 @@ protected:
 		{
 			PLAYER::SET_POLICE_IGNORE_PLAYER(PlayerID(), false);
 		}
+		_lastPlayerPed = -1;
 	}
 };
 
@@ -306,6 +340,8 @@ protected:
 
 export class NoNoise : public SwitchItem
 {
+private:
+	Ped _lastPlayerPed = -1;
 public:
 	constexpr NoNoise(WString caption) : SwitchItem(caption)
 	{
@@ -318,6 +354,20 @@ protected:
 		if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
 		{
 			PLAYER::SET_PLAYER_NOISE_MULTIPLIER(PlayerID(), 0.0f);
+			_lastPlayerPed = PlayerPed();
+		}
+	}
+
+	void OnUpdate() override
+	{
+		if (_lastPlayerPed == PlayerPed())
+		{
+			return;
+		}
+		if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
+		{
+			PLAYER::SET_PLAYER_NOISE_MULTIPLIER(PlayerID(), 0.0f);
+			_lastPlayerPed = PlayerPed();
 		}
 	}
 
@@ -327,11 +377,14 @@ protected:
 		{
 			PLAYER::SET_PLAYER_NOISE_MULTIPLIER(PlayerID(), 1.0f);
 		}
+		_lastPlayerPed = -1;
 	}
 };
 
 export class FastSwim : public SwitchItem
 {
+private:
+	Ped _lastPlayerPed = -1;
 public:
 	constexpr FastSwim(WString caption) : SwitchItem(caption)
 	{
@@ -344,6 +397,20 @@ protected:
 		if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
 		{
 			PLAYER::SET_SWIM_MULTIPLIER_FOR_PLAYER(PlayerID(), 1.49f);
+			_lastPlayerPed = PlayerPed();
+		}
+	}
+
+	void OnUpdate() override
+	{
+		if (_lastPlayerPed == PlayerPed())
+		{
+			return;
+		}
+		if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
+		{
+			PLAYER::SET_SWIM_MULTIPLIER_FOR_PLAYER(PlayerID(), 1.49f);
+			_lastPlayerPed = PlayerPed();
 		}
 	}
 
@@ -353,11 +420,14 @@ protected:
 		{
 			PLAYER::SET_SWIM_MULTIPLIER_FOR_PLAYER(PlayerID(), 1.0f);
 		}
+		_lastPlayerPed = -1;
 	}
 };
 
 export class FastRun : public SwitchItem
 {
+private:
+	Ped _lastPlayerPed = -1;
 public:
 	constexpr FastRun(WString caption) : SwitchItem(caption)
 	{
@@ -370,6 +440,20 @@ protected:
 		if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
 		{
 			PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PlayerID(), 1.49f);
+			_lastPlayerPed = PlayerPed();
+		}
+	}
+
+	void OnUpdate() override
+	{
+		if (_lastPlayerPed == PlayerPed())
+		{
+			return;
+		}
+		if (ENTITY::DOES_ENTITY_EXIST(PlayerPed()))
+		{
+			PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PlayerID(), 1.49f);
+			_lastPlayerPed = PlayerPed();
 		}
 	}
 
@@ -379,6 +463,7 @@ protected:
 		{
 			PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PlayerID(), 1.0f);
 		}
+		_lastPlayerPed = -1;
 	}
 };
 
