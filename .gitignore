@@ -3,6 +3,10 @@ GTA5Trainer/obj
 GTA5Trainer/bin
 CopyFile/bin
 CopyFile/obj
+Bridge/obj
+Bridge/bin
+Script/obj
+Script/bin
 
 #用 Git Bash打开，转到工作目录
 #git update-index --skip-worktree ./CopyFile/Program.cs  把 ./CopyFile/Program.cs 文件夹下的文件添加到忽略列表中
