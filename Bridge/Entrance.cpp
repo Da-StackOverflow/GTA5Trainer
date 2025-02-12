@@ -24,18 +24,19 @@ using namespace System::Reflection;
 using namespace System::Collections::Generic;
 using namespace System::Security::Permissions;
 
-static void Log(String^ log)
+static void Info(String^ log)
 {
-	File::AppendAllText("GTA5TrainerAsiError.txt", log + "\n");
+	File::AppendAllText("Script/GTA5TrainerAsiError.txt", log + "\n");
 }
 
 public ref class ProxyObject : public MarshalByRefObject, IDisposable
 {
 public:
 	static ProxyObject^ Instance;
-	static String^ RootPath;
-	static String^ AsiPath;
-	static String^ ScriptPath;
+	static String^ RootPath = Path::GetPathRoot(Path::GetFullPath("GTA5TrainerAsi.asi"));
+	static String^ ScriptRootPath = Path::GetPathRoot(Path::GetFullPath("Script"));
+	static String^ AsiPath = Path::GetFullPath("GTA5TrainerAsi.asi");
+	static String^ ScriptPath = Path::GetFullPath("Script/GTA5TrainerScript.dll");
 	AppDomain^ Domain;
 	Assembly^ _Assembly;
 	MethodInfo^ _InitMethod;
@@ -51,9 +52,6 @@ public:
 		Instance = this;
 		Domain = AppDomain::CurrentDomain;
 		_nativeMemory = nullptr;
-		AsiPath = Path::GetFullPath("GTA5TrainerAsi.asi");
-		ScriptPath = Path::GetFullPath("GTA5TrainerScript.dll");
-		RootPath = Path::GetPathRoot(ScriptPath);
 	}
 
 	~ProxyObject()
@@ -77,19 +75,19 @@ public:
 		}
 		catch (Exception^ ex)
 		{
-			Log("Failed to unload script domain: " + ex->ToString());
+			Info("Failed to unload script domain: " + ex->ToString());
 		}
 	}
 
 	static ProxyObject^ Load()
 	{
 		// Create application and script domain for all the scripts to reside in
-		var name = (ScriptPath->GetHashCode() ^ Environment::TickCount).ToString("X") + "_ScriptDomain";
+		var name = "ScriptDomain_" + (AsiPath->GetHashCode() ^ Environment::TickCount).ToString("X");
 		var setup = gcnew AppDomainSetup();
 		setup->CachePath = Path::GetTempPath();
-		setup->ApplicationBase = RootPath;
+		setup->ApplicationBase = ScriptRootPath;
 		setup->ShadowCopyFiles = "true";
-		setup->ShadowCopyDirectories = RootPath;
+		setup->ShadowCopyDirectories = ScriptRootPath;
 
 		var newDomain = AppDomain::CreateDomain(name, null, setup, gcnew PermissionSet(PermissionState::Unrestricted));
 		newDomain->InitializeLifetimeService();
@@ -97,14 +95,15 @@ public:
 		ProxyObject^ obj = null;
 		try
 		{
-			obj = (ProxyObject^)newDomain->CreateInstanceFromAndUnwrap(AsiPath, "ProxyObject", false, BindingFlags::NonPublic | BindingFlags::Instance, null, gcnew array<Object^>(1){RootPath,}, null, null);
+			obj = static_cast<ProxyObject^>(newDomain->CreateInstanceFromAndUnwrap(AsiPath, "ProxyObject"));
+			AppDomain::Unload(newDomain);
 		}
 		catch (Exception^ ex)
 		{
 			AppDomain::Unload(newDomain);
-			Log(ex->ToString());
+			Info(ex->Message);
+			Info(ex->StackTrace);
 		}
-
 		return obj;
 	}
 
@@ -124,27 +123,52 @@ public:
 
 	void Start()
 	{
-		_Assembly = Assembly::LoadFile(ScriptPath);
-		var type = _Assembly->GetType("Entrance");
-		_InitMethod = type->GetMethod("OnInit");
-		_UpdateMethod = type->GetMethod("OnUpdate");
-		_InputMethod = type->GetMethod("OnInput");
-		_DestroyMethod = type->GetMethod("OnDestroy");
-		_ScriptObject = Activator::CreateInstance(type);
-		_InputArgs = gcnew array<Object^>(2);
-		_InitMethod->Invoke(_ScriptObject, null);
+		try
+		{
+			_Assembly = Assembly::LoadFile(ScriptPath);
+			var type = _Assembly->GetType("Entrance");
+			_InitMethod = type->GetMethod("OnInit");
+			_UpdateMethod = type->GetMethod("OnUpdate");
+			_InputMethod = type->GetMethod("OnInput");
+			_DestroyMethod = type->GetMethod("OnDestroy");
+			_ScriptObject = Activator::CreateInstance(type);
+			_InputArgs = gcnew array<Object^>(2);
+			_InitMethod->Invoke(_ScriptObject, null);
+		}
+		catch (Exception^ ex)
+		{
+			Info(ex->Message);
+			Info(ex->StackTrace);
+		}
 	}
 
 	void OnUpdate()
 	{
-		_UpdateMethod->Invoke(_ScriptObject, null);
+		try
+		{
+			_UpdateMethod->Invoke(_ScriptObject, null);
+		}
+		catch (Exception^ ex)
+		{
+			Info(ex->Message);
+			Info(ex->StackTrace);
+		}
+
 	}
 
 	void OnInput(uint key, bool isUp)
 	{
-		_InputArgs[0] = key;
-		_InputArgs[1] = isUp;
-		_InputMethod->Invoke(_ScriptObject, _InputArgs);
+		try
+		{
+			_InputArgs[0] = key;
+			_InputArgs[1] = isUp;
+			_InputMethod->Invoke(_ScriptObject, _InputArgs);
+		}
+		catch (Exception^ ex)
+		{
+			Info(ex->Message);
+			Info(ex->StackTrace);
+		}
 	}
 };
 
@@ -202,19 +226,27 @@ static void ForceCLRInit()
 
 static void InitBridge()
 {
-	if (Bridge::ProxyObj != nullptr)
+	try
 	{
-		ProxyObject::Unload(Bridge::ProxyObj);
-	}
+		if (Bridge::ProxyObj != null)
+		{
+			ProxyObject::Unload(Bridge::ProxyObj);
+		}
 
-	Bridge::ProxyObj = ProxyObject::Load();
-	if (Bridge::ProxyObj == nullptr)
+		Bridge::ProxyObj = ProxyObject::Load();
+		if (Bridge::ProxyObj == null)
+		{
+			Info("ProxyObject::Load() failed");
+			return;
+		}
+
+		Bridge::ProxyObj->Start();
+	}
+	catch (Exception^ e)
 	{
-		Log("ProxyObject::Load() failed");
-		return;
+		Info(e->Message);
+		Info(e->StackTrace);
 	}
-
-	Bridge::ProxyObj->Start();
 }
 
 static void UpdateScript()
@@ -249,7 +281,6 @@ static void Run()
 					State = ScriptState::Unloaded;
 					break;
 				}
-
 				UpdateScript();
 				scriptWait(0);
 			}
@@ -257,6 +288,7 @@ static void Run()
 	}
 	catch (const std::exception& e)
 	{
+		Log("error");
 		Log(e.what());
 	}
 }
@@ -277,12 +309,12 @@ bool __stdcall DllMain(HMODULE hModule, uint reason, void* lpReserved)
 	{
 		case Dll_INIT:
 		{
+			InitLog();
 			DisableThreadLibraryCalls(hModule);
 			if (!GetModuleHandle(TEXT("clr.dll")))
 			{
 				ForceCLRInit();
 			}
-			InitLog();
 			scriptRegister(hModule, Run);
 			keyboardHandlerRegister(OnInput);
 			break;
