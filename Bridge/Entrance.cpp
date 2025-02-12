@@ -2,73 +2,142 @@
 #pragma unmanaged
 #include "Import.h"
 #include <stdexcept>
-static bool _gameReloaded = false;
+
+public enum ScriptState
+{
+	Loaded,
+	Unloaded
+};
+
+ScriptState State = ScriptState::Unloaded;
 
 #pragma managed
 
+#ifdef GetTempPath
+#undef GetTempPath
+#endif
+
 using namespace System;
 using namespace System::IO;
+using namespace System::Security;
 using namespace System::Reflection;
 using namespace System::Collections::Generic;
+using namespace System::Security::Permissions;
+
+static void Log(String^ log)
+{
+	File::AppendAllText("GTA5TrainerAsiError.txt", log + "\n");
+}
 
 public ref class ProxyObject : public MarshalByRefObject, IDisposable
 {
 public:
-	AppDomain^ AppDomain()
-	{
-		return AppDomain::CurrentDomain;
-	}
-
-	static ProxyObject CurrentDomain;
-	Assembly^ _Assembly = null;
-	MethodInfo^ _InitMethod = null;
-	MethodInfo^ _UpdateMethod = null;
-	MethodInfo^ _DestroyMethod = null;
-	MethodInfo^ _InputMethod = null;
-	Object^ _ScriptObject = null;
-	array<Object^>^ _InputArgs = null;
+	static ProxyObject^ Instance;
+	static String^ RootPath;
+	static String^ AsiPath;
+	static String^ ScriptPath;
+	AppDomain^ Domain;
+	Assembly^ _Assembly;
+	MethodInfo^ _InitMethod;
+	MethodInfo^ _UpdateMethod;
+	MethodInfo^ _InputMethod;
+	MethodInfo^ _DestroyMethod;
+	Object^ _ScriptObject;
+	array<Object^>^ _InputArgs;
+	byte* _nativeMemory;
 
 	ProxyObject()
 	{
-		_Assembly = Assembly::LoadFile(Path::GetFullPath("GTA5Trainer.dll"));
-		var type = _Assembly->GetType("Entrance");
-		_InitMethod = type->GetMethod("OnInit");
-		_UpdateMethod = type->GetMethod("OnUpdate");
-		_DestroyMethod = type->GetMethod("OnDestroy");
-		_InputMethod = type->GetMethod("OnInput");
-		_ScriptObject = Activator::CreateInstance(type);
-		_InputArgs = gcnew array<Object^>(2);
+		Instance = this;
+		Domain = AppDomain::CurrentDomain;
+		_nativeMemory = nullptr;
+		AsiPath = Path::GetFullPath("GTA5TrainerAsi.asi");
+		ScriptPath = Path::GetFullPath("GTA5TrainerScript.dll");
+		RootPath = Path::GetPathRoot(ScriptPath);
 	}
 
 	~ProxyObject()
 	{
-		GC::SuppressFinalize(this);
+		Release();
+	}
+
+	!ProxyObject()
+	{
+		
+	}
+
+
+	static void Unload(ProxyObject^ domain)
+	{
+		domain->~ProxyObject();
+
+		try
+		{
+			AppDomain::Unload(domain->Domain);
+		}
+		catch (Exception^ ex)
+		{
+			Log("Failed to unload script domain: " + ex->ToString());
+		}
+	}
+
+	static ProxyObject^ Load()
+	{
+		// Create application and script domain for all the scripts to reside in
+		var name = (ScriptPath->GetHashCode() ^ Environment::TickCount).ToString("X") + "_ScriptDomain";
+		var setup = gcnew AppDomainSetup();
+		setup->CachePath = Path::GetTempPath();
+		setup->ApplicationBase = RootPath;
+		setup->ShadowCopyFiles = "true";
+		setup->ShadowCopyDirectories = RootPath;
+
+		var newDomain = AppDomain::CreateDomain(name, null, setup, gcnew PermissionSet(PermissionState::Unrestricted));
+		newDomain->InitializeLifetimeService();
+
+		ProxyObject^ obj = null;
+		try
+		{
+			obj = (ProxyObject^)newDomain->CreateInstanceFromAndUnwrap(AsiPath, "ProxyObject", false, BindingFlags::NonPublic | BindingFlags::Instance, null, gcnew array<Object^>(1){RootPath,}, null, null);
+		}
+		catch (Exception^ ex)
+		{
+			AppDomain::Unload(newDomain);
+			Log(ex->ToString());
+		}
+
+		return obj;
 	}
 
 	void Release()
 	{
+		if (_DestroyMethod != null)
+		{
+			_DestroyMethod->Invoke(_ScriptObject, null);
+		}
 		_InitMethod = null;
 		_UpdateMethod = null;
-		_DestroyMethod = null;
 		_InputMethod = null;
 		_ScriptObject = null;
 		_InputArgs = null;
 		_Assembly = null;
 	}
 
-	void OnInit()
+	void Start()
 	{
+		_Assembly = Assembly::LoadFile(ScriptPath);
+		var type = _Assembly->GetType("Entrance");
+		_InitMethod = type->GetMethod("OnInit");
+		_UpdateMethod = type->GetMethod("OnUpdate");
+		_InputMethod = type->GetMethod("OnInput");
+		_DestroyMethod = type->GetMethod("OnDestroy");
+		_ScriptObject = Activator::CreateInstance(type);
+		_InputArgs = gcnew array<Object^>(2);
 		_InitMethod->Invoke(_ScriptObject, null);
 	}
 
 	void OnUpdate()
 	{
 		_UpdateMethod->Invoke(_ScriptObject, null);
-	}
-
-	void OnDestroy()
-	{
-		_DestroyMethod->Invoke(_ScriptObject, null);
 	}
 
 	void OnInput(uint key, bool isUp)
@@ -79,99 +148,33 @@ public:
 	}
 };
 
-public enum ScriptState
-{
-	Loading,
-	Loaded,
-	Unloading,
-	Unloaded
-};
-
 public ref class Bridge
 {
-private:
-	static long long _operateTime = 0;
-	static ScriptState _scriptState = ScriptState::Unloaded;
-	static AppDomain^ _domain;
 public:
-
-	static AppDomain^ CurrentDomain()
-	{
-		return AppDomain::CurrentDomain;
-	}
-
-	static void Load()
-	{
-		long long time = GetTimeTicks();
-		if (_scriptState == ScriptState::Unloaded && time - _operateTime > 3000)
-		{
-			_operateTime = time;
-			_scriptState = ScriptState::Loading;
-			Log("Start Load Script");
-		}
-	}
-
-	static void OnLoad()
-	{
-		if (_obj == null)
-		{
-			_obj = static_cast<ProxyObject^>(AppDomain::CurrentDomain->CreateInstanceFromAndUnwrap(DomainName, "ProxyObject"));
-			_obj->OnInit();
-			_operateTime = GetTimeTicks();
-			_scriptState = ScriptState::Loaded;
-			Log("Load Script Finish");
-		}
-	}
+	static long long _operateTime = 0;
+	static ProxyObject^ ProxyObj = ProxyObject::Instance;
 
 	static void Unload()
 	{
 		long long time = GetTimeTicks();
-		if (_scriptState == ScriptState::Loaded && time - _operateTime > 3000)
+		if (time - _operateTime > 3000)
 		{
-			_operateTime = time;
-			_scriptState = ScriptState::Unloading;
-			Log("Start Unload Script");
+			State = ScriptState::Unloaded;
+			_operateTime = GetTimeTicks();
 		}
-	}
-
-	static void OnUnload()
-	{
-		if (_obj != null)
-		{
-			_obj->OnDestroy();
-			_obj->Release();
-			_obj = nullptr;
-			Log("Unload Script Finish");
-		}
-		_scriptState = ScriptState::Unloaded;
-		_operateTime = GetTimeTicks();
 	}
 
 	static void OnTick()
 	{
-		switch (_scriptState)
+		if (State == ScriptState::Loaded && ProxyObj != null)
 		{
-			case ScriptState::Loaded:
-			{
-				_obj->OnUpdate();
-				break;
-			}
-			case ScriptState::Loading:
-			{
-				OnLoad();
-				break;
-			}
-			case ScriptState::Unloading:
-			{
-				OnUnload();
-				break;
-			}
+			ProxyObj->OnUpdate();
 		}
 	}
 
 	static void OnInput(uint key, bool isUpNow)
 	{
-		switch (_scriptState)
+		switch (State)
 		{
 			case ScriptState::Loaded:
 			{
@@ -181,26 +184,14 @@ public:
 				}
 				else if (0 < key && key < 256)
 				{
-					_obj->OnInput(key, isUpNow);
-				}
-				break;
-			}
-			case ScriptState::Unloaded:
-			{
-				if (key == VK_F8)
-				{
-					Load();
+					if (ProxyObj != null)
+					{
+						ProxyObj->OnInput(key, isUpNow);
+					}
 				}
 				break;
 			}
 		}
-	}
-
-	static void Release(Object^ sender, EventArgs^ e)
-	{
-		OnUnload();
-		DomainName = null;
-		GC::Collect();
 	}
 };
 
@@ -211,8 +202,19 @@ static void ForceCLRInit()
 
 static void InitBridge()
 {
-	Bridge::Load();
-	AppDomain::CurrentDomain->ProcessExit += gcnew EventHandler(Bridge::Release);
+	if (Bridge::ProxyObj != nullptr)
+	{
+		ProxyObject::Unload(Bridge::ProxyObj);
+	}
+
+	Bridge::ProxyObj = ProxyObject::Load();
+	if (Bridge::ProxyObj == nullptr)
+	{
+		Log("ProxyObject::Load() failed");
+		return;
+	}
+
+	Bridge::ProxyObj->Start();
 }
 
 static void UpdateScript()
@@ -234,20 +236,17 @@ static void Run()
 	try
 	{
 		_preGameFiber = GetCurrentFiber();
-
+		State = ScriptState::Loaded;
 		while (true)
 		{
-			_gameReloaded = false;
-
 			InitBridge();
-
-			while (!_gameReloaded)
+			while (State == ScriptState::Loaded)
 			{
 				const PVOID currentFiber = GetCurrentFiber();
 				if (currentFiber != _preGameFiber)
 				{
 					_preGameFiber = currentFiber;
-					_gameReloaded = true;
+					State = ScriptState::Unloaded;
 					break;
 				}
 
@@ -298,4 +297,8 @@ bool __stdcall DllMain(HMODULE hModule, uint reason, void* lpReserved)
 	}
 	return true;
 }
+
+#ifndef GetTempPath
+#define GetTempPath GetTempPathW
+#endif
 
