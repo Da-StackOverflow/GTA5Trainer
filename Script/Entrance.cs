@@ -1,29 +1,14 @@
-﻿public class Entrance
+﻿using Bridge;
+
+public class Entrance : Entry
 {
-	public void OnInit()
-	{
-		Log.InitLog();
-		Log.Info("Entrance.OnInit");
-	}
-	
-	public void OnUpdate()
+	public override void OnInit()
 	{
 		
 	}
 
-	public void OnDestroy()
+	public override void OnUpdate()
 	{
-		Log.Info("Entrance.OnDestroy");
-		Log.CloseLog();
-	}
-
-	public void OnInput(uint key, bool isUpNow)
-	{
-		if (isUpNow)
-		{
-			Input.OnKeyUp(key);
-			return;
-		}
-		Input.OnKeyDown(key);
+		
 	}
 }

@@ -38,7 +38,6 @@ typedef long long i64;
 
 typedef uint Void;
 typedef uint Any;
-typedef uint uint;
 typedef uint Hash;
 typedef int Entity;
 typedef int Player;

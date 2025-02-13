@@ -6,7 +6,5 @@ namespace Bridge
 		public abstract void OnInit();
 
 		public abstract void OnUpdate();
-
-		public abstract void OnDestroy();
 	}
 }

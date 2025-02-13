@@ -4,7 +4,7 @@ namespace Bridge
 {
 	public abstract class MenuItem
 	{
-		public string Title;
+		public string Text;
 		public Vector2 Position;
 		public Vector2 Size;
 		public Color TextColor;
@@ -12,7 +12,7 @@ namespace Bridge
 
 		protected MenuItem(string title, int height, Color bgColor)
 		{
-			Title = title;
+			Text = title;
 			Size = new Vector2(300.0f / 1920.0f, height / 1080.0f);
 			TextColor = Color.White;
 			BGColor = bgColor;
@@ -21,14 +21,14 @@ namespace Bridge
 
 		protected MenuItem(string title, int height)
 		{
-			Title = title;
+			Text = title;
 			Size = new Vector2(300.0f / 1920.0f, height / 1080.0f);
 			TextColor = Color.White;
 			BGColor = Color.Green;
 			Position = new Vector2();
 		}
 
-		internal virtual void OnDraw()
+		internal virtual void OnDraw(bool isSelected = false)
 		{
 
 		}

@@ -52,7 +52,7 @@ namespace Bridge
 
 		public static ProxyObject Load()
 		{
-			var name = "GTA5Trainer_" + (ScriptRootPath.GetHashCode() ^ DateTime.Now.Ticks / 10000).ToString("X");
+			var name = "GTA5Trainer_" + (ScriptRootPath.GetHashCode() ^ Time.Now).ToString("X");
 			var setup = new AppDomainSetup
 			{
 				CachePath = Path.GetTempPath(),

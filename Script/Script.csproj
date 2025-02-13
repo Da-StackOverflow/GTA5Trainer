@@ -35,13 +35,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\Color.cs" />
-    <Compile Include="Base\Input.cs" />
-    <Compile Include="Base\KeyCode.cs" />
-    <Compile Include="Base\Log.cs" />
-    <Compile Include="Base\Vector.cs" />
     <Compile Include="Entrance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bridge\Bridge.csproj">
+      <Project>{2ed13178-53dc-4114-acc6-3eb5cb8d0ed2}</Project>
+      <Name>Bridge</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

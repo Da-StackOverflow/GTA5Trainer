@@ -23,7 +23,7 @@ using namespace System::IO;
 
 static void Info(String^ log)
 {
-	File::AppendAllText("Script/GTA5TrainerAsiError.txt", log + "\n");
+	File::AppendAllText("GTA5Trainer/AsiError.txt", log + "\n");
 }
 
 public ref class Engine
