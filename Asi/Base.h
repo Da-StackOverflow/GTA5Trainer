@@ -50,7 +50,7 @@ static void InitLog()
 	_logger = new std::ofstream("GTA5TrainerBridgeLog.txt", std::ios::trunc);
 }
 
-static void Log(const char* log)
+static void Print(const char* log)
 {
 	if (!isDevMode)
 	{
@@ -63,7 +63,7 @@ static void Log(const char* log)
 	}
 }
 
-static void Log(const wchar_t* log)
+static void Print(const wchar_t* log)
 {
 	if (!isDevMode)
 	{

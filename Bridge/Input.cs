@@ -44,7 +44,7 @@
 		}
 	}
 
-	public class Input
+	public static class Input
 	{
 		private const uint KeyCodeType = 255;
 
