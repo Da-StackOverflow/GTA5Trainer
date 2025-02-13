@@ -23,7 +23,7 @@ using namespace System::IO;
 
 static void Info(String^ log)
 {
-	File::AppendAllText("GTA5Trainer/AsiError.txt", log + "\n");
+	File::AppendAllText("GTA5TrainerAsiError.txt", log + "\n");
 }
 
 public ref class Engine
@@ -105,12 +105,28 @@ static void InitBridge()
 
 static void UpdateScript()
 {
-	Engine::OnTick();
+	try
+	{
+		Engine::OnTick();
+	}
+	catch (Exception^ e)
+	{
+		Info(e->Message);
+		Info(e->StackTrace);
+	}
 }
 
 static void ScriptOnInput(uint key, int isUpNow)
 {
-	Engine::OnInput(key, isUpNow);
+	try
+	{
+		Engine::OnInput(key, isUpNow);
+	}
+	catch (Exception^ e)
+	{
+		Info(e->Message);
+		Info(e->StackTrace);
+	}
 }
 
 #pragma unmanaged
@@ -119,31 +135,23 @@ static PVOID _preGameFiber = null;
 
 static void Run()
 {
-	try
+	_preGameFiber = GetCurrentFiber();
+	State = ScriptState::Loaded;
+	while (true)
 	{
-		_preGameFiber = GetCurrentFiber();
-		State = ScriptState::Loaded;
-		while (true)
+		InitBridge();
+		while (State == ScriptState::Loaded)
 		{
-			InitBridge();
-			while (State == ScriptState::Loaded)
+			const PVOID currentFiber = GetCurrentFiber();
+			if (currentFiber != _preGameFiber)
 			{
-				const PVOID currentFiber = GetCurrentFiber();
-				if (currentFiber != _preGameFiber)
-				{
-					_preGameFiber = currentFiber;
-					State = ScriptState::Unloaded;
-					break;
-				}
-				UpdateScript();
-				scriptWait(0);
+				_preGameFiber = currentFiber;
+				State = ScriptState::Unloaded;
+				break;
 			}
+			UpdateScript();
+			scriptWait(0);
 		}
-	}
-	catch (const std::exception& e)
-	{
-		Print("error");
-		Print(e.what());
 	}
 }
 
@@ -151,8 +159,6 @@ static void OnInput(uint key, ushort repeats, byte scanCode, int isExtended, int
 {
 	ScriptOnInput(key, isUpNow);
 }
-
-#pragma unmanaged
 
 static const uint Dll_INIT = 1;
 static const uint Dll_Release = 0;
@@ -163,7 +169,6 @@ bool __stdcall DllMain(HMODULE hModule, uint reason, void* lpReserved)
 	{
 		case Dll_INIT:
 		{
-			InitLog();
 			DisableThreadLibraryCalls(hModule);
 			if (!GetModuleHandle(TEXT("clr.dll")))
 			{
@@ -177,7 +182,6 @@ bool __stdcall DllMain(HMODULE hModule, uint reason, void* lpReserved)
 		{
 			keyboardHandlerUnregister(OnInput);
 			scriptUnregister(hModule);
-			CloseLog();
 			break;
 		}
 	}

@@ -9,16 +9,16 @@ namespace Bridge
 {
 	public sealed class ProxyObject : MarshalByRefObject, IDisposable
 	{
-		public static readonly string ScriptRootPath = Path.GetPathRoot(Path.GetFullPath("GTA5Trainer"));
+		public static readonly string ScriptRootPath = Directory.GetParent("GTA5TrainerAsi.asi").FullName;
 		public static readonly string AsiPath = Path.GetFullPath("GTA5TrainerAsi.asi");
-		public static readonly string BridgePath = Path.GetFullPath("GTA5Trainer/GTA5TrainerBridge.dll");
+		public static readonly string BridgePath = Path.GetFullPath("GTA5TrainerBridge.dll");
 
 		public AppDomain Domain { get; private set; }
 
 		private readonly List<Assembly> _assemblyList;
 		private readonly List<Entry> _entries;
 
-		private ProxyObject()
+		public ProxyObject()
 		{
 			Domain = AppDomain.CurrentDomain;
 			_assemblyList = [];
@@ -45,8 +45,8 @@ namespace Bridge
 			}
 			catch (Exception e)
 			{
-				Log.Info(e.Message);
-				Log.Info(e.StackTrace);
+				Log.Error(e.Message);
+				Log.Error(e.StackTrace);
 			}
 		}
 
@@ -74,8 +74,8 @@ namespace Bridge
 			catch (Exception ex)
 			{
 				AppDomain.Unload(newDomain);
-				Log.Info(ex.Message);
-				Log.Info(ex.StackTrace);
+				Log.Error(ex.Message);
+				Log.Error(ex.StackTrace);
 			}
 			return obj;
 		}
@@ -83,11 +83,15 @@ namespace Bridge
 
 		public void Start()
 		{
+			Log.Info("Starting...");
 			var files = Directory.GetFiles(ScriptRootPath, "*.TrainerScript", SearchOption.AllDirectories);
+			Log.Info($"Find File Count:{files.Length}");
 			foreach (var file in files)
 			{
+				
 				try
 				{
+					Log.Info($"Start Load {file}");
 					var assembly = Assembly.LoadFrom(file);
 					_assemblyList.Add(assembly);
 					foreach (var type in assembly.GetTypes())
@@ -98,26 +102,40 @@ namespace Bridge
 							_entries.Add(entry);
 						}
 					}
+					Log.Info($"Load {file} Finish");
 				}
 				catch (Exception e)
 				{
-					Log.Info(e.Message);
-					Log.Info(e.StackTrace);
+					Log.Error(e.Message);
+					Log.Error(e.StackTrace);
 				}
 			}
-			int count = _entries.Count;
-			for (int i = 0; i < count; i++)
+			try
 			{
-				_entries[i].OnInit();
+				int count = _entries.Count;
+				for (int i = 0; i < count; i++)
+				{
+					_entries[i].OnInit();
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.Message);
+				Log.Error(e.StackTrace);
 			}
 		}
 
 		public void OnUpdate()
 		{
-			int count = _entries.Count;
-			for (int i = 0; i < count; i++)
+			try
 			{
-				_entries[i].OnUpdate();
+				Log.Info("MenuController.Instance.Update");
+				MenuController.Instance.Update();
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.Message);
+				Log.Error(e.StackTrace);
 			}
 		}
 

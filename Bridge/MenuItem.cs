@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 
 namespace Bridge
 {
@@ -9,14 +9,16 @@ namespace Bridge
 		public Vector2 Size;
 		public Color TextColor;
 		public Color BGColor;
+		private float Scale;
 
-		protected MenuItem(string title, int height, Color bgColor)
+		protected MenuItem(string title, int height, Color bgColor, float scale = 0.3f)
 		{
 			Text = title;
 			Size = new Vector2(300.0f / 1920.0f, height / 1080.0f);
 			TextColor = Color.White;
 			BGColor = bgColor;
 			Position = new Vector2();
+			Scale = scale;
 		}
 
 		protected MenuItem(string title, int height)
@@ -30,13 +32,25 @@ namespace Bridge
 
 		internal virtual void OnDraw(bool isSelected = false)
 		{
+			PaintText(Text, 0.01f, Position.Y, Scale, ref TextColor);
+			Functions.DRAW_RECT(Position.X, Position.Y, Size.X, Size.Y, BGColor.R, BGColor.G, BGColor.B, BGColor.A);
+		}
 
+		protected static void PaintText(string text, float x, float y, float scale, ref Color color)
+		{
+			Functions.SET_TEXT_FONT(0);
+			Functions.SET_TEXT_SCALE(0.0f, scale);
+			Functions.SET_TEXT_COLOR(color.R, color.G, color.B, color.A);
+			Functions.SET_TEXT_OUTLINE();
+			Functions.BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
+			Functions.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
+			Functions.END_TEXT_COMMAND_DISPLAY_TEXT(x, y);
 		}
 	}
 
 	public sealed class Caption : MenuItem
 	{
-		public Caption(string title) : base(title, 60, Color.Cyan)
+		public Caption(string title) : base(title, 60, Color.Cyan, 0.5f)
 		{
 		}
 	}
@@ -54,22 +68,29 @@ namespace Bridge
 		internal void Execute()
 		{
 			OnExecute();
+			Functions.PLAY_SOUND_FRONTEND(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
+		}
+
+		protected void SetTips(string tips, long ms = 3000)
+		{
+			MenuController.Instance.SetTips(tips, ms);
 		}
 
 		protected abstract void OnExecute();
 	}
 
-	public abstract class SubMenu : ExecuteItem
+	public sealed class SubMenu : ExecuteItem
 	{
-		protected const string AdditionText = ">>";
-		protected SubMenu(string title) : base(title)
+		private const string AdditionText = ">>";
+		private Func<Menu> _menuGetter;
+		public SubMenu(string title, Func<Menu> menuGetter) : base(title)
 		{
-			
+			_menuGetter = menuGetter;
 		}
 
 		protected sealed override void OnExecute()
 		{
-
+			MenuController.Instance.PushMenu(_menuGetter?.Invoke());
 		}
 	}
 

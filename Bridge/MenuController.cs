@@ -1,7 +1,4 @@
-﻿
-
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Bridge
 {
@@ -16,21 +13,25 @@ namespace Bridge
 		private static readonly MenuController _instance = new();
 		public static MenuController Instance { get => _instance; }
 
+		private readonly Menu _mainMenu;
+		public Menu MainMenu => _mainMenu;
+
 		private MenuController()
 		{
 			_nextCanInputTime = 0;
 			_statusTextMaxTicks = 0;
 			_statusText = "";
+			_mainMenu = new Menu("内置修改器 by Da");
 		}
 
-		public void Update()
+		internal void Update()
 		{
 			OnDraw();
 			OnInput();
 			OnExecuteHookFunction();
 		}
 
-		public void PushMenu(Menu menu)
+		internal void PushMenu(Menu menu)
 		{
 			if (menu is not null)
 			{
@@ -38,7 +39,7 @@ namespace Bridge
 			}
 		}
 
-		public void PopMenu()
+		internal void PopMenu()
 		{
 			_menuStack.Pop();
 		}
@@ -52,21 +53,17 @@ namespace Bridge
 			_menuList[menu.Caption.Text] = menu;
 		}
 
-		public Menu GetMenu(string caption)
+		public bool TryGetMenu(string caption, out Menu menu)
 		{
-			if (_menuList.TryGetValue(caption, out var menu))
-			{
-				return menu;
-			}
-			return null;
+			return _menuList.TryGetValue(caption, out menu);
 		}
 
-		public Menu GetActiveMenu()
+		public Menu GetShowingMenu()
 		{
 			return _menuStack.Count > 0 ? _menuStack.Peek() : null;
 		}
 
-		public void SetTips(string text, long ms)
+		public void SetTips(string text, long ms = 3000)
 		{
 			_statusText = text;
 			_statusTextMaxTicks = Time.Now + ms;
@@ -76,7 +73,13 @@ namespace Bridge
 		{
 			if (Time.Now < _statusTextMaxTicks)
 			{
-				//DrawText(_statusText, 0.5f, 0.5f, 0.5f, 0.5f, Color.White);
+				Functions.SET_TEXT_FONT(0);
+				Functions.SET_TEXT_SCALE(0.0f, 0.5f);
+				Functions.SET_TEXT_COLOR(0, 0, 0, 255);
+				Functions.SET_TEXT_OUTLINE();
+				Functions.BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
+				Functions.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(_statusText);
+				Functions.END_TEXT_COMMAND_DISPLAY_TEXT(0.5f, 0.5f);
 			}
 		}
 
@@ -96,7 +99,7 @@ namespace Bridge
 
 		private void OnDraw()
 		{
-			GetActiveMenu()?.OnDraw();
+			GetShowingMenu()?.OnDraw();
 			DrawTips();
 		}
 
@@ -106,7 +109,23 @@ namespace Bridge
 			{
 				return;
 			}
-			var menu = GetActiveMenu();
+
+			if (Input.MenuSwitchPressed())
+			{
+				Log.Info("Input.MenuSwitchPressed");
+				if (_menuStack.Count == 0)
+				{
+					PushMenu(_mainMenu);
+				}
+				else
+				{
+					_menuStack.Clear();
+				}
+				InputWait(300);
+				return;
+			}
+
+			var menu = GetShowingMenu();
 			if (menu is not null)
 			{
 				var waitTime = ExcuteInput(menu);

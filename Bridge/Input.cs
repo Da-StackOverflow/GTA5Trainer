@@ -115,7 +115,7 @@
 
 		public static bool MenuSwitchPressed()
 		{
-			return IsKeyDown(KeyCode.F5);
+			return IsKeyDown(KeyCode.F4);
 		}
 	}
 }

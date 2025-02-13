@@ -48,13 +48,13 @@ var path = Path.GetFullPath("CopyFile.exe").Split("bin")[0];
 //		//}
 //		//Console.WriteLine($"}};");
 
-//		Dictionary<string, StringBuilder> _components = new();
+//		Dictionary<string, StringBuilder> components = new();
 //		foreach (var weapon in result)
 //		{
-//			if (!_components.TryGetValue(weapon.Name?.ToUpper() ?? "", out var sb))
+//			if (!components.TryGetValue(weapon.Name?.ToUpper() ?? "", out var sb))
 //			{
 //				sb = new($"    {{\"{weapon.Name?.ToUpper()}\", {{");
-//				_components.Add(weapon.Name?.ToUpper() ?? "", sb);
+//				components.Add(weapon.Name?.ToUpper() ?? "", sb);
 //			}
 //			if (weapon.Components is not null)
 //			{
@@ -65,8 +65,8 @@ var path = Path.GetFullPath("CopyFile.exe").Split("bin")[0];
 //				sb.Append("}},");
 //			}
 //		}
-//		Console.WriteLine("export const std::unordered_map<const char*, std::vector<ItemInfo>> WeaponComponents = {");
-//		foreach (var component in _components)
+//		Console.WriteLine("export const std::unorderedmap<const char*, std::vector<ItemInfo>> WeaponComponents = {");
+//		foreach (var component in components)
 //		{
 //			Console.WriteLine(component.Value.ToString());
 //		}
@@ -80,9 +80,42 @@ var path = Path.GetFullPath("CopyFile.exe").Split("bin")[0];
 //}
 
 
+//try
+//{
+//	File.Copy("F:/CSharp/GTA5Trainer/GTA5Trainer/bin/GTA5Trainer.asi", "D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer.asi", true);
+//	Console.WriteLine("成功");
+//}
+//catch (Exception e)
+//{
+//	Console.WriteLine(e.Message);
+//	Console.WriteLine(e.StackTrace);
+//}
+
 try
 {
-	File.Copy("F:/CSharp/GTA5Trainer/GTA5Trainer/bin/GTA5Trainer.asi", "D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer.asi", true);
+	File.Copy("F:/CSharp/GTA5Trainer/Asi/bin/GTA5TrainerAsi.asi", "D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5TrainerAsi.asi", true);
+	Console.WriteLine("成功");
+}
+catch (Exception e)
+{
+	Console.WriteLine(e.Message);
+	Console.WriteLine(e.StackTrace);
+}
+
+try
+{
+	File.Copy("F:/CSharp/GTA5Trainer/Bridge/bin/GTA5TrainerBridge.dll", "D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5TrainerBridge.dll", true);
+	Console.WriteLine("成功");
+}
+catch (Exception e)
+{
+	Console.WriteLine(e.Message);
+	Console.WriteLine(e.StackTrace);
+}
+
+try
+{
+	File.Copy("F:/CSharp/GTA5Trainer/Script/bin/GTA5TrainerScript.dll", "D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5TrainerScript.TrainerScript", true);
 	Console.WriteLine("成功");
 }
 catch (Exception e)
