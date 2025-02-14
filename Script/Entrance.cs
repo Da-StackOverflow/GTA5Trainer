@@ -10,7 +10,7 @@ public class Entrance : Entry
 
 	private Menu GetOrPlayerSystemMenu()
 	{
-		if (MenuController.Instance.TryGetMenu("玩家系统", out var menu))
+		if (MenuController.Instance.TryGetMenu("玩家系统", out Menu menu))
 		{
 			menu = new Menu("玩家系统");
 			MenuController.Instance.Register(menu);

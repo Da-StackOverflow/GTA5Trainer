@@ -129,7 +129,6 @@ namespace Bridge
 		{
 			try
 			{
-				Log.Info("MenuController.Instance.Update");
 				MenuController.Instance.Update();
 			}
 			catch (Exception e)

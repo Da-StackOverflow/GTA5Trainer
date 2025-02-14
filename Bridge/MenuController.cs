@@ -4,8 +4,8 @@ namespace Bridge
 {
 	public sealed class MenuController
 	{
-		private readonly Stack<Menu> _menuStack = [];
-		private readonly Dictionary<string, Menu> _menuList = [];
+		private readonly Stack<AMenu> _menuStack = [];
+		private readonly Dictionary<string, AMenu> _menuList = [];
 		private string _statusText;
 		private long _nextCanInputTime;
 		private long _statusTextMaxTicks;
@@ -31,7 +31,7 @@ namespace Bridge
 			OnExecuteHookFunction();
 		}
 
-		internal void PushMenu(Menu menu)
+		internal void PushMenu(AMenu menu)
 		{
 			if (menu is not null)
 			{
@@ -44,7 +44,7 @@ namespace Bridge
 			_menuStack.Pop();
 		}
 
-		public void Register(Menu menu)
+		public void Register(AMenu menu)
 		{
 			if (_menuList.ContainsKey(menu.Caption.Text))
 			{
@@ -53,12 +53,20 @@ namespace Bridge
 			_menuList[menu.Caption.Text] = menu;
 		}
 
-		public bool TryGetMenu(string caption, out Menu menu)
+		public bool TryGetMenu<T>(string caption, out T menu) where T : AMenu
 		{
-			return _menuList.TryGetValue(caption, out menu);
+			var result = _menuList.TryGetValue(caption, out var m);
+			if (result)
+			{
+				menu = m as T;
+			}
+			else {
+				menu = null;
+			}
+			return result;
 		}
 
-		public Menu GetShowingMenu()
+		public AMenu GetShowingMenu()
 		{
 			return _menuStack.Count > 0 ? _menuStack.Peek() : null;
 		}
@@ -112,7 +120,6 @@ namespace Bridge
 
 			if (Input.MenuSwitchPressed())
 			{
-				Log.Info("Input.MenuSwitchPressed");
 				if (_menuStack.Count == 0)
 				{
 					PushMenu(_mainMenu);
@@ -133,7 +140,7 @@ namespace Bridge
 			}
 		}
 
-		private int ExcuteInput(Menu menu)
+		private int ExcuteInput(AMenu menu)
 		{
 			if (Input.IsAccept())
 			{
@@ -172,7 +179,7 @@ namespace Bridge
 		{
 			foreach (var menu in _menuList.Values)
 			{
-				menu.OnSwitchItemUpdate();
+				menu.Update();
 			}
 		}
 

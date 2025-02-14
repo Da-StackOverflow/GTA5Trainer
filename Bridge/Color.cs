@@ -11,7 +11,7 @@
 		public static readonly Color Lime = new(0x65ef63u);
 		public static readonly Color Green = new(0x35b52au);
 		public static readonly Color Blue = new(0x4fadffu);
-		public static readonly Color Yellow = new(0xffa14fu);
+		public static readonly Color Yellow = new(0xffe851u);
 		public static readonly Color White = new(255, 255, 255);
 		public static readonly Color Black = new(0, 0, 0);
 		public static readonly Color Cyan = new(0, 255, 255);
@@ -37,9 +37,17 @@
 			A = a;
 		}
 
+		public Color()
+		{
+			R = 255;
+			G = 255;
+			B = 255;
+			A = 255;
+		}
+
 		public override readonly string ToString()
 		{
-			return string.Format("A:{0:x}, R:{1:x}, G:{2:x}, B:{3:x}", A, R, G, B);
+			return string.Format("R:{1:x}, G:{2:x}, B:{3:x}, A:{0:x}", A, R, G, B);
 		}
 
 		public static bool operator ==(Color left, Color right)

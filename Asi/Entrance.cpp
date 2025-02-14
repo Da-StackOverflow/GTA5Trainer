@@ -9,13 +9,9 @@ public enum ScriptState
 	Unloaded
 };
 
-ScriptState State = ScriptState::Unloaded;
+ScriptState State = ScriptState::Loaded;
 
 #pragma managed
-
-#ifdef GetTempPath
-#undef GetTempPath
-#endif
 
 using namespace Bridge;
 using namespace System;
@@ -32,12 +28,19 @@ public:
 	static i64 _operateTime = 0;
 	static ProxyObject^ ProxyObj;
 
-	static void Unload()
+	static void ChangeLoadState()
 	{
 		i64 time = GetTimeTicks();
 		if (time - _operateTime > 3000)
 		{
-			State = ScriptState::Unloaded;
+			if (State == ScriptState::Unloaded)
+			{
+				State = ScriptState::Loaded;
+			}
+			else
+			{
+				State = ScriptState::Unloaded;
+			}
 			_operateTime = GetTimeTicks();
 		}
 	}
@@ -52,22 +55,15 @@ public:
 
 	static void OnInput(uint key, bool isUpNow)
 	{
-		switch (State)
+		if (key == VK_F8)
 		{
-			case ScriptState::Loaded:
+			ChangeLoadState();
+		}
+		else if (0 < key && key < 256)
+		{
+			if (ProxyObj != null)
 			{
-				if (key == VK_F8)
-				{
-					Unload();
-				}
-				else if (0 < key && key < 256)
-				{
-					if (ProxyObj != null)
-					{
-						ProxyObj->OnInput(key, isUpNow);
-					}
-				}
-				break;
+				ProxyObj->OnInput(key, isUpNow);
 			}
 		}
 	}
@@ -136,20 +132,26 @@ static PVOID _preGameFiber = null;
 static void Run()
 {
 	_preGameFiber = GetCurrentFiber();
-	State = ScriptState::Loaded;
 	while (true)
 	{
-		InitBridge();
-		while (State == ScriptState::Loaded)
+		if (State == ScriptState::Loaded)
 		{
-			const PVOID currentFiber = GetCurrentFiber();
-			if (currentFiber != _preGameFiber)
+			InitBridge();
+			while (State == ScriptState::Loaded)
 			{
-				_preGameFiber = currentFiber;
-				State = ScriptState::Unloaded;
-				break;
+				const PVOID currentFiber = GetCurrentFiber();
+				if (currentFiber != _preGameFiber)
+				{
+					_preGameFiber = currentFiber;
+					State = ScriptState::Loaded;
+					break;
+				}
+				UpdateScript();
+				scriptWait(0);
 			}
-			UpdateScript();
+		}
+		else
+		{
 			scriptWait(0);
 		}
 	}
@@ -187,8 +189,4 @@ bool __stdcall DllMain(HMODULE hModule, uint reason, void* lpReserved)
 	}
 	return true;
 }
-
-#ifndef GetTempPath
-#define GetTempPath GetTempPathW
-#endif
 
