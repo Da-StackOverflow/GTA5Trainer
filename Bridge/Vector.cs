@@ -91,7 +91,7 @@ namespace Bridge
 
 		public override readonly string ToString()
 		{
-			return string.Format("X:{0}, Y:{1}, Z:{2}", X, Y, Z);
+			return $"X:{0:F3}, Y:{Y:F3}, Z:{Z:F3}";
 		}
 
 		public static bool operator ==(Vector3 left, Vector3 right)

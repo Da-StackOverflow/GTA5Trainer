@@ -36,7 +36,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>bin\</OutDir>
     <IntDir>obj\</IntDir>
-    <TargetName>GTA5TrainerAsi</TargetName>
+    <TargetName>GTA5Trainer</TargetName>
     <LibraryPath>$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
     <ManagedAssembly>true</ManagedAssembly>

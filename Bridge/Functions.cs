@@ -4272,6 +4272,7 @@ namespace Bridge
 		public static void ADD_TEXT_COMPONENT_SUBSTRING_TEXT_LABEL_HASH_KEY(Hash gxtEntryHash) { Invoke(0x17299B63C7683A2B, V(gxtEntryHash)); }
 		public static void ADD_TEXT_COMPONENT_SUBSTRING_BLIP_NAME(Blip blip) { Invoke(0x80EAD8E2E1D5D52E, V(blip)); }
 		public static void ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(string text) { Invoke(0x6C188BE134E074AA, V(text)); }
+		public static void ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(byte* text) { Invoke(0x6C188BE134E074AA, V(text)); }
 		// Adds a timer (e.g. "00:00:00:000"). The appearance of the timer depends on the flags, which needs more research.
 		public static void ADD_TEXT_COMPONENT_SUBSTRING_TIME(int timestamp, int flags) { Invoke(0x1115F16B8AB9E8BF, V(timestamp), V(flags)); }
 		public static void ADD_TEXT_COMPONENT_FORMATTED_INTEGER(int value, bool commaSeparated) { Invoke(0x0E4C749FF9DE9CC4, V(value), V(commaSeparated)); }

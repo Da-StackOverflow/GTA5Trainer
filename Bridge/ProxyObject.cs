@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Security;
+using System.Threading;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Security.Permissions;
@@ -9,10 +10,10 @@ namespace Bridge
 {
 	public sealed class ProxyObject : MarshalByRefObject, IDisposable
 	{
-		public static readonly string ScriptRootPath = Directory.GetParent("GTA5TrainerAsi.asi").FullName;
-		public static readonly string AsiPath = Path.GetFullPath("GTA5TrainerAsi.asi");
-		public static readonly string BridgePath = Path.GetFullPath("GTA5TrainerBridge.dll");
+		public static readonly string ScriptRootPath = Path.GetFullPath("GTA5Trainer");
 
+		private Thread _keepAliveThread;
+		private bool _keepAlive;
 		public AppDomain Domain { get; private set; }
 
 		private readonly List<Assembly> _assemblyList;
@@ -23,25 +24,68 @@ namespace Bridge
 			Domain = AppDomain.CurrentDomain;
 			_assemblyList = [];
 			_entries = [];
+			_keepAlive = true;
+			_keepAliveThread = new Thread(KeepAlive);
+			_keepAliveThread.Start();
 		}
 
 		~ProxyObject()
 		{
 			Native.FreeBuffer();
+			_keepAlive = false;
+			try
+			{
+				if (_keepAliveThread is not null && _keepAliveThread.IsAlive)
+				{
+					_keepAliveThread.Abort();
+					_keepAliveThread = null;
+				}
+			}
+			catch
+			{
+
+			}  
 		}
 
 		public void Dispose()
 		{
+			_keepAlive = false;
+			if(_keepAliveThread is not null && _keepAliveThread.IsAlive)
+			{
+				_keepAliveThread.Abort();
+				_keepAliveThread = null;
+			}
 			Native.Release();
 			GC.SuppressFinalize(this);
+		}
+
+
+		public int A;
+		private void DoNoThing()
+		{
+			++A;
+		}
+
+		private void KeepAlive()
+		{
+			while (_keepAlive)
+			{
+				DoNoThing();
+				Thread.Sleep(30000);
+			}
 		}
 
 		public static void Unload(ProxyObject domain)
 		{
 			try
 			{
+				Log.Info($"Unload Domain {Path.GetFullPath("GTA5TrainerBridge.dll")}");
 				domain.Dispose();
 				AppDomain.Unload(domain.Domain);
+			}
+			catch (ThreadAbortException)
+			{
+
 			}
 			catch (Exception e)
 			{
@@ -69,7 +113,7 @@ namespace Bridge
 			ProxyObject obj = null;
 			try
 			{
-				obj = (ProxyObject)newDomain.CreateInstanceFromAndUnwrap(typeof(ProxyObject).Assembly.Location, typeof(ProxyObject).FullName);
+				obj = (ProxyObject)newDomain.CreateInstanceFromAndUnwrap(Path.Combine(ScriptRootPath, "GTA5TrainerBridge.dll"), typeof(ProxyObject).FullName);
 			}
 			catch (Exception ex)
 			{
@@ -88,7 +132,6 @@ namespace Bridge
 			Log.Info($"Find File Count:{files.Length}");
 			foreach (var file in files)
 			{
-				
 				try
 				{
 					Log.Info($"Start Load {file}");

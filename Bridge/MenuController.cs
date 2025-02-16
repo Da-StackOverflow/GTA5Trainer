@@ -6,9 +6,10 @@ namespace Bridge
 	{
 		private readonly Stack<AMenu> _menuStack = [];
 		private readonly Dictionary<string, AMenu> _menuList = [];
-		private string _statusText;
+		private readonly List<IUpdate> _updateList = [];
 		private long _nextCanInputTime;
 		private long _statusTextMaxTicks;
+		private readonly byte[] _statusTextBytes = new byte[256];
 
 		private static readonly MenuController _instance = new();
 		public static MenuController Instance { get => _instance; }
@@ -20,7 +21,6 @@ namespace Bridge
 		{
 			_nextCanInputTime = 0;
 			_statusTextMaxTicks = 0;
-			_statusText = "";
 			_mainMenu = new Menu("内置修改器 by Da");
 		}
 
@@ -51,6 +51,10 @@ namespace Bridge
 				Log.Error($"Menu {menu.Caption.Text} already exists!");
 			}
 			_menuList[menu.Caption.Text] = menu;
+			if(menu is IUpdate update)
+			{
+				_updateList.Add(update);
+			}
 		}
 
 		public bool TryGetMenu<T>(string caption, out T menu) where T : AMenu
@@ -73,25 +77,36 @@ namespace Bridge
 
 		public void SetTips(string text, long ms = 3000)
 		{
-			_statusText = text;
+			var count = System.Text.Encoding.UTF8.GetBytes(text, 0, text.Length, _statusTextBytes, 0);
+			if(count < _statusTextBytes.Length)
+			{
+				_statusTextBytes[count] = 0;
+			}
+			else
+			{
+				_statusTextBytes[_statusTextBytes.Length - 1] = 0;
+			}
 			_statusTextMaxTicks = Time.Now + ms;
 		}
 
-		private void DrawTips()
+		private unsafe void DrawTips()
 		{
 			if (Time.Now < _statusTextMaxTicks)
 			{
 				Functions.SET_TEXT_FONT(0);
 				Functions.SET_TEXT_SCALE(0.0f, 0.5f);
-				Functions.SET_TEXT_COLOR(0, 0, 0, 255);
+				Functions.SET_TEXT_COLOR(255, 255, 255, 255);
 				Functions.SET_TEXT_OUTLINE();
 				Functions.BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
-				Functions.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(_statusText);
+				fixed (byte* ptr = _statusTextBytes)
+				{
+					Functions.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(ptr);
+				}
 				Functions.END_TEXT_COMMAND_DISPLAY_TEXT(0.5f, 0.5f);
 			}
 		}
 
-		private void InputWait(long ms)
+		private void SetInputWaitTime(long ms)
 		{
 			if (ms <= 0)
 			{
@@ -100,7 +115,7 @@ namespace Bridge
 			_nextCanInputTime = Time.Now + ms;
 		}
 
-		private bool InputIsOnWait()
+		private bool IsInputIsOnWait()
 		{
 			return _nextCanInputTime > Time.Now;
 		}
@@ -113,7 +128,7 @@ namespace Bridge
 
 		private void OnInput()
 		{
-			if (InputIsOnWait())
+			if (IsInputIsOnWait())
 			{
 				return;
 			}
@@ -128,7 +143,7 @@ namespace Bridge
 				{
 					_menuStack.Clear();
 				}
-				InputWait(300);
+				SetInputWaitTime(300);
 				return;
 			}
 
@@ -136,7 +151,7 @@ namespace Bridge
 			if (menu is not null)
 			{
 				var waitTime = ExcuteInput(menu);
-				InputWait(waitTime);
+				SetInputWaitTime(waitTime);
 			}
 		}
 
@@ -145,53 +160,42 @@ namespace Bridge
 			if (Input.IsAccept())
 			{
 				menu.OnInput(KeyCode.Return);
-				return 150;
+				return 100;
 			}
 			if (Input.IsBack())
 			{
 				PopMenu();
-				return 200;
+				return 100;
 			}
 			if (Input.IsUp())
 			{
 				menu.OnInput(KeyCode.Up);
-				return 150;
+				return 100;
 			}
 			if (Input.IsDown())
 			{
 				menu.OnInput(KeyCode.Down);
-				return 150;
+				return 100;
 			}
 			if (Input.IsLeft())
 			{
 				menu.OnInput(KeyCode.Left);
-				return 150;
+				return 100;
 			}
 			if (Input.IsRight())
 			{
 				menu.OnInput(KeyCode.Right);
-				return 150;
+				return 100;
 			}
-			return 100;
+			return 50;
 		}
 
 		private void OnExecuteHookFunction()
 		{
-			foreach (var menu in _menuList.Values)
+			var length = _updateList.Count;
+			for (int i = 0; i < length; i++)
 			{
-				menu.Update();
-			}
-		}
-
-		public void WaitAndDraw(long ms)
-		{
-			long time = Time.Now + ms;
-			bool waited = false;
-			while (Time.Now < time || !waited)
-			{
-				Native.Sleep(1);
-				waited = true;
-				OnDraw();
+				_updateList[i].Update();
 			}
 		}
 	}

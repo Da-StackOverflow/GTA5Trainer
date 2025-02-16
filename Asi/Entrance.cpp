@@ -2,6 +2,7 @@
 #pragma unmanaged
 #include "Import.h"
 #include <stdexcept>
+#include <fstream>
 
 public enum ScriptState
 {
@@ -10,6 +11,17 @@ public enum ScriptState
 };
 
 ScriptState State = ScriptState::Loaded;
+
+static void Print(const char* log)
+{
+	var logger = std::ofstream("GTA5TrainerScript.txt", std::ios::app);
+	if (logger.is_open())
+	{
+		logger << log << std::endl;
+		logger.flush();
+		logger.close();
+	}
+}
 
 #pragma managed
 
@@ -25,23 +37,19 @@ static void Info(String^ log)
 public ref class Engine
 {
 public:
-	static i64 _operateTime = 0;
 	static ProxyObject^ ProxyObj;
 
 	static void ChangeLoadState()
 	{
-		i64 time = GetTimeTicks();
-		if (time - _operateTime > 3000)
+		if (State == ScriptState::Unloaded)
 		{
-			if (State == ScriptState::Unloaded)
-			{
-				State = ScriptState::Loaded;
-			}
-			else
-			{
-				State = ScriptState::Unloaded;
-			}
-			_operateTime = GetTimeTicks();
+			State = ScriptState::Loaded;
+			Print("State is ScriptState::Loaded");
+		}
+		else
+		{
+			State = ScriptState::Unloaded;
+			Print("State is ScriptState::Unloaded");
 		}
 	}
 
@@ -57,7 +65,10 @@ public:
 	{
 		if (key == VK_F8)
 		{
-			ChangeLoadState();
+			if (isUpNow)
+			{
+				ChangeLoadState();
+			}
 		}
 		else if (0 < key && key < 256)
 		{
@@ -136,6 +147,7 @@ static void Run()
 	{
 		if (State == ScriptState::Loaded)
 		{
+			Print("InitBridge");
 			InitBridge();
 			while (State == ScriptState::Loaded)
 			{
@@ -144,6 +156,7 @@ static void Run()
 				{
 					_preGameFiber = currentFiber;
 					State = ScriptState::Loaded;
+					Print("Asi Fiber Changed");
 					break;
 				}
 				UpdateScript();

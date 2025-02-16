@@ -4,7 +4,7 @@ namespace Bridge
 {
 	public abstract class MenuItem
 	{
-		internal readonly string Text;
+		public string Text;
 		internal Vector2 Position;
 		internal readonly Vector2 Size;
 		internal readonly Color TextColor = Color.White;
@@ -12,23 +12,23 @@ namespace Bridge
 		internal readonly float FontSize;
 		internal float TextY;
 
-		protected MenuItem(string title, int height, Color bgColor, int fontSize = 45)
+		protected MenuItem(string title, int height, Color bgColor)
 		{
 			Text = title;
 			Size = new Vector2(400.0f / 1920.0f, height / 1080.0f);
 			BGColor = bgColor;
 			Position = new Vector2(Size.X / 2.0f, Size.Y / 2.0f);
-			FontSize = fontSize / 100.0f;
+			FontSize = height / 150.0f;
 			TextY = Position.Y - Size.Y / 3.0f;
 		}
 
-		protected MenuItem(string title, int height, int fontSize = 30)
+		protected MenuItem(string title, int height)
 		{
 			Text = title;
 			Size = new Vector2(400.0f / 1920.0f, height / 1080.0f);
 			BGColor = Color.Green;
 			Position = new Vector2();
-			FontSize = fontSize / 100.0f;
+			FontSize = height / 150.0f;
 		}
 
 		internal void SetPosition(float x, float y)
@@ -44,7 +44,7 @@ namespace Bridge
 			Functions.DRAW_RECT(Position.X, Position.Y, Size.X, Size.Y, BGColor.R, BGColor.G, BGColor.B, BGColor.A);
 		}
 
-		protected static void PaintText(string text, float x, float y, float fontSize, int r, int g, int b, int a)
+		internal static void PaintText(string text, float x, float y, float fontSize, int r, int g, int b, int a)
 		{
 			Functions.SET_TEXT_FONT(0);
 			Functions.SET_TEXT_SCALE(0.0f, fontSize);
@@ -55,6 +55,26 @@ namespace Bridge
 			Functions.END_TEXT_COMMAND_DISPLAY_TEXT(x, y);
 		}
 
+		internal unsafe static void PaintText(byte* text, float x, float y, float fontSize, int r, int g, int b, int a)
+		{
+			Functions.SET_TEXT_FONT(0);
+			Functions.SET_TEXT_SCALE(0.0f, fontSize);
+			Functions.SET_TEXT_COLOR(r, g, b, a);
+			Functions.SET_TEXT_OUTLINE();
+			Functions.BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
+			Functions.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
+			Functions.END_TEXT_COMMAND_DISPLAY_TEXT(x, y);
+		}
+
+		protected static void Wait(uint ms)
+		{
+			Native.Sleep(ms);
+		}
+
+		protected static int PlayerID => Functions.PLAYER_ID();
+
+		protected static int PlayerPed => Functions.PLAYER_PED_ID();
+
 		public override string ToString()
 		{
 			return Text;
@@ -63,20 +83,58 @@ namespace Bridge
 
 	public sealed class Caption : MenuItem
 	{
-		internal int MaxPage;
-		internal int CurrentPage;
+		private readonly static byte[] _stringBytes = new byte[16];
+
+		private bool _modified = true;
+
+		private int _maxPage = 0;
+		internal int MaxPage
+		{
+			get => _maxPage;
+			set
+			{
+				_maxPage = value;
+				_modified = true;
+			}
+		}
+		private int _currentPage = 1;
+		internal int CurrentPage
+		{
+			get => _currentPage;
+			set
+			{
+				_currentPage = value;
+				_modified = true;
+			}
+		}
+		
 		public Caption(string title) : base(title, 60, Color.Cyan)
 		{
-			MaxPage = 0;
-			CurrentPage = 0;
 		}
 
-		internal override void OnDraw(bool isSelected = false)
+		internal unsafe override void OnDraw(bool isSelected = false)
 		{
 			base.OnDraw(isSelected);
-			if (MaxPage > 1)
+			if (_maxPage > 1)
 			{
-				PaintText($"{CurrentPage:02d}/{MaxPage:02d}", 0.17f, TextY, FontSize, TextColor.R, TextColor.G, TextColor.B, TextColor.A);
+				if (_modified)
+				{
+					var str = $"{_currentPage:D2}/{_maxPage:D2}\0";
+					var count = System.Text.Encoding.UTF8.GetBytes(str, 0, str.Length, _stringBytes, 0);
+					if(count >= 16)
+					{
+						_stringBytes[15] = 0;
+					}
+					else
+					{
+						_stringBytes[count] = 0;
+					}
+					_modified = false;
+				}
+				fixed (byte* ptr = _stringBytes)
+				{
+					PaintText(ptr, 0.17f, TextY, FontSize, TextColor.R, TextColor.G, TextColor.B, TextColor.A);
+				}
 			}
 		}
 	}
@@ -117,21 +175,15 @@ namespace Bridge
 		}
 	}
 
-	public sealed class SubMenu : ExecuteItem
+	public abstract class ASubMenu : ExecuteItem
 	{
 		private const string AdditionText = ">>";
-		private readonly Func<Menu> _menuGetter;
-		public SubMenu(string title, Func<Menu> menuGetter) : base(title)
+		public ASubMenu(string title) : base(title)
 		{
-			_menuGetter = menuGetter;
+			
 		}
 
-		protected sealed override void OnExecute()
-		{
-			MenuController.Instance.PushMenu(_menuGetter?.Invoke());
-		}
-
-		internal override void OnDraw(bool isSelected = false)
+		internal sealed override void OnDraw(bool isSelected = false)
 		{
 			base.OnDraw(isSelected);
 			if (isSelected)
@@ -142,6 +194,34 @@ namespace Bridge
 			{
 				PaintText(AdditionText, 0.19f, TextY, FontSize, TextColor.R, TextColor.G, TextColor.B, TextColor.A);
 			}
+		}
+	}
+
+	public sealed class SubMenu : ASubMenu
+	{
+		private readonly Func<Menu> _menuGetter;
+		public SubMenu(string title, Func<Menu> menuGetter) : base(title)
+		{
+			_menuGetter = menuGetter;
+		}
+
+		protected sealed override void OnExecute()
+		{
+			MenuController.Instance.PushMenu(_menuGetter?.Invoke());
+		}
+	}
+
+	public sealed class SubMenu<T> : ASubMenu where T : AMenu
+	{
+		private readonly Func<T> _menuGetter;
+		public SubMenu(string title, Func<T> menuGetter) : base(title)
+		{
+			_menuGetter = menuGetter;
+		}
+
+		protected sealed override void OnExecute()
+		{
+			MenuController.Instance.PushMenu(_menuGetter?.Invoke());
 		}
 	}
 

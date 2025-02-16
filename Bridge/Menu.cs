@@ -58,10 +58,12 @@ namespace Bridge
 				case KeyCode.Left:
 					_activePage = (_activePage + pageCount - 1) % pageCount;
 					_activeItemInActivePage = 0;
+					Caption.CurrentPage = _activePage + 1;
 					break;
 				case KeyCode.Right:
 					_activePage = (_activePage + 1) % pageCount;
 					_activeItemInActivePage = 0;
+					Caption.CurrentPage = _activePage + 1;
 					break;
 				case KeyCode.Back:
 					break;
@@ -69,11 +71,9 @@ namespace Bridge
 		}
 
 		protected abstract void ProcessExecute(int index);
-
-		internal abstract void Update();
 	}
 
-	public sealed class Menu : AMenu
+	public sealed class Menu : AMenu, IUpdate
 	{
 		private readonly List<ExecuteItem> _items = [];
 		private readonly List<UpdateableItem> _updateableItems = [];
@@ -115,6 +115,7 @@ namespace Bridge
 				_updateableItems.Add(u);
 				_switchItemCount++;
 			}
+			Caption.MaxPage = _itemCount / ItemsMaxCountPerPage + (_itemCount % ItemsMaxCountPerPage != 0 ? 1 : 0);
 		}
 
 		internal override void OnDraw()
@@ -134,7 +135,7 @@ namespace Bridge
 			_items[index].Execute();
 		}
 
-		internal override void Update()
+		public void Update()
 		{
 			for (int i = 0; i < _switchItemCount; i++)
 			{
@@ -215,11 +216,6 @@ namespace Bridge
 			_items[index].Execute();
 		}
 
-		internal override void Update()
-		{
-
-		}
-
 		public sealed override void AddItem<T1>(T1 item)
 		{
 			if (item is null)
@@ -230,8 +226,7 @@ namespace Bridge
 			if (item is T t)
 			{
 				int index = _items.Count % ItemsMaxCountPerPage;
-				item.Position.X = item.Size.X / 2.0f;
-				item.Position.Y = item.Size.Y * (index + 0.5f) + Caption.Size.Y;
+				item.SetPosition(item.Size.X / 2.0f, item.Size.Y * (index + 0.5f) + Caption.Size.Y);
 				if ((_items.Count & 1) == 0)
 				{
 					item.BGColor.R = Color.Lime.R;
@@ -249,18 +244,19 @@ namespace Bridge
 
 				_items.Add(t);
 				_itemCount++;
+				Caption.MaxPage = _itemCount / ItemsMaxCountPerPage + (_itemCount % ItemsMaxCountPerPage != 0 ? 1 : 0);
 			}
 		}
 	}
 
-	public sealed class UpdateableItemMenu<T> : Menu<T> where T : UpdateableItem
+	public sealed class UpdateableItemMenu<T> : Menu<T>, IUpdate where T : UpdateableItem
 	{
 		public UpdateableItemMenu(string caption, Func<T> createItemFunc, Action<int, T> refreshItemFunc) : base(caption, createItemFunc, refreshItemFunc)
 		{
 
 		}
 
-		internal override void Update()
+		public void Update()
 		{
 			for (int i = 0; i < _itemCount; i++)
 			{

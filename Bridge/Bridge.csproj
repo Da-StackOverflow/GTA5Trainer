@@ -39,7 +39,10 @@
     <Compile Include="Color.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="Functions.cs" />
+    <Compile Include="GlobalValue.cs" />
     <Compile Include="Input.cs" />
+    <Compile Include="ItemInfo.cs" />
+    <Compile Include="IUpdate.cs" />
     <Compile Include="KeyCode.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Menu.cs" />
@@ -48,6 +51,7 @@
     <Compile Include="Native.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyObject.cs" />
+    <Compile Include="Random.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Vector.cs" />
   </ItemGroup>

@@ -7,7 +7,6 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
-#include <chrono>
 #include <fstream>
 
 
@@ -31,11 +30,5 @@ typedef void(*FunctionPtr)();
 // Remember that you can't call natives inside
 // void OnPresent(IDXGISwapChain *swapChain);
 typedef void(*PresentCallback)(void*);
-
-
-static i64 GetTimeTicks()
-{
-	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-}
 
 #endif
