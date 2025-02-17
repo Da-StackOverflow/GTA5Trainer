@@ -8874,12 +8874,44 @@ namespace Bridge
 		public static float CALCULATE_TRAVEL_DISTANCE_BETWEEN_POINTS(float x1, float y1, float z1, float x2, float y2, float z2) { return Invoke<float>(0xADD95C7005C4A197, V(x1), V(y1), V(z1), V(x2), V(y2), V(z2)); }
 
 
-
+		public enum PedType : int
+		{
+			PLAYER_0,
+			PLAYER_1,
+			NETWORK_PLAYER,
+			PLAYER_2,
+			CIVMALE,
+			CIVFEMALE,
+			COP,
+			GANG_ALBANIAN,
+			GANG_BIKER_1,
+			GANG_BIKER_2,
+			GANG_ITALIAN,
+			GANG_RUSSIAN,
+			GANG_RUSSIAN_2,
+			GANG_IRISH,
+			GANG_JAMAICAN,
+			GANG_AFRICAN_AMERICAN,
+			GANG_KOREAN,
+			GANG_CHINESE_JAPANESE,
+			GANG_PUERTO_RICAN,
+			DEALER,
+			MEDIC,
+			FIREMAN,
+			CRIMINAL,
+			BUM,
+			PROSTITUTE,
+			SPECIAL,
+			MISSION,
+			SWAT,
+			ANIMAL,
+			ARMY
+		};
 
 		// https://alloc8or.re/gta5/doc/enums/ePedType.txt
 		// 
 		// Full list of peds by DurtyFree: https://github.com/DurtyFree/gta-v-data-dumps/blob/master/peds.json
-		public static Ped CREATE_PED(int pedType, Hash modelHash, float x, float y, float z, float heading, bool isNetwork, bool bScriptHostPed) { return Invoke<Ped>(0xD49F9B0955C367DE, V(pedType), V(modelHash), V(x), V(y), V(z), V(heading), V(isNetwork), V(bScriptHostPed)); }
+		public static Ped CREATE_PED(PedType pedType, Hash modelHash, float x, float y, float z, float heading, bool isNetwork, bool bScriptHostPed) { return Invoke<Ped>(0xD49F9B0955C367DE, V((int)pedType), V(modelHash), V(x), V(y), V(z), V(heading), V(isNetwork), V(bScriptHostPed)); }
 		// Deletes the specified ped, then sets the handle pointed to by the pointer to NULL.
 		public static void DELETE_PED(Ped* ped) { Invoke(0x9614299DCB53E54B, V(ped)); }
 		public static Ped CLONE_PED(Ped ped, bool isNetwork, bool bScriptHostPed, bool copyHeadBlendFlag) { return Invoke<Ped>(0xEF29A16337FACADB, V(ped), V(isNetwork), V(bScriptHostPed), V(copyHeadBlendFlag)); }

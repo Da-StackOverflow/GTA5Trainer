@@ -15,6 +15,10 @@ namespace Player
 			{
 				CLEAR_PLAYER_WANTED_LEVEL(PlayerID);
 			}
+			for (int i = 1; i <= 46; i++)
+			{
+				SUPPRESS_CRIME_THIS_FRAME(PlayerID, i);
+			}
 		}
 	}
 }
