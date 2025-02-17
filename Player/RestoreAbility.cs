@@ -1,16 +1,14 @@
 ﻿using Bridge;
-using System;
 using static Bridge.Functions;
 
 namespace Player
 {
-	internal sealed class UnlimitedAbility : UpdateableItem
+	internal class RestoreAbility : TriggerItem
 	{
-		public UnlimitedAbility(string caption) : base(caption)
+		public RestoreAbility(string caption) : base(caption)
 		{
 		}
-
-		protected override void OnUpdate()
+		protected override void OnExecute()
 		{
 			if (DOES_ENTITY_EXIST(PlayerPed))
 			{

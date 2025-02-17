@@ -21,9 +21,10 @@ namespace Player
 				menu.AddItem(new FastRun("快速跑"));
 				menu.AddItem(new SuperJump("超级跳"));
 				menu.AddItem(new FixPlayer("恢复生命"));
+				menu.AddItem(new RestoreAbility("恢复特殊能力"));
 				menu.AddItem(new RestoreStamina("恢复体力"));
 				menu.AddItem(new RestoreBreath("恢复氧气"));
-				menu.AddItem(new DisableVehicleImpactRagdoll("取消车辆碰撞的布娃娃"));
+				menu.AddItem(new DisableHurttRagdoll("取消受伤害的布娃娃效果"));
 				menu.AddItem(new PlayerInvincible("无敌"));
 				menu.AddItem(new UnlimitedAbility("无限特殊能力"));
 				menu.AddItem(new UnlimitedStamina("无限体力"));
@@ -96,9 +97,10 @@ namespace Player
 				menu = new Menu("通缉等级修改");
 				menu.AddItem(new ClearWanted("清除通缉等级"));
 				menu.AddItem(new ModifyWantedLevel("增加1颗星", 1));
-				menu.AddItem(new ModifyWantedLevel("减少1颗星", 1));
+				menu.AddItem(new ModifyWantedLevel("减少1颗星", -1));
 				menu.AddItem(new NeverWanted("不再受通缉"));
 				menu.AddItem(new PoliceIgnore("警察忽视玩家"));
+				menu.AddItem(new EveryOneIgnorePlayer("所有人忽视玩家"));
 				MenuController.Instance.Register(menu);
 			}
 			return menu;
