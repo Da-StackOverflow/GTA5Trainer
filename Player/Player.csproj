@@ -38,8 +38,9 @@
     <Compile Include="AddCash.cs" />
     <Compile Include="ChangeSkin.cs" />
     <Compile Include="ClearWanted.cs" />
-    <Compile Include="DisableRagdoll.cs" />
+    <Compile Include="DisableVehicleImpactRagdoll.cs" />
     <Compile Include="Entry.cs" />
+    <Compile Include="EveryOneIgnorePlayer.cs" />
     <Compile Include="FallBackSkin.cs" />
     <Compile Include="FallBackSkinWhenDead.cs" />
     <Compile Include="FastRun.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestoreBreath.cs" />
     <Compile Include="RestoreStamina.cs" />
+    <Compile Include="SpawnPed.cs" />
     <Compile Include="SuperJump.cs" />
     <Compile Include="Teleport.cs" />
     <Compile Include="TeleportMarker.cs" />
