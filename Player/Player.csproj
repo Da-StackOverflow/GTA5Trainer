@@ -38,6 +38,7 @@
     <Compile Include="AddCash.cs" />
     <Compile Include="ChangeSkin.cs" />
     <Compile Include="ClearWanted.cs" />
+    <Compile Include="DisableRagdoll.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="FallBackSkin.cs" />
     <Compile Include="FallBackSkinWhenDead.cs" />

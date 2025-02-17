@@ -12,8 +12,6 @@ namespace Bridge
 	{
 		public static readonly string ScriptRootPath = Path.GetFullPath("GTA5Trainer");
 
-		private Thread _keepAliveThread;
-		private bool _keepAlive;
 		public AppDomain Domain { get; private set; }
 
 		private readonly List<Assembly> _assemblyList;
@@ -24,71 +22,55 @@ namespace Bridge
 			Domain = AppDomain.CurrentDomain;
 			_assemblyList = [];
 			_entries = [];
-			_keepAlive = true;
-			_keepAliveThread = new Thread(KeepAlive);
-			_keepAliveThread.Start();
 		}
 
 		~ProxyObject()
 		{
 			Native.FreeBuffer();
-			_keepAlive = false;
-			try
-			{
-				if (_keepAliveThread is not null && _keepAliveThread.IsAlive)
-				{
-					_keepAliveThread.Abort();
-					_keepAliveThread = null;
-				}
-			}
-			catch
-			{
-
-			}  
 		}
 
 		public void Dispose()
 		{
-			_keepAlive = false;
-			if(_keepAliveThread is not null && _keepAliveThread.IsAlive)
-			{
-				_keepAliveThread.Abort();
-				_keepAliveThread = null;
-			}
 			Native.Release();
 			GC.SuppressFinalize(this);
-		}
-
-
-		public int A;
-		private void DoNoThing()
-		{
-			++A;
-		}
-
-		private void KeepAlive()
-		{
-			while (_keepAlive)
-			{
-				DoNoThing();
-				Thread.Sleep(30000);
-			}
 		}
 
 		public static void Unload(ProxyObject domain)
 		{
 			try
 			{
-				Log.Info($"Unload Domain {Path.GetFullPath("GTA5TrainerBridge.dll")}");
 				domain.Dispose();
+				Log.Info($"Unload Domain");
 				AppDomain.Unload(domain.Domain);
+				domain.Domain = null;
 			}
-			catch (ThreadAbortException)
+			catch (System.Runtime.Remoting.RemotingException)
 			{
+				try
+				{
+					if (domain != null)
+					{
+						AppDomain.Unload(domain.Domain);
+					}
+				}
+				catch
+				{
 
+				}
 			}
 			catch (Exception e)
 			{
+				try
+				{
+					if (domain != null)
+					{
+						AppDomain.Unload(domain.Domain);
+					}
+				}
+				catch
+				{
+
+				}
 				Log.Error(e.Message);
 				Log.Error(e.StackTrace);
 			}

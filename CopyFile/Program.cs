@@ -79,6 +79,43 @@ var path = Path.GetFullPath("CopyFile.exe").Split("bin")[0];
 //	Console.WriteLine(e.StackTrace);
 //}
 
+//try
+//{
+//	var result = JsonSerializer.Deserialize<List<PedJson>>(File.ReadAllText($"{path}peds.json"), JsonSerializerOptions.Default);
+//	if (result is not null)
+//	{
+//		Dictionary<string, StringBuilder> types = [];
+//		foreach (var ped in result)
+//		{
+//			if (!types.TryGetValue(ped.Pedtype ?? "", out var sb))
+//			{
+//				sb = new ($"        public static readonly ItemInfo[] {ped.Pedtype ?? "Unkown"} = [\n");
+//				types.Add(ped.Pedtype ?? "", sb);
+//			}
+//			if((ped.TranslatedDirectorName?.SimplifiedChinese ?? "") != "")
+//			{
+//				sb.AppendLine($"            new (\"{ped.TranslatedDirectorName?.SimplifiedChinese}\", \"{ped.Name?.ToLower()}\"),");
+//			}
+//			else
+//			{
+//				sb.AppendLine($"            new (\"{ped.Name?.ToLower()}\", \"{ped.Name?.ToLower()}\"),");
+//			}
+//		}
+
+//		foreach (var type in types)
+//		{
+//			Console.WriteLine(type.Value.ToString());
+//			Console.WriteLine("        ];");
+//			Console.WriteLine();
+//		}
+//	}
+//}
+//catch (Exception e)
+//{
+//	Console.WriteLine(e.Message);
+//	Console.WriteLine(e.StackTrace);
+//}
+
 
 //try
 //{
@@ -93,7 +130,7 @@ var path = Path.GetFullPath("CopyFile.exe").Split("bin")[0];
 
 bool gameRunning = false;
 
-if(!Directory.Exists("D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer"))
+if (!Directory.Exists("D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer"))
 {
 	Directory.CreateDirectory("D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer");
 }
@@ -147,7 +184,7 @@ string[] scripts = [
 
 try
 {
-	for(int i = 0; i < scripts.Length; i++)
+	for (int i = 0; i < scripts.Length; i++)
 	{
 		var script = scripts[i];
 		File.Copy($"F:/CSharp/GTA5Trainer/{script}/bin/{script}.dll", $"D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer/Script{i}_{script}.TrainerScript", true);

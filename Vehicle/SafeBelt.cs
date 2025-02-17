@@ -15,9 +15,9 @@ namespace Vehicle
 		{
 			if (DOES_ENTITY_EXIST(PlayerPed))
 			{
-				if (GET_PED_CONFIG_FLAG(PlayerPed, 32, true))
+				if (GET_PED_CONFIG_FLAG(PlayerPed, PedConfigFlags.WillFlyThruWindscreen, true))
 				{
-					SET_PED_CONFIG_FLAG(PlayerPed, 32, false);
+					SET_PED_CONFIG_FLAG(PlayerPed, PedConfigFlags.WillFlyThruWindscreen, false);
 				}
 				_prePed = PlayerPed;
 			}
@@ -32,9 +32,9 @@ namespace Vehicle
 
 			if (DOES_ENTITY_EXIST(PlayerPed))
 			{
-				if (GET_PED_CONFIG_FLAG(PlayerPed, 32, true))
+				if (GET_PED_CONFIG_FLAG(PlayerPed, PedConfigFlags.WillFlyThruWindscreen, true))
 				{
-					SET_PED_CONFIG_FLAG(PlayerPed, 32, false);
+					SET_PED_CONFIG_FLAG(PlayerPed, PedConfigFlags.WillFlyThruWindscreen, false);
 				}
 				_prePed = PlayerPed;
 			}
@@ -44,7 +44,7 @@ namespace Vehicle
 		{
 			if (DOES_ENTITY_EXIST(PlayerPed))
 			{
-				SET_PED_CONFIG_FLAG(PlayerPed, 32, true);
+				SET_PED_CONFIG_FLAG(PlayerPed, PedConfigFlags.WillFlyThruWindscreen, true);
 			}
 			_prePed = -1;
 		}

@@ -11,7 +11,7 @@ namespace Player
 
 		protected override void OnExecute()
 		{
-			RESTORE_PLAYER_STAMINA(PlayerID, 100.0f);
+			RESET_PLAYER_STAMINA(PlayerID);
 		}
 	}
 }

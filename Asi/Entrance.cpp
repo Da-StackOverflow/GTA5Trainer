@@ -7,7 +7,8 @@
 public enum ScriptState
 {
 	Loaded,
-	Unloaded
+	Unloaded,
+	StopLongTimeToRestartBridge,
 };
 
 ScriptState State = ScriptState::Loaded;
@@ -105,6 +106,7 @@ static void InitBridge()
 	}
 	catch (Exception^ e)
 	{
+		Info(e->GetType()->ToString());
 		Info(e->Message);
 		Info(e->StackTrace);
 	}
@@ -116,8 +118,13 @@ static void UpdateScript()
 	{
 		Engine::OnTick();
 	}
+	catch (System::Runtime::Remoting::RemotingException^)
+	{
+		State = ScriptState::StopLongTimeToRestartBridge;
+	}
 	catch (Exception^ e)
 	{
+		Info(e->GetType()->ToString());
 		Info(e->Message);
 		Info(e->StackTrace);
 	}
@@ -129,14 +136,26 @@ static void ScriptOnInput(uint key, int isUpNow)
 	{
 		Engine::OnInput(key, isUpNow);
 	}
+	catch (System::Runtime::Remoting::RemotingException^)
+	{
+		State = ScriptState::StopLongTimeToRestartBridge;
+	}
 	catch (Exception^ e)
 	{
+		Info(e->GetType()->ToString());
 		Info(e->Message);
 		Info(e->StackTrace);
 	}
 }
 
 #pragma unmanaged
+
+static void ClearPreLog()
+{
+	DeleteFile(L"GTA5TrainerAsiError.txt");
+	DeleteFile(L"GTA5TrainerBridgeError.txt");
+	DeleteFile(L"GTA5TrainerScript.txt");
+}
 
 static PVOID _preGameFiber = null;
 
@@ -145,27 +164,38 @@ static void Run()
 	_preGameFiber = GetCurrentFiber();
 	while (true)
 	{
-		if (State == ScriptState::Loaded)
+		switch (State)
 		{
-			Print("InitBridge");
-			InitBridge();
-			while (State == ScriptState::Loaded)
+			case Loaded:
 			{
-				const PVOID currentFiber = GetCurrentFiber();
-				if (currentFiber != _preGameFiber)
+				Print("InitBridge");
+				InitBridge();
+				while (State == ScriptState::Loaded)
 				{
-					_preGameFiber = currentFiber;
-					State = ScriptState::Loaded;
-					Print("Asi Fiber Changed");
-					break;
+					const PVOID currentFiber = GetCurrentFiber();
+					if (currentFiber != _preGameFiber)
+					{
+						_preGameFiber = currentFiber;
+						State = ScriptState::Loaded;
+						Print("Asi Fiber Changed");
+						break;
+					}
+					UpdateScript();
+					scriptWait(0);
 				}
-				UpdateScript();
-				scriptWait(0);
+				break;
 			}
-		}
-		else
-		{
-			scriptWait(0);
+			case StopLongTimeToRestartBridge:
+			{
+				Print("Game was Stop Long Time, Bridge was auto disposed by GC, Then try to Restart Bridge");
+				State = ScriptState::Loaded;
+				break;
+			}
+			default:
+			{
+				scriptWait(0);
+				break;
+			}
 		}
 	}
 }
@@ -184,6 +214,7 @@ bool __stdcall DllMain(HMODULE hModule, uint reason, void* lpReserved)
 	{
 		case Dll_INIT:
 		{
+			ClearPreLog();
 			DisableThreadLibraryCalls(hModule);
 			if (!GetModuleHandle(TEXT("clr.dll")))
 			{

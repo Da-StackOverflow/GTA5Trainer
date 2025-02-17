@@ -22,6 +22,8 @@ namespace Player
 				menu.AddItem(new SuperJump("超级跳"));
 				menu.AddItem(new FixPlayer("恢复生命"));
 				menu.AddItem(new RestoreStamina("恢复体力"));
+				menu.AddItem(new RestoreBreath("恢复氧气"));
+				menu.AddItem(new DisableVehicleImpactRagdoll("取消车辆碰撞的布娃娃"));
 				menu.AddItem(new PlayerInvincible("无敌"));
 				menu.AddItem(new UnlimitedAbility("无限特殊能力"));
 				menu.AddItem(new UnlimitedStamina("无限体力"));

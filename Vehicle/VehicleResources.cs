@@ -5,6 +5,10 @@ namespace Vehicle
 	internal static class VehicleResources
 	{
 		public static readonly ItemInfo[] Car = [
+			new ("T20", "T20"),
+			new ("骷髅马（装甲版）", "KURUMA2"),
+			new ("义警", "VIGILANTE"),
+			new ("斯国一", "SUGOI"),
 			new ("灵蛇", "ADDER"),
 			new ("机场巴士", "AIRBUS"),
 			new ("行李拖车", "AIRTUG"),
@@ -321,7 +325,6 @@ namespace Vehicle
 			new ("科莫达", "KOMODA"),
 			new ("武夫", "KRIEGER"),
 			new ("骷髅马", "KURUMA"),
-			new ("骷髅马（装甲版）", "KURUMA2"),
 			new ("瓦尔顿-L35", "L35"),
 			new ("追捕者", "LANDSTALKER"),
 			new ("追捕者-XL", "LANDSTALKER2"),
@@ -484,7 +487,6 @@ namespace Vehicle
 			new ("澜波改装版", "RUMPO3"),
 			new ("拉斯顿", "RUSTON"),
 			new ("S80RR", "S80"),
-			new ("", "S95"),
 			new ("军刀涡轮", "SABREGT"),
 			new ("军刀涡轮改装版", "SABREGT2"),
 			new ("沙德勒", "SADLER"),
@@ -543,7 +545,6 @@ namespace Vehicle
 			new ("地层先锋", "STRATUM"),
 			new ("斯垂特", "STREITER"),
 			new ("加长型礼车", "STRETCH"),
-			new ("斯国一", "SUGOI"),
 			new ("王者", "SULTAN"),
 			new ("王者经典版", "SULTAN2"),
 			new ("王者-RS-经典版", "SULTAN3"),
@@ -555,7 +556,6 @@ namespace Vehicle
 			new ("乘风改装版", "SURFER3"),
 			new ("奔腾", "SURGE"),
 			new ("放荡者", "SWINGER"),
-			new ("T20", "T20"),
 			new ("玉米饼餐车", "TACO"),
 			new ("塔霍马轿跑车", "TAHOMA"),
 			new ("密探", "TAILGATER"),
@@ -622,7 +622,6 @@ namespace Vehicle
 			new ("活力够", "VIGERO"),
 			new ("活力够-ZX", "VIGERO2"),
 			new ("活力够-ZX-敞篷版", "VIGERO3"),
-			new ("义警", "VIGILANTE"),
 			new ("室女座", "VIRGO"),
 			new ("经典室女座改装版", "VIRGO2"),
 			new ("经典室女座", "VIRGO3"),
@@ -706,9 +705,14 @@ namespace Vehicle
 		];
 
 		public static readonly ItemInfo[] Bike = [
+			new ("暴君", "OPPRESSOR"),
+			new ("暴君-Mk-2", "OPPRESSOR2"),
+			new ("圣太郎", "SHOTARO"),
+			new ("桑切斯", "SANCHEZ2"),
 			new ("街头恶魔", "AKUMA"),
 			new ("阿瓦鲁斯", "AVARUS"),
 			new ("驮兽", "BAGGER"),
+			new ("猛冲", "THRUST"),
 			new ("801-巴提", "BATI"),
 			new ("801RR-巴提", "BATI2"),
 			new ("BF400", "BF400"),
@@ -741,8 +745,6 @@ namespace Vehicle
 			new ("曼切兹侦查-C", "MANCHEZ3"),
 			new ("复仇女神", "NEMESIS"),
 			new ("夜刃", "NIGHTBLADE"),
-			new ("暴君", "OPPRESSOR"),
-			new ("暴君-Mk-2", "OPPRESSOR2"),
 			new ("PCJ-600", "PCJ"),
 			new ("披萨派送员", "PIZZABOY"),
 			new ("警用摩托车", "POLICEB"),
@@ -751,12 +753,9 @@ namespace Vehicle
 			new ("里弗", "REEVER"),
 			new ("恶霸", "RUFFIAN"),
 			new ("桑切斯（涂装版）", "SANCHEZ"),
-			new ("桑切斯", "SANCHEZ2"),
 			new ("圣驹", "SANCTUS"),
 			new ("信奴比", "SHINOBI"),
-			new ("圣太郎", "SHOTARO"),
 			new ("君主", "SOVEREIGN"),
-			new ("猛冲", "THRUST"),
 			new ("威德", "VADER"),
 			new ("审判者", "VINDICATOR"),
 			new ("漩涡", "VORTEX"),
@@ -766,6 +765,8 @@ namespace Vehicle
 		];
 
 		public static readonly ItemInfo[] Plane = [
+			new ("P-996-天煞", "LAZER"),
+			new ("九头蛇", "HYDRA"),
 			new ("RO-86-阿尔科诺斯特", "ALKONOST"),
 			new ("阿尔法-Z1", "ALPHAZ1"),
 			new ("复仇者", "AVENGER"),
@@ -781,9 +782,7 @@ namespace Vehicle
 			new ("洒药机", "DUSTER"),
 			new ("洒药机-300-H", "DUSTER2"),
 			new ("霍华德-NX-25", "HOWARD"),
-			new ("九头蛇", "HYDRA"),
 			new ("喷气机", "JET"),
-			new ("P-996-天煞", "LAZER"),
 			new ("乐梭", "LUXOR"),
 			new ("乐梭豪华版", "LUXOR2"),
 			new ("天行巨兽", "MAMMATUS"),
@@ -929,8 +928,8 @@ namespace Vehicle
 		];
 
 		public static readonly ItemInfo[] Submarinecar = [
-			new ("斯特龙伯格", "STROMBERG"),
 			new ("图拉尔多", "TOREADOR"),
+			new ("斯特龙伯格", "STROMBERG"),
 		];
 	}
 }
