@@ -1,8 +1,14 @@
 中文：
-GTA5内置修改器，用面向对象的方法重写了原版的NativeTrainer,并支持其他语言，目前是纯中文的翻译，想要修改成其他语言请修改MenuInit.ixx, WeaponsInfos.ixx, WeatherInfos.ixx, VehicleInfos.ixx, PedModelInfos.ixx里面的内容
-附带的trainerv.ini和TrainerV.asi是让刷出线上载具不消失的补丁，需要可以自行添加
+
+GTA5内置修改器，用面向对象的方法重写了原版的NativeTrainer, 
+C++版本在./GTA5Trainer 文件夹下
+
+新增.Net Framework 4.8.1 版本
+在 ./Asi, ./Bridge, ./Other, ./Player, ./Time, ./Vehicle, ./Weapon, ./Weather 文件夹下
 
 English:
-The GTA5 built-in modifier rewrites the original NativeTrainer by using OOP and supports multiple languages. Currently, it is a pure Chinese translation. To modify it into another language, please edit the contents of MenuInit.ixx, WeaponsInfos.ixx, WeatherInfos.ixx, VehicleInfos.ixx, and PedModelInfos.ixx.
+The GTA5 built-in modifier rewrites the original NativeTrainer by using OOP
+At Folders: ./GTA5Trainer
 
-The accompanying trainerv.ini and TrainerV.asi are patches to prevent online vehicles from disappearing. These can be added manually.
+Add .Net Framework 4.8.1 To Build Trainer
+At Folders: ./Asi, ./Bridge, ./Other, ./Player, ./Time, ./Vehicle, ./Weapon, ./Weather
