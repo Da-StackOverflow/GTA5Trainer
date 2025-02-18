@@ -1,20 +1,20 @@
-﻿using Bridge;
-using static Bridge.Functions;
+﻿using ScriptUI;
+using static ScriptUI.Functions;
 using static Player.PlayerResources;
 
 namespace Player
 {
-	public class Entry : Bridge.Entry
+	public class Entry : AScriptEntry
 	{
-		public override void OnInit()
+		protected override void OnInit()
 		{
 			Log.Info("Player OnInit");
-			MenuController.Instance.MainMenu.AddItem(new SubMenu("玩家系统", GetOrCreatePlayerMenu));
+			_controller.MainMenu.AddItem(new SubMenu("玩家系统", GetOrCreatePlayerMenu));
 		}
 
 		private Menu GetOrCreatePlayerMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("玩家系统", out Menu menu))
+			if (!_controller.TryGetMenu("玩家系统", out Menu menu))
 			{
 				menu = new Menu("玩家系统");
 				menu.AddItem(new SubMenu("传送", GetOrCreatePlayerTeleportMenu));
@@ -37,14 +37,14 @@ namespace Player
 				menu.AddItem(new SubMenu("改变玩家模型", GetOrCreatePlayerChangeSkinMenu));
 				menu.AddItem(new FallBackSkinWhenDead("当玩家死亡后自动恢复成默认皮肤"));
 				menu.AddItem(new FallBackSkin("恢复成默认皮肤"));
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerChangeSkinMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("改变玩家模型", out Menu menu))
+			if (!_controller.TryGetMenu("改变玩家模型", out Menu menu))
 			{
 				menu = new Menu("改变玩家模型");
 				menu.AddItem(new FallBackSkinWhenDead("自动换回默认模型"));
@@ -57,14 +57,14 @@ namespace Player
 				menu.AddItem(new SubMenu("变成消防员", GetOrCreatePlayerChangeToFiremanMenu));
 				menu.AddItem(new SubMenu("变成国安局特工", GetOrCreatePlayerChangeToSwatMenu));
 				menu.AddItem(new SubMenu("变成主角", GetOrCreatePlayerChangeToPlayerMenu));
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerChangeToAnimalMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("变成动物", out Menu menu))
+			if (!_controller.TryGetMenu("变成动物", out Menu menu))
 			{
 				menu = new Menu("变成动物");
 				var length = Animals.Length;
@@ -72,14 +72,14 @@ namespace Player
 				{
 					menu.AddItem(new ChangeSkin(Animals[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerChangeToMaleMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("变成男人", out Menu menu))
+			if (!_controller.TryGetMenu("变成男人", out Menu menu))
 			{
 				menu = new Menu("变成男人");
 				var length = Male.Length;
@@ -87,14 +87,14 @@ namespace Player
 				{
 					menu.AddItem(new ChangeSkin(Male[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerChangeToFemalMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("变成女人", out Menu menu))
+			if (!_controller.TryGetMenu("变成女人", out Menu menu))
 			{
 				menu = new Menu("变成女人");
 				var length = Femal.Length;
@@ -102,14 +102,14 @@ namespace Player
 				{
 					menu.AddItem(new ChangeSkin(Femal[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerChangeToMedicMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("变成医生", out Menu menu))
+			if (!_controller.TryGetMenu("变成医生", out Menu menu))
 			{
 				menu = new Menu("变成医生");
 				var length = Medic.Length;
@@ -117,14 +117,14 @@ namespace Player
 				{
 					menu.AddItem(new ChangeSkin(Medic[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerChangeToCopMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("变成警察", out Menu menu))
+			if (!_controller.TryGetMenu("变成警察", out Menu menu))
 			{
 				menu = new Menu("变成警察");
 				var length = Cop.Length;
@@ -132,14 +132,14 @@ namespace Player
 				{
 					menu.AddItem(new ChangeSkin(Cop[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerChangeToArmyMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("变成军人", out Menu menu))
+			if (!_controller.TryGetMenu("变成军人", out Menu menu))
 			{
 				menu = new Menu("变成军人");
 				var length = Army.Length;
@@ -147,14 +147,14 @@ namespace Player
 				{
 					menu.AddItem(new ChangeSkin(Army[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerChangeToFiremanMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("变成消防员", out Menu menu))
+			if (!_controller.TryGetMenu("变成消防员", out Menu menu))
 			{
 				menu = new Menu("变成消防员");
 				var length = Fireman.Length;
@@ -162,14 +162,14 @@ namespace Player
 				{
 					menu.AddItem(new ChangeSkin(Fireman[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerChangeToSwatMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("变成国安局特工", out Menu menu))
+			if (!_controller.TryGetMenu("变成国安局特工", out Menu menu))
 			{
 				menu = new Menu("变成国安局特工");
 				var length = Swat.Length;
@@ -177,14 +177,14 @@ namespace Player
 				{
 					menu.AddItem(new ChangeSkin(Swat[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerChangeToPlayerMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("变成主角", out Menu menu))
+			if (!_controller.TryGetMenu("变成主角", out Menu menu))
 			{
 				menu = new Menu("变成主角");
 				{
@@ -208,14 +208,14 @@ namespace Player
 						menu.AddItem(new ChangeSkin(Player2[i]));
 					}
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerTeleportMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("传送", out Menu menu))
+			if (!_controller.TryGetMenu("传送", out Menu menu))
 			{
 				menu = new Menu("传送");
 				menu.AddItem(new TeleportMarker("传送到地图标记点"));
@@ -227,14 +227,14 @@ namespace Player
 				menu.AddItem(new Teleport("花园银行顶部", -79.241f, -821.336f, 326.175f));
 				menu.AddItem(new Teleport("在建大楼顶部", -148.989f, -962.854f, 269.135f));
 				menu.AddItem(new Teleport("塔吊顶部", -119.054f, -976.211f, 296.197f));
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreateAddCashMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("增加金钱", out Menu menu))
+			if (!_controller.TryGetMenu("增加金钱", out Menu menu))
 			{
 				menu = new Menu("增加金钱");
 				menu.AddItem(new AddCash("给麦克增加一万", 0, 10000));
@@ -243,14 +243,14 @@ namespace Player
 				menu.AddItem(new AddCash("给富兰克林增加一百万", 1, 1000000));
 				menu.AddItem(new AddCash("给崔佛增加一万", 2, 10000));
 				menu.AddItem(new AddCash("给崔佛增加一百万", 2, 1000000));
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreateWantedMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("通缉等级修改", out Menu menu))
+			if (!_controller.TryGetMenu("通缉等级修改", out Menu menu))
 			{
 				menu = new Menu("通缉等级修改");
 				menu.AddItem(new ClearWanted("清除通缉等级"));
@@ -259,14 +259,14 @@ namespace Player
 				menu.AddItem(new NeverWanted("不再受通缉"));
 				menu.AddItem(new PoliceIgnore("警察忽视玩家"));
 				menu.AddItem(new EveryOneIgnorePlayer("所有人忽视玩家"));
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreateSpawnPedMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成NPC", out Menu menu))
+			if (!_controller.TryGetMenu("生成NPC", out Menu menu))
 			{
 				menu = new Menu("生成NPC");
 				menu.AddItem(new SubMenu("生成动物", GetOrCreatePlayerSpawnAnimalMenu));
@@ -278,14 +278,14 @@ namespace Player
 				menu.AddItem(new SubMenu("生成消防员", GetOrCreatePlayerSpawnFiremanMenu));
 				menu.AddItem(new SubMenu("生成国安局特工", GetOrCreatePlayerSpawnSwatMenu));
 				menu.AddItem(new SubMenu("生成主角", GetOrCreatePlayerSpawnPlayerMenu));
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerSpawnAnimalMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成动物", out Menu menu))
+			if (!_controller.TryGetMenu("生成动物", out Menu menu))
 			{
 				menu = new Menu("生成动物");
 				var length = Animals.Length;
@@ -293,14 +293,14 @@ namespace Player
 				{
 					menu.AddItem(new SpawnPed(Animals[i], PedType.ANIMAL));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerSpawnMaleMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成男人", out Menu menu))
+			if (!_controller.TryGetMenu("生成男人", out Menu menu))
 			{
 				menu = new Menu("生成男人");
 				var length = Male.Length;
@@ -308,14 +308,14 @@ namespace Player
 				{
 					menu.AddItem(new SpawnPed(Male[i], PedType.CIVMALE));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerSpawnFemalMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成女人", out Menu menu))
+			if (!_controller.TryGetMenu("生成女人", out Menu menu))
 			{
 				menu = new Menu("生成女人");
 				var length = Femal.Length;
@@ -323,14 +323,14 @@ namespace Player
 				{
 					menu.AddItem(new SpawnPed(Femal[i], PedType.CIVFEMALE));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerSpawnMedicMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成医生", out Menu menu))
+			if (!_controller.TryGetMenu("生成医生", out Menu menu))
 			{
 				menu = new Menu("生成医生");
 				var length = Medic.Length;
@@ -338,14 +338,14 @@ namespace Player
 				{
 					menu.AddItem(new SpawnPed(Medic[i], PedType.MEDIC));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerSpawnCopMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成警察", out Menu menu))
+			if (!_controller.TryGetMenu("生成警察", out Menu menu))
 			{
 				menu = new Menu("生成警察");
 				var length = Cop.Length;
@@ -353,14 +353,14 @@ namespace Player
 				{
 					menu.AddItem(new SpawnPed(Cop[i], PedType.COP));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerSpawnArmyMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成军人", out Menu menu))
+			if (!_controller.TryGetMenu("生成军人", out Menu menu))
 			{
 				menu = new Menu("生成军人");
 				var length = Army.Length;
@@ -368,14 +368,14 @@ namespace Player
 				{
 					menu.AddItem(new SpawnPed(Army[i], PedType.ARMY));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerSpawnFiremanMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成消防员", out Menu menu))
+			if (!_controller.TryGetMenu("生成消防员", out Menu menu))
 			{
 				menu = new Menu("生成消防员");
 				var length = Fireman.Length;
@@ -383,14 +383,14 @@ namespace Player
 				{
 					menu.AddItem(new SpawnPed(Fireman[i], PedType.FIREMAN));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerSpawnSwatMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成国安局特工", out Menu menu))
+			if (!_controller.TryGetMenu("生成国安局特工", out Menu menu))
 			{
 				menu = new Menu("生成国安局特工");
 				var length = Swat.Length;
@@ -398,14 +398,14 @@ namespace Player
 				{
 					menu.AddItem(new SpawnPed(Swat[i], PedType.SWAT));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
 		private Menu GetOrCreatePlayerSpawnPlayerMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成主角", out Menu menu))
+			if (!_controller.TryGetMenu("生成主角", out Menu menu))
 			{
 				menu = new Menu("生成主角");
 				{
@@ -429,7 +429,7 @@ namespace Player
 						menu.AddItem(new SpawnPed(Player2[i], PedType.PLAYER_2));
 					}
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}

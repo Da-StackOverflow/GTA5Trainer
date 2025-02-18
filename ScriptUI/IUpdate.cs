@@ -1,4 +1,4 @@
-﻿namespace Bridge
+﻿namespace ScriptUI
 {
 	internal interface IUpdate
 	{

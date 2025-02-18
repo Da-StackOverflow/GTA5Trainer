@@ -12,9 +12,9 @@ using Interior = int;
 using Blip = int;
 using ScrHandle = int;
 
-using static Bridge.Native;
+using static ScriptUI.Native;
 
-namespace Bridge
+namespace ScriptUI
 {
 	public static unsafe class Functions
 	{
@@ -17006,7 +17006,7 @@ namespace Bridge
 		// BRADP = Braddock Pass
 		// BRADT = Braddock Tunnel
 		// BURTON = Burton
-		// CALAFB = Calafia Bridge
+		// CALAFB = Calafia ScriptUI
 		// CANNY = Raton Canyon
 		// CCREAK = Cassidy Creek
 		// CHAMH = Chamberlain Hills
@@ -17099,7 +17099,7 @@ namespace Bridge
 		// BRADP = Braddock Pass
 		// BRADT = Braddock Tunnel
 		// BURTON = Burton
-		// CALAFB = Calafia Bridge
+		// CALAFB = Calafia ScriptUI
 		// CANNY = Raton Canyon
 		// CCREAK = Cassidy Creek
 		// CHAMH = Chamberlain Hills

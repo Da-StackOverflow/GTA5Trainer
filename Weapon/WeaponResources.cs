@@ -1,4 +1,4 @@
-﻿using Bridge;
+﻿using ScriptUI;
 using System.Collections.Generic;
 
 namespace Weapon

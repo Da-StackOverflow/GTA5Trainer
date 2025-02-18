@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Bridge
+namespace ScriptUI
 {
 	public abstract class AMenu
 	{

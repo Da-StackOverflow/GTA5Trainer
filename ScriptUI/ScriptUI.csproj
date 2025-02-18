@@ -4,25 +4,26 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DE755D91-8BE4-443E-83B3-055A3EDCD9F0}</ProjectGuid>
+    <ProjectGuid>{2ED13178-53DC-4114-ACC6-3EB5CB8D0ED2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bridge</RootNamespace>
-    <AssemblyName>GTA5TrainerBridge</AssemblyName>
+    <RootNamespace>ScriptUI</RootNamespace>
+    <AssemblyName>GTA5TrainerScriptUI</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-	<LangVersion>12.0</LangVersion>
+    <LangVersion>12.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>12.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>IDE0290;</NoWarn>
+    <NoWarn>IDE0290</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -35,10 +36,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AEntry.cs" />
-    <Compile Include="AController.cs" />
+    <Compile Include="Color.cs" />
+    <Compile Include="AScriptEntry.cs" />
+    <Compile Include="Functions.cs" />
+    <Compile Include="GlobalValue.cs" />
+    <Compile Include="Input.cs" />
+    <Compile Include="ItemInfo.cs" />
+    <Compile Include="IUpdate.cs" />
+    <Compile Include="KeyCode.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="MenuController.cs" />
+    <Compile Include="MenuItem.cs" />
+    <Compile Include="Native.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProxyObject.cs" />
+    <Compile Include="Random.cs" />
+    <Compile Include="Time.cs" />
+    <Compile Include="Vector.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bridge\Bridge.csproj">
+      <Project>{de755d91-8be4-443e-83b3-055a3edcd9f0}</Project>
+      <Name>Bridge</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

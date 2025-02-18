@@ -1,19 +1,19 @@
-﻿using Bridge;
+﻿using ScriptUI;
 using static Weather.WeatherResources;
 
 namespace Weather
 {
-	public class Entry : Bridge.Entry
+	public class Entry : AScriptEntry
 	{
-		public override void OnInit()
+		protected override void OnInit()
 		{
 			Log.Info("Weather OnInit");
-			MenuController.Instance.MainMenu.AddItem(new SubMenu("天气系统", GetOrCreateWeatherMenu));
+			_controller.MainMenu.AddItem(new SubMenu("天气系统", GetOrCreateWeatherMenu));
 		}
 
-		static Menu GetOrCreateChangeWeatherMenu()
+		private Menu GetOrCreateChangeWeatherMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("改变天气", out Menu menu))
+			if (!_controller.TryGetMenu("改变天气", out Menu menu))
 			{
 				menu = new Menu("改变天气");
 				var length = WeatherInfos.Length;
@@ -21,20 +21,20 @@ namespace Weather
 				{
 					menu.AddItem(new ChangeWeather(WeatherInfos[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateWeatherMenu()
+		private Menu GetOrCreateWeatherMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("天气系统", out Menu menu))
+			if (!_controller.TryGetMenu("天气系统", out Menu menu))
 			{
 				menu = new Menu("天气系统");
 				menu.AddItem(new SubMenu("改变天气", GetOrCreateChangeWeatherMenu));
 				menu.AddItem(new StandChangedWeather("保持改变后的天气"));
 				menu.AddItem(new SetWind("生成大风"));
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 				
 			}
 			return menu;

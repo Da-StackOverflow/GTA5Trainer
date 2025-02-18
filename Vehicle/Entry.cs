@@ -1,19 +1,19 @@
-﻿using Bridge;
+﻿using ScriptUI;
 using static Vehicle.VehicleResources;
 
 namespace Vehicle
 {
-	public class Entry : Bridge.Entry
+	public class Entry : AScriptEntry
 	{
-		public override void OnInit()
+		protected override void OnInit()
 		{
 			Log.Info("Vehicle OnInit");
-			MenuController.Instance.MainMenu.AddItem(new SubMenu("车辆系统", GetOrCreateVehicleMenu));
+			_controller.MainMenu.AddItem(new SubMenu("车辆系统", GetOrCreateVehicleMenu));
 		}
 
-		static Menu GetOrCreateSpawnCarMenu()
+		private Menu GetOrCreateSpawnCarMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成汽车", out Menu menu))
+			if (!_controller.TryGetMenu("生成汽车", out Menu menu))
 			{
 				menu = new Menu("生成汽车");
 				var length = Car.Length;
@@ -21,15 +21,15 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(Car[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 				
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnHelicopterMenu()
+		private Menu GetOrCreateSpawnHelicopterMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成直升机", out Menu menu))
+			if (!_controller.TryGetMenu("生成直升机", out Menu menu))
 			{
 				menu = new Menu("生成直升机");
 				var length = Helicopter.Length;
@@ -37,14 +37,14 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(Helicopter[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnBikeMenu()
+		private Menu GetOrCreateSpawnBikeMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成摩托车", out Menu menu))
+			if (!_controller.TryGetMenu("生成摩托车", out Menu menu))
 			{
 				menu = new Menu("生成摩托车");
 				var length = Bike.Length;
@@ -52,14 +52,14 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(Bike[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnPlaneMenu()
+		private Menu GetOrCreateSpawnPlaneMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成飞机", out Menu menu))
+			if (!_controller.TryGetMenu("生成飞机", out Menu menu))
 			{
 				menu = new Menu("生成飞机");
 				var length = Plane.Length;
@@ -67,14 +67,14 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(Plane[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnAmphibiousAutomobileMenu()
+		private Menu GetOrCreateSpawnAmphibiousAutomobileMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成水陆两栖车", out Menu menu))
+			if (!_controller.TryGetMenu("生成水陆两栖车", out Menu menu))
 			{
 				menu = new Menu("生成水陆两栖车");
 				var length = AmphibiousAutomobile.Length;
@@ -82,14 +82,14 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(AmphibiousAutomobile[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnTrailerMenu()
+		private Menu GetOrCreateSpawnTrailerMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成拖车", out Menu menu))
+			if (!_controller.TryGetMenu("生成拖车", out Menu menu))
 			{
 				menu = new Menu("生成拖车");
 				var length = Trailer.Length;
@@ -97,14 +97,14 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(Trailer[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnSubmarineMenu()
+		private Menu GetOrCreateSpawnSubmarineMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成潜水艇", out Menu menu))
+			if (!_controller.TryGetMenu("生成潜水艇", out Menu menu))
 			{
 				menu = new Menu("生成潜水艇");
 				var length = Submarine.Length;
@@ -112,14 +112,14 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(Submarine[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnQuadbikeMenu()
+		private Menu GetOrCreateSpawnQuadbikeMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成四轮摩托车", out Menu menu))
+			if (!_controller.TryGetMenu("生成四轮摩托车", out Menu menu))
 			{
 				menu = new Menu("生成四轮摩托车");
 				var length = Quadbike.Length;
@@ -127,14 +127,14 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(Quadbike[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnAmphibiousQuadbikeMenu()
+		private Menu GetOrCreateSpawnAmphibiousQuadbikeMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成水陆四轮摩托车", out Menu menu))
+			if (!_controller.TryGetMenu("生成水陆四轮摩托车", out Menu menu))
 			{
 				menu = new Menu("生成水陆四轮摩托车");
 				var length = AmphibiousQuadbike.Length;
@@ -142,14 +142,14 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(AmphibiousQuadbike[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnBlimpMenu()
+		private Menu GetOrCreateSpawnBlimpMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成飞艇", out Menu menu))
+			if (!_controller.TryGetMenu("生成飞艇", out Menu menu))
 			{
 				menu = new Menu("生成飞艇");
 				var length = Blimp.Length;
@@ -157,14 +157,14 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(Blimp[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnBicycleMenu()
+		private Menu GetOrCreateSpawnBicycleMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成自行车", out Menu menu))
+			if (!_controller.TryGetMenu("生成自行车", out Menu menu))
 			{
 				menu = new Menu("生成自行车");
 				var length = Bicycle.Length;
@@ -172,14 +172,14 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(Bicycle[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnTrainMenu()
+		private Menu GetOrCreateSpawnTrainMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成火车", out Menu menu))
+			if (!_controller.TryGetMenu("生成火车", out Menu menu))
 			{
 				menu = new Menu("生成火车");
 				var length = Train.Length;
@@ -187,14 +187,14 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(Train[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnBoatMenu()
+		private Menu GetOrCreateSpawnBoatMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成船", out Menu menu))
+			if (!_controller.TryGetMenu("生成船", out Menu menu))
 			{
 				menu = new Menu("生成船");
 				var length = Boat.Length;
@@ -202,14 +202,14 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(Boat[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnSubmarinecarMenu()
+		private Menu GetOrCreateSpawnSubmarinecarMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成潜水车", out Menu menu))
+			if (!_controller.TryGetMenu("生成潜水车", out Menu menu))
 			{
 				menu = new Menu("生成潜水车");
 				var length = Submarinecar.Length;
@@ -217,14 +217,14 @@ namespace Vehicle
 				{
 					menu.AddItem(new SpawnCar(Submarinecar[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateSpawnVehicleMenu()
+		private Menu GetOrCreateSpawnVehicleMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("生成车辆", out Menu menu))
+			if (!_controller.TryGetMenu("生成车辆", out Menu menu))
 			{
 				menu = new Menu("生成车辆");
 				menu.AddItem(new SetSpawnCarAndWarpInFlag("设置生成车辆后立即进入到车里"));
@@ -242,14 +242,14 @@ namespace Vehicle
 				menu.AddItem(new SubMenu("生成飞艇", GetOrCreateSpawnBlimpMenu));
 				menu.AddItem(new SubMenu("生成自行车", GetOrCreateSpawnBicycleMenu));
 				menu.AddItem(new SubMenu("生成火车", GetOrCreateSpawnTrainMenu));
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
 
-		static Menu GetOrCreateVehicleMenu()
+		private Menu GetOrCreateVehicleMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("车辆系统", out Menu menu))
+			if (!_controller.TryGetMenu("车辆系统", out Menu menu))
 			{
 				menu = new Menu("车辆系统");
 				menu.AddItem(new SubMenu("生成车辆", GetOrCreateSpawnVehicleMenu));
@@ -260,7 +260,7 @@ namespace Vehicle
 				menu.AddItem(new InvincibleWheel("防弹车轮"));
 				menu.AddItem(new SpeedBoost("车辆加速"));
 				menu.AddItem(new VehicleRockets("车载火箭炮"));
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}

@@ -1,18 +1,18 @@
-﻿using Bridge;
+﻿using ScriptUI;
 
 namespace Other
 {
-	public class Entry : Bridge.Entry
+	public class Entry : AScriptEntry
 	{
-		public override void OnInit()
+		protected override void OnInit()
 		{
 			Log.Info("Other OnInit");
-			MenuController.Instance.MainMenu.AddItem(new SubMenu("其他系统", GetOrCreateOtherMenu));
+			_controller.MainMenu.AddItem(new SubMenu("其他系统", GetOrCreateOtherMenu));
 		}
 
-		static Menu GetOrCreateOtherMenu()
+		private Menu GetOrCreateOtherMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("其他系统", out Menu menu))
+			if (!_controller.TryGetMenu("其他系统", out Menu menu))
 			{
 				menu = new Menu("其他系统");
 				menu.AddItem(new MoonGravity("月球引力"));
@@ -23,7 +23,7 @@ namespace Other
 				menu.AddItem(new NextRadioTrack("下一首车载音乐"));
 				menu.AddItem(new HideHud("隐藏Hud"));
 				menu.AddItem(new AchieveAllAchievements("达成所有成就"));
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}

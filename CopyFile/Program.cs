@@ -173,6 +173,17 @@ catch (Exception e)
 	Console.WriteLine(e.StackTrace);
 }
 
+try
+{
+	File.Copy("F:/CSharp/GTA5Trainer/ScriptUI/bin/GTA5TrainerScriptUI.dll", "D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer/GTA5TrainerScriptUI.dll", true);
+	Console.WriteLine("Copy GTA5Trainer/GTA5TrainerScriptUI.dll Success");
+}
+catch (Exception e)
+{
+	Console.WriteLine(e.Message);
+	Console.WriteLine(e.StackTrace);
+}
+
 string[] scripts = [
 	"Player",
 	"Vehicle",

@@ -51,8 +51,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bridge\Bridge.csproj">
-      <Project>{2ed13178-53dc-4114-acc6-3eb5cb8d0ed2}</Project>
+      <Project>{de755d91-8be4-443e-83b3-055a3edcd9f0}</Project>
       <Name>Bridge</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScriptUI\ScriptUI.csproj">
+      <Project>{2ed13178-53dc-4114-acc6-3eb5cb8d0ed2}</Project>
+      <Name>ScriptUI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

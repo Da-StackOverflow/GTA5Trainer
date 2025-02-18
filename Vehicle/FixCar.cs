@@ -1,5 +1,5 @@
-﻿using Bridge;
-using static Bridge.Functions;
+﻿using ScriptUI;
+using static ScriptUI.Functions;
 
 namespace Vehicle
 {

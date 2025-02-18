@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Bridge
+namespace ScriptUI
 {
 	public struct Vector2
 	{

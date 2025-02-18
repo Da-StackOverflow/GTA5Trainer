@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Bridge;
+using System.Collections.Generic;
+using System.IO;
 
-namespace Bridge
+namespace ScriptUI
 {
-	public sealed class MenuController
+	public sealed class MenuController : AController
 	{
 		private readonly Stack<AMenu> _menuStack = [];
 		private readonly Dictionary<string, AMenu> _menuList = [];
@@ -11,24 +13,17 @@ namespace Bridge
 		private long _statusTextMaxTicks;
 		private readonly byte[] _statusTextBytes = new byte[256];
 
-		private static readonly MenuController _instance = new();
-		public static MenuController Instance { get => _instance; }
+		private static MenuController _instance;
+		internal static MenuController Instance { get => _instance; }
 
 		private readonly Menu _mainMenu;
 		public Menu MainMenu => _mainMenu;
-
-		private MenuController()
+		public MenuController()
 		{
+			_instance = this;
 			_nextCanInputTime = 0;
 			_statusTextMaxTicks = 0;
 			_mainMenu = new Menu("内置修改器 by Da");
-		}
-
-		internal void Update()
-		{
-			OnDraw();
-			OnInput();
-			OnExecuteHookFunction();
 		}
 
 		internal void PushMenu(AMenu menu)
@@ -120,13 +115,13 @@ namespace Bridge
 			return _nextCanInputTime > Time.Now;
 		}
 
-		private void OnDraw()
+		private void ProcessUI()
 		{
 			GetShowingMenu()?.OnDraw();
 			DrawTips();
 		}
 
-		private void OnInput()
+		private void ProcessInput()
 		{
 			if (IsInputIsOnWait())
 			{
@@ -190,13 +185,37 @@ namespace Bridge
 			return 50;
 		}
 
-		private void OnExecuteHookFunction()
+		private void ProcessScript()
 		{
 			var length = _updateList.Count;
 			for (int i = 0; i < length; i++)
 			{
 				_updateList[i].Update();
 			}
+		}
+
+		protected override void Update()
+		{
+			ProcessUI();
+			ProcessInput();
+			ProcessScript();
+		}
+
+		protected override void OnInput(uint key, bool isUpNow)
+		{
+			if (isUpNow)
+			{
+				Input.OnKeyUp(key);
+			}
+			else
+			{
+				Input.OnKeyDown(key);
+			}
+		}
+
+		public override void Dispose()
+		{
+			Native.Release();
 		}
 	}
 }

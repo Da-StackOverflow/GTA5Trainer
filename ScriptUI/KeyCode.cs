@@ -1,4 +1,4 @@
-﻿namespace Bridge
+﻿namespace ScriptUI
 {
 	public enum KeyCode : uint
 	{

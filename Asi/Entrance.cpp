@@ -7,8 +7,7 @@
 public enum ScriptState
 {
 	Loaded,
-	Unloaded,
-	StopLongTimeToRestartBridge,
+	Reloading,
 };
 
 ScriptState State = ScriptState::Loaded;
@@ -42,16 +41,7 @@ public:
 
 	static void ChangeLoadState()
 	{
-		if (State == ScriptState::Unloaded)
-		{
-			State = ScriptState::Loaded;
-			Print("State is ScriptState::Loaded");
-		}
-		else
-		{
-			State = ScriptState::Unloaded;
-			Print("State is ScriptState::Unloaded");
-		}
+		State = ScriptState::Reloading;
 	}
 
 	static void OnTick()
@@ -120,7 +110,8 @@ static void UpdateScript()
 	}
 	catch (System::Runtime::Remoting::RemotingException^)
 	{
-		State = ScriptState::StopLongTimeToRestartBridge;
+		State = ScriptState::Reloading;
+		Print("Game was Stop Long Time, Bridge was auto disposed by GC, Then try to Restart Bridge");
 	}
 	catch (Exception^ e)
 	{
@@ -138,7 +129,8 @@ static void ScriptOnInput(uint key, int isUpNow)
 	}
 	catch (System::Runtime::Remoting::RemotingException^)
 	{
-		State = ScriptState::StopLongTimeToRestartBridge;
+		State = ScriptState::Reloading;
+		Print("Game was Stop Long Time, Bridge was auto disposed by GC, Then try to Restart Bridge");
 	}
 	catch (Exception^ e)
 	{
@@ -168,15 +160,16 @@ static void Run()
 		{
 			case Loaded:
 			{
-				Print("InitBridge");
+				Print("Asi Start InitBridge");
 				InitBridge();
+				Print("Asi InitBridge Finished");
 				while (State == ScriptState::Loaded)
 				{
 					const PVOID currentFiber = GetCurrentFiber();
 					if (currentFiber != _preGameFiber)
 					{
 						_preGameFiber = currentFiber;
-						State = ScriptState::Loaded;
+						State = ScriptState::Reloading;
 						Print("Asi Fiber Changed");
 						break;
 					}
@@ -185,9 +178,8 @@ static void Run()
 				}
 				break;
 			}
-			case StopLongTimeToRestartBridge:
+			case Reloading:
 			{
-				Print("Game was Stop Long Time, Bridge was auto disposed by GC, Then try to Restart Bridge");
 				State = ScriptState::Loaded;
 				break;
 			}

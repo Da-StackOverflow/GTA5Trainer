@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bridge
+namespace ScriptUI
 {
 	public abstract class MenuItem
 	{

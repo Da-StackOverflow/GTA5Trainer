@@ -1,19 +1,19 @@
-﻿using Bridge;
-using static Bridge.Functions;
+﻿using ScriptUI;
+using static ScriptUI.Functions;
 
 namespace Weapon
 {
-	public class Entry : Bridge.Entry
+	public class Entry : AScriptEntry
 	{
-		public override void OnInit()
+		protected override void OnInit()
 		{
 			Log.Info("Weapon OnInit");
-			MenuController.Instance.MainMenu.AddItem(new SubMenu("武器系统", GetOrCreateWeaponMenu));
+			_controller.MainMenu.AddItem(new SubMenu("武器系统", GetOrCreateWeaponMenu));
 		}
 
 		private Menu GetOrCreateGetWeaponMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("获取武器", out Menu menu))
+			if (!_controller.TryGetMenu("获取武器", out Menu menu))
 			{
 				menu = new Menu("获取武器");
 				menu.AddItem(new GetAllWeapons("获取所有武器"));
@@ -22,7 +22,7 @@ namespace Weapon
 				{
 					menu.AddItem(new GetWeapon(WeaponResources.WeaponsInfos[i]));
 				}
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}
@@ -52,10 +52,10 @@ namespace Weapon
 
 		private unsafe Menu<UpdateWeapon> GetOrCreateUpdateWeaponMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("升级武器", out Menu<UpdateWeapon> menu))
+			if (!_controller.TryGetMenu("升级武器", out Menu<UpdateWeapon> menu))
 			{
 				menu = new Menu<UpdateWeapon>("升级武器", CreateUpdateWeaponItem, RefreshUpdateWeaponItem);
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			uint weaponHash = 0;
 			bool find = false;
@@ -84,7 +84,7 @@ namespace Weapon
 
 		private Menu GetOrCreateWeaponMenu()
 		{
-			if (!MenuController.Instance.TryGetMenu("武器系统", out Menu menu))
+			if (!_controller.TryGetMenu("武器系统", out Menu menu))
 			{
 				menu = new Menu("武器系统");
 				menu.AddItem(new SubMenu("获取武器", GetOrCreateGetWeaponMenu));
@@ -96,7 +96,7 @@ namespace Weapon
 				menu.AddItem(new FireAmmo("火焰子弹"));
 				menu.AddItem(new ExplosiveAmmo("爆炸子弹"));
 				menu.AddItem(new ExplosiveMelee("爆炸近战武器"));
-				MenuController.Instance.Register(menu);
+				_controller.Register(menu);
 			}
 			return menu;
 		}

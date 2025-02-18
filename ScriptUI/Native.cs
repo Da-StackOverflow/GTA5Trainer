@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 using System;
 
-namespace Bridge
+namespace ScriptUI
 {
 	internal unsafe static class Native
 	{

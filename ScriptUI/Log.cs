@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Bridge
+namespace ScriptUI
 {
 	public static class Log
 	{

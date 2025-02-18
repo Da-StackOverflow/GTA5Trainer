@@ -1,4 +1,4 @@
-﻿namespace Bridge
+﻿namespace ScriptUI
 {
 	public static class Time
 	{

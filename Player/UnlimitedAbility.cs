@@ -1,6 +1,6 @@
-﻿using Bridge;
+﻿using ScriptUI;
 using System;
-using static Bridge.Functions;
+using static ScriptUI.Functions;
 
 namespace Player
 {

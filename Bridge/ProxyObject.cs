@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Security;
-using System.Threading;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Security.Permissions;
@@ -10,28 +9,42 @@ namespace Bridge
 {
 	public sealed class ProxyObject : MarshalByRefObject, IDisposable
 	{
-		public static readonly string ScriptRootPath = Path.GetFullPath("GTA5Trainer");
+		private static readonly string ScriptRootPath = Path.GetFullPath("GTA5Trainer");
 
-		public AppDomain Domain { get; private set; }
+		private static void Info(string log)
+		{
+			File.AppendAllText("GTA5TrainerScript.txt", $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}: {log}\n");
+		}
+
+		private static void Error(string log)
+		{
+			File.AppendAllText("GTA5TrainerBridgeError.txt", $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}: {log}\n");
+		}
+
+		private AppDomain _domain;
 
 		private readonly List<Assembly> _assemblyList;
-		private readonly List<Entry> _entries;
+		private readonly List<AEntry> _entries;
+		private AController _controller;
 
 		public ProxyObject()
 		{
-			Domain = AppDomain.CurrentDomain;
+			_domain = AppDomain.CurrentDomain;
 			_assemblyList = [];
 			_entries = [];
 		}
 
 		~ProxyObject()
 		{
-			Native.FreeBuffer();
+			_controller?.Dispose();
 		}
 
 		public void Dispose()
 		{
-			Native.Release();
+			_controller?.Dispose();
+			_controller = null;
+			_entries.Clear();
+			_assemblyList.Clear();
 			GC.SuppressFinalize(this);
 		}
 
@@ -40,9 +53,10 @@ namespace Bridge
 			try
 			{
 				domain.Dispose();
-				Log.Info($"Unload Domain");
-				AppDomain.Unload(domain.Domain);
-				domain.Domain = null;
+				Info($"domain {domain._domain.FriendlyName} Disposed");
+				AppDomain.Unload(domain._domain);
+				Info($"domain {domain._domain.FriendlyName} Success Unloaded");
+				domain._domain = null;
 			}
 			catch (System.Runtime.Remoting.RemotingException)
 			{
@@ -50,7 +64,7 @@ namespace Bridge
 				{
 					if (domain != null)
 					{
-						AppDomain.Unload(domain.Domain);
+						AppDomain.Unload(domain._domain);
 					}
 				}
 				catch
@@ -64,21 +78,22 @@ namespace Bridge
 				{
 					if (domain != null)
 					{
-						AppDomain.Unload(domain.Domain);
+						AppDomain.Unload(domain._domain);
 					}
 				}
 				catch
 				{
 
 				}
-				Log.Error(e.Message);
-				Log.Error(e.StackTrace);
+				Error(e.GetType().ToString());
+				Error(e.Message);
+				Error(e.StackTrace);
 			}
 		}
 
 		public static ProxyObject Load()
 		{
-			var name = "GTA5Trainer_" + (ScriptRootPath.GetHashCode() ^ Time.Now).ToString("X");
+			var name = "GTA5Trainer_" + (ScriptRootPath.GetHashCode() ^ DateTime.Now.Ticks).ToString("X");
 			var setup = new AppDomainSetup
 			{
 				CachePath = Path.GetTempPath(),
@@ -97,11 +112,12 @@ namespace Bridge
 			{
 				obj = (ProxyObject)newDomain.CreateInstanceFromAndUnwrap(Path.Combine(ScriptRootPath, "GTA5TrainerBridge.dll"), typeof(ProxyObject).FullName);
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
 				AppDomain.Unload(newDomain);
-				Log.Error(ex.Message);
-				Log.Error(ex.StackTrace);
+				Error(e.GetType().ToString());
+				Error(e.Message);
+				Error(e.StackTrace);
 			}
 			return obj;
 		}
@@ -109,44 +125,75 @@ namespace Bridge
 
 		public void Start()
 		{
-			Log.Info("Starting...");
+			Info("Starting Script");
+			try
+			{
+				var uiFile = Path.Combine(ScriptRootPath, "GTA5TrainerScriptUI.dll");
+				Info($"Start Load Script: {uiFile}");
+				var uiAssembly = Assembly.LoadFrom(uiFile);
+				_assemblyList.Add(uiAssembly);
+				foreach (var type in uiAssembly.GetTypes())
+				{
+					if (type.IsSubclassOf(typeof(AController)) && !type.IsAbstract)
+					{
+						_controller = (AController)Activator.CreateInstance(type);
+					}
+				}
+			}
+			catch(Exception e)
+			{
+				Error(e.GetType().ToString());
+				Error(e.Message);
+				Error(e.StackTrace);
+			}
+
+			if (_controller is null)
+			{
+				Error("Can't find AController");
+				return;
+			}
+
 			var files = Directory.GetFiles(ScriptRootPath, "*.TrainerScript", SearchOption.AllDirectories);
-			Log.Info($"Find File Count:{files.Length}");
+			Info($"Find Script File Count: {files.Length}");
+
 			foreach (var file in files)
 			{
 				try
 				{
-					Log.Info($"Start Load {file}");
+					Info($"Start Load Script: {file}");
 					var assembly = Assembly.LoadFrom(file);
 					_assemblyList.Add(assembly);
 					foreach (var type in assembly.GetTypes())
 					{
-						if (type.IsSubclassOf(typeof(Entry)) && !type.IsAbstract)
+						if (type.IsSubclassOf(typeof(AEntry)) && !type.IsAbstract)
 						{
-							var entry = (Entry)Activator.CreateInstance(type);
+							var entry = (AEntry)Activator.CreateInstance(type);
 							_entries.Add(entry);
 						}
 					}
-					Log.Info($"Load {file} Finish");
+					Info($"Load Script: {file} Finish");
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.Message);
-					Log.Error(e.StackTrace);
+					Error(e.GetType().ToString());
+					Error(e.Message);
+					Error(e.StackTrace);
 				}
 			}
+
 			try
 			{
 				int count = _entries.Count;
 				for (int i = 0; i < count; i++)
 				{
-					_entries[i].OnInit();
+					_entries[i].OnInit(_controller);
 				}
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.Message);
-				Log.Error(e.StackTrace);
+				Error(e.GetType().ToString());
+				Error(e.Message);
+				Error(e.StackTrace);
 			}
 		}
 
@@ -154,23 +201,28 @@ namespace Bridge
 		{
 			try
 			{
-				MenuController.Instance.Update();
+				_controller?.Update();
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.Message);
-				Log.Error(e.StackTrace);
+				Error(e.GetType().ToString());
+				Error(e.Message);
+				Error(e.StackTrace);
 			}
 		}
 
 		public void OnInput(uint key, bool isUp)
 		{
-			if (isUp)
+			try
 			{
-				Input.OnKeyUp(key);
-				return;
+				_controller?.OnInput(key, isUp);
 			}
-			Input.OnKeyDown(key);
+			catch (Exception e)
+			{
+				Error(e.GetType().ToString());
+				Error(e.Message);
+				Error(e.StackTrace);
+			}
 		}
 	}
 }
