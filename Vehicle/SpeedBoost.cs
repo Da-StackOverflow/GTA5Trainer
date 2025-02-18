@@ -28,9 +28,9 @@ namespace Vehicle
 					float speed = GET_ENTITY_SPEED(veh);
 					if (bUp)
 					{
-						if (speed < 3.0f)
+						if (speed < 4.8f)
 						{
-							speed = 3.0f;
+							speed = 4.8f;
 						}
 						speed += speed * 0.05f;
 						SET_VEHICLE_FORWARD_SPEED(veh, speed);

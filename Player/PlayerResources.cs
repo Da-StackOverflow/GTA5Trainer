@@ -17,7 +17,7 @@ namespace Player
 			-2100.0f, -2050.0f, -2000.0f, -1950.0f, -1900.0f, -1850.0f, -1800.0f, -1750.0f, -1700.0f,
 		];
 
-		public static readonly ItemInfo[] PedModelInfos = [
+		public static readonly ItemInfo[] Animals = [
 			new ("野猪", "a_c_boar"),
 			new ("a_c_boar_02", "a_c_boar_02"),
 			new ("猫", "a_c_cat_01"),
@@ -58,7 +58,7 @@ namespace Player
 			new ("西高地白梗", "a_c_westy"),
 		];
 
-		public static readonly ItemInfo[] civmale = [
+		public static readonly ItemInfo[] Male = [
 			new ("a_c_chimp", "a_c_chimp"),
 			new ("a_c_chimp_02", "a_c_chimp_02"),
 			new ("a_c_rhesus", "a_c_rhesus"),
@@ -643,12 +643,12 @@ namespace Player
 			new ("s_m_m_ccrew_02", "s_m_m_ccrew_02"),
 			new ("s_m_m_ccrew_03", "s_m_m_ccrew_03"),
 			new ("梅利威瑟民兵", "s_m_m_chemsec_01"),
-			new ("IAAμ特工", "s_m_m_ciasec_01"),
+			new ("IAA特工", "s_m_m_ciasec_01"),
 			new ("s_m_m_cntrybar_01", "s_m_m_cntrybar_01"),
 			new ("港口工人", "s_m_m_dockwork_01"),
 			new ("医生", "s_m_m_doctor_01"),
 			new ("s_m_m_drugprocess_01", "s_m_m_drugprocess_01"),
-			new ("FIBμ特工", "s_m_m_fiboffice_01"),
+			new ("FIB特工", "s_m_m_fiboffice_01"),
 			new ("s_m_m_fiboffice_02", "s_m_m_fiboffice_02"),
 			new ("s_m_m_fieldworker_01", "s_m_m_fieldworker_01"),
 			new ("s_m_m_gaffer_01", "s_m_m_gaffer_01"),
@@ -663,7 +663,7 @@ namespace Player
 			new ("s_m_m_highsec_05", "s_m_m_highsec_05"),
 			new ("清洁工", "s_m_m_janitor"),
 			new ("勤杂工", "s_m_m_lathandy_01"),
-			new ("ITμ专家", "s_m_m_lifeinvad_01"),
+			new ("IT专家", "s_m_m_lifeinvad_01"),
 			new ("厨房杂工", "s_m_m_linecook"),
 			new ("洛圣都客运工人", "s_m_m_lsmetro_01"),
 			new ("街头艺人", "s_m_m_mariachi_01"),
@@ -804,7 +804,7 @@ namespace Player
 			new ("丧尸", "u_m_y_zombie_01"),
 		];
 
-		public static readonly ItemInfo[] CIVFEMALE = [
+		public static readonly ItemInfo[] Femal = [
 			new ("海滨散步客", "a_f_m_beach_01"),
 			new ("商务休闲人士", "a_f_m_bevhills_01"),
 			new ("西装客", "a_f_m_bevhills_02"),
@@ -1081,7 +1081,7 @@ namespace Player
 			new ("u_f_y_taylor", "u_f_y_taylor"),
 		];
 
-		public static readonly ItemInfo[] COP = [
+		public static readonly ItemInfo[] Cop = [
 			new ("mp_m_fibsec_01", "mp_m_fibsec_01"),
 			new ("洛圣都警局警员", "s_f_y_cop_01"),
 			new ("布莱恩郡警长", "s_f_y_sheriff_01"),
@@ -1095,19 +1095,19 @@ namespace Player
 			new ("海岸警卫队员", "s_m_y_uscg_01"),
 		];
 
-		public static readonly ItemInfo[] PLAYER_1 = [
-			new ("富兰克林", "player_one"),
-		];
-
-		public static readonly ItemInfo[] PLAYER_2 = [
-			new ("崔佛", "player_two"),
-		];
-
-		public static readonly ItemInfo[] PLAYER_0 = [
+		public static readonly ItemInfo[] Player0 = [
 			new ("麦克", "player_zero"),
 		];
 
-		public static readonly ItemInfo[] army = [
+		public static readonly ItemInfo[] Player1 = [
+			new ("富兰克林", "player_one"),
+		];
+
+		public static readonly ItemInfo[] Player2 = [
+			new ("崔佛", "player_two"),
+		];
+
+		public static readonly ItemInfo[] Army = [
 			new ("军队官员", "s_m_m_marine_01"),
 			new ("军队高官", "s_m_m_marine_02"),
 			new ("军队技工", "s_m_y_armymech_01"),
@@ -1117,11 +1117,11 @@ namespace Player
 			new ("海军陆战队员", "s_m_y_marine_03"),
 		];
 
-		public static readonly ItemInfo[] MEDIC = [
+		public static readonly ItemInfo[] Medic = [
 			new ("医护人员", "s_m_m_paramedic_01"),
 		];
 
-		public static readonly ItemInfo[] FIREMAN = [
+		public static readonly ItemInfo[] Fireman = [
 			new ("洛圣都消防局消防员", "s_m_y_fireman_01"),
 		];
 
