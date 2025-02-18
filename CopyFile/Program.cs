@@ -117,79 +117,10 @@ var path = Path.GetFullPath("CopyFile.exe").Split("bin")[0];
 //}
 
 
-//try
-//{
-//	File.Copy("F:/CSharp/GTA5Trainer/GTA5Trainer/bin/GTA5Trainer.asi", "D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer.asi", true);
-//	Console.WriteLine("成功");
-//}
-//catch (Exception e)
-//{
-//	Console.WriteLine(e.Message);
-//	Console.WriteLine(e.StackTrace);
-//}
-
-bool gameRunning = false;
-
-if (!Directory.Exists("D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer"))
-{
-	Directory.CreateDirectory("D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer");
-}
-
-if (!gameRunning)
-{
-	try
-	{
-		File.Copy("F:/CSharp/GTA5Trainer/Asi/bin/GTA5Trainer.asi", "D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer.asi", true);
-		Console.WriteLine("Copy GTA5Trainer.asi Success");
-	}
-	catch (Exception e)
-	{
-		Console.WriteLine(e.Message);
-		Console.WriteLine(e.StackTrace);
-	}
-
-
-	try
-	{
-		File.Copy("F:/CSharp/GTA5Trainer/Bridge/bin/GTA5TrainerBridge.dll", "D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5TrainerBridge.dll", true);
-		Console.WriteLine("Copy GTA5TrainerBridge.dll Success");
-	}
-	catch (Exception e)
-	{
-		Console.WriteLine(e.Message);
-		Console.WriteLine(e.StackTrace);
-	}
-}
-
-
 try
 {
-	File.Copy("F:/CSharp/GTA5Trainer/Bridge/bin/GTA5TrainerBridge.dll", "D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer/GTA5TrainerBridge.dll", true);
-	Console.WriteLine("Copy GTA5Trainer/GTA5TrainerBridge.dll Success");
-}
-catch (Exception e)
-{
-	Console.WriteLine(e.Message);
-	Console.WriteLine(e.StackTrace);
-}
-
-string[] scripts = [
-	"Player",
-	"Vehicle",
-	"Weapon",
-	"Time",
-	"Weather",
-	"Other",
-];
-
-try
-{
-	for (int i = 0; i < scripts.Length; i++)
-	{
-		var script = scripts[i];
-		File.Copy($"F:/CSharp/GTA5Trainer/{script}/bin/{script}.dll", $"D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer/Script{i}_{script}.TrainerScript", true);
-		Console.WriteLine($"Copy GTA5Trainer/Script{i}_{script}.TrainerScript Success");
-	}
+	File.Copy("F:/CSharp/GTA5Trainer/GTA5Trainer/bin/GTA5Trainer.asi", "D:/SteamLibrary/steamapps/common/Grand Theft Auto V/GTA5Trainer.asi", true);
+	Console.WriteLine("成功");
 }
 catch (Exception e)
 {
