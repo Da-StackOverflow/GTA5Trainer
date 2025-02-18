@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyFile", "CopyFile\CopyFi
 		{E697BDCE-7031-4C39-A60B-0DB5426057D8} = {E697BDCE-7031-4C39-A60B-0DB5426057D8}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GTA5Trainer", "GTA5Trainer\GTA5Trainer.vcxproj", "{28A5D51A-4CA0-4298-96C0-3E85346B0047}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Asi", "Asi\Asi.vcxproj", "{B2E7347A-69C4-4F4B-BA55-929CD32A4292}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Player", "Player\Player.csproj", "{E697BDCE-7031-4C39-A60B-0DB5426057D8}"
@@ -40,8 +38,6 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5249072E-D26A-4D95-BA22-72F9ECDA00C0}.Release|x64.ActiveCfg = Release|x64
 		{5249072E-D26A-4D95-BA22-72F9ECDA00C0}.Release|x64.Build.0 = Release|x64
-		{28A5D51A-4CA0-4298-96C0-3E85346B0047}.Release|x64.ActiveCfg = Release|x64
-		{28A5D51A-4CA0-4298-96C0-3E85346B0047}.Release|x64.Build.0 = Release|x64
 		{B2E7347A-69C4-4F4B-BA55-929CD32A4292}.Release|x64.ActiveCfg = Release|x64
 		{B2E7347A-69C4-4F4B-BA55-929CD32A4292}.Release|x64.Build.0 = Release|x64
 		{E697BDCE-7031-4C39-A60B-0DB5426057D8}.Release|x64.ActiveCfg = Release|x64
