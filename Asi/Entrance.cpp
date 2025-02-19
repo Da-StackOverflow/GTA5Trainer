@@ -1,8 +1,6 @@
 ﻿//定义 DLL 应用程序的入口点。
 #pragma unmanaged
 #include "Import.h"
-#include <stdexcept>
-#include <fstream>
 
 public enum ScriptState
 {
