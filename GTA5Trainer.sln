@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyFile", "CopyFile\CopyFile.csproj", "{5249072E-D26A-4D95-BA22-72F9ECDA00C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyTool", "CopyTool\CopyTool.csproj", "{FC93BD13-8BE6-424F-A452-1685A2571191}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2ED13178-53DC-4114-ACC6-3EB5CB8D0ED2} = {2ED13178-53DC-4114-ACC6-3EB5CB8D0ED2}
 		{3447C8A3-137D-4963-92CB-DD6EABEE2BAD} = {3447C8A3-137D-4963-92CB-DD6EABEE2BAD}
@@ -18,9 +18,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyFile", "CopyFile\CopyFi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Asi", "Asi\Asi.vcxproj", "{B2E7347A-69C4-4F4B-BA55-929CD32A4292}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Player", "Player\Player.csproj", "{E697BDCE-7031-4C39-A60B-0DB5426057D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge", "Bridge\Bridge.csproj", "{DE755D91-8BE4-443E-83B3-055A3EDCD9F0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptUI", "ScriptUI\ScriptUI.csproj", "{2ED13178-53DC-4114-ACC6-3EB5CB8D0ED2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Player", "Player\Player.csproj", "{E697BDCE-7031-4C39-A60B-0DB5426057D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vehicle", "Vehicle\Vehicle.csproj", "{3447C8A3-137D-4963-92CB-DD6EABEE2BAD}"
 EndProject
@@ -32,15 +34,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Time", "Time\Time.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Other", "Other\Other.csproj", "{37FAAD9F-27E1-4BBA-9733-1A38F9988935}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge", "Bridge\Bridge.csproj", "{DE755D91-8BE4-443E-83B3-055A3EDCD9F0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5249072E-D26A-4D95-BA22-72F9ECDA00C0}.Release|x64.ActiveCfg = Release|x64
-		{5249072E-D26A-4D95-BA22-72F9ECDA00C0}.Release|x64.Build.0 = Release|x64
 		{B2E7347A-69C4-4F4B-BA55-929CD32A4292}.Release|x64.ActiveCfg = Release|x64
 		{B2E7347A-69C4-4F4B-BA55-929CD32A4292}.Release|x64.Build.0 = Release|x64
 		{E697BDCE-7031-4C39-A60B-0DB5426057D8}.Release|x64.ActiveCfg = Release|x64
@@ -59,6 +57,8 @@ Global
 		{37FAAD9F-27E1-4BBA-9733-1A38F9988935}.Release|x64.Build.0 = Release|x64
 		{DE755D91-8BE4-443E-83B3-055A3EDCD9F0}.Release|x64.ActiveCfg = Release|x64
 		{DE755D91-8BE4-443E-83B3-055A3EDCD9F0}.Release|x64.Build.0 = Release|x64
+		{FC93BD13-8BE6-424F-A452-1685A2571191}.Release|x64.ActiveCfg = Release|x64
+		{FC93BD13-8BE6-424F-A452-1685A2571191}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
