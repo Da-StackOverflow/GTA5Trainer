@@ -12,6 +12,8 @@ public enum ScriptState
 
 ScriptState State = ScriptState::Loaded;
 
+bool IsReload = false;
+
 static void Print(const char* log)
 {
 	var logger = std::ofstream("GTA5TrainerScript.txt", std::ios::app);
@@ -42,6 +44,7 @@ public:
 	static void ChangeLoadState()
 	{
 		State = ScriptState::Reloading;
+		Print("Start Reload Script");
 	}
 
 	static void OnTick()
@@ -92,7 +95,7 @@ static void InitBridge()
 			return;
 		}
 
-		Engine::ProxyObj->Start();
+		Engine::ProxyObj->Start(IsReload);
 	}
 	catch (Exception^ e)
 	{
@@ -129,8 +132,7 @@ static void ScriptOnInput(uint key, int isUpNow)
 	}
 	catch (System::Runtime::Remoting::RemotingException^)
 	{
-		State = ScriptState::Reloading;
-		Print("Game was Stop Long Time, Bridge was auto disposed by GC, Then try to Restart Bridge");
+		// 在 UpdateScript() 处理该异常
 	}
 	catch (Exception^ e)
 	{
@@ -181,6 +183,7 @@ static void Run()
 			case Reloading:
 			{
 				State = ScriptState::Loaded;
+				IsReload = true;
 				break;
 			}
 			default:

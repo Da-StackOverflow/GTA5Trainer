@@ -21,11 +21,16 @@ namespace Bridge
 			File.AppendAllText("GTA5TrainerBridgeError.txt", $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}: {log}\n");
 		}
 
-		private AppDomain _domain;
+		private readonly AppDomain _domain;
 
 		private readonly List<Assembly> _assemblyList;
 		private readonly List<AEntry> _entries;
 		private AController _controller;
+
+		public override string ToString()
+		{
+			return _domain.FriendlyName;
+		}
 
 		public ProxyObject()
 		{
@@ -53,16 +58,15 @@ namespace Bridge
 			try
 			{
 				domain.Dispose();
-				Info($"domain {domain._domain.FriendlyName} Disposed");
+				Info($"domain {domain} Disposed");
 				AppDomain.Unload(domain._domain);
-				Info($"domain {domain._domain.FriendlyName} Success Unloaded");
-				domain._domain = null;
+				Info($"domain Success Unloaded");
 			}
 			catch (System.Runtime.Remoting.RemotingException)
 			{
 				try
 				{
-					if (domain != null)
+					if (domain is not null)
 					{
 						AppDomain.Unload(domain._domain);
 					}
@@ -76,7 +80,7 @@ namespace Bridge
 			{
 				try
 				{
-					if (domain != null)
+					if (domain is not null)
 					{
 						AppDomain.Unload(domain._domain);
 					}
@@ -123,7 +127,7 @@ namespace Bridge
 		}
 
 
-		public void Start()
+		public void Start(bool isReload)
 		{
 			Info("Starting Script");
 			try
@@ -136,7 +140,9 @@ namespace Bridge
 				{
 					if (type.IsSubclassOf(typeof(AController)) && !type.IsAbstract)
 					{
-						_controller = (AController)Activator.CreateInstance(type);
+						_controller = (AController)Activator.CreateInstance(type, true);
+						_controller._isReload = isReload;
+						break;
 					}
 				}
 			}

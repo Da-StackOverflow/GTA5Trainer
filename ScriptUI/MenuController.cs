@@ -1,6 +1,5 @@
 ﻿using Bridge;
 using System.Collections.Generic;
-using System.IO;
 
 namespace ScriptUI
 {
@@ -18,7 +17,8 @@ namespace ScriptUI
 
 		private readonly Menu _mainMenu;
 		public Menu MainMenu => _mainMenu;
-		public MenuController()
+
+		private MenuController()
 		{
 			_instance = this;
 			_nextCanInputTime = 0;
@@ -196,6 +196,11 @@ namespace ScriptUI
 
 		protected override void Update()
 		{
+			if (_isReload)
+			{
+				SetTips("脚本重载成功!");
+				_isReload = false;
+			}
 			ProcessUI();
 			ProcessInput();
 			ProcessScript();
