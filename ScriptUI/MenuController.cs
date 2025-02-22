@@ -1,4 +1,5 @@
 ﻿using Bridge;
+using System;
 using System.Collections.Generic;
 
 namespace ScriptUI
@@ -24,6 +25,31 @@ namespace ScriptUI
 			_nextCanInputTime = 0;
 			_statusTextMaxTicks = 0;
 			_mainMenu = new Menu("内置修改器 by Da");
+		}
+
+		~MenuController()
+		{
+			OnRelease(false);
+		}
+
+		public override void Dispose()
+		{
+			OnRelease(true);
+		}
+
+		private bool _isDisposed = false;
+		private void OnRelease(bool isDisposeCall)
+		{
+			if (_isDisposed)
+			{
+				return;
+			}
+			Native.Release();
+			if (isDisposeCall)
+			{
+				GC.SuppressFinalize(this);
+			}
+			_isDisposed = true;
 		}
 
 		internal void PushMenu(AMenu menu)
@@ -216,11 +242,6 @@ namespace ScriptUI
 			{
 				Input.OnKeyDown(key);
 			}
-		}
-
-		public override void Dispose()
-		{
-			Native.Release();
 		}
 	}
 }
