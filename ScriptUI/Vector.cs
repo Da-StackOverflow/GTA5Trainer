@@ -15,7 +15,7 @@ namespace ScriptUI
 
 		public override readonly string ToString()
 		{
-			return string.Format("X:{0}, Y:{1}", X, Y);
+			return $"X:{X:F3}f, Y:{Y:F3}f";
 		}
 
 		public static bool operator ==(Vector2 left, Vector2 right)
@@ -91,7 +91,7 @@ namespace ScriptUI
 
 		public override readonly string ToString()
 		{
-			return $"X:{0:F3}, Y:{Y:F3}, Z:{Z:F3}";
+			return $"{X:F3}f, {Y:F3}f, {Z:F3}f";
 		}
 
 		public static bool operator ==(Vector3 left, Vector3 right)

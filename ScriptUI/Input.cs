@@ -75,32 +75,32 @@
 
 		public static bool IsAccept()
 		{
-			return IsKeyDown(KeyCode.Num5) || IsKeyDown(KeyCode.Return);
+			return IsKeyDown(KeyCode.Num5); // || IsKeyDown(KeyCode.Return);
 		}
 
 		public static bool IsBack()
 		{
-			return IsKeyDown(KeyCode.Num0) || IsKeyDown(KeyCode.Back);
+			return IsKeyDown(KeyCode.Num0); // || IsKeyDown(KeyCode.Back);
 		}
 
 		public static bool IsUp()
 		{
-			return IsKeyDown(KeyCode.Num8) || IsKeyDown(KeyCode.Up);
+			return IsKeyDown(KeyCode.Num8); // || IsKeyDown(KeyCode.Up);
 		}
 
 		public static bool IsDown()
 		{
-			return IsKeyDown(KeyCode.Num2) || IsKeyDown(KeyCode.Down);
+			return IsKeyDown(KeyCode.Num2); // || IsKeyDown(KeyCode.Down);
 		}
 
 		public static bool IsLeft()
 		{
-			return IsKeyDown(KeyCode.Num4) || IsKeyDown(KeyCode.Left);
+			return IsKeyDown(KeyCode.Num4); // || IsKeyDown(KeyCode.Left);
 		}
 
 		public static bool IsRight()
 		{
-			return IsKeyDown(KeyCode.Num6) || IsKeyDown(KeyCode.Right);
+			return IsKeyDown(KeyCode.Num6); // || IsKeyDown(KeyCode.Right);
 		}
 
 		public static bool IsShift()
