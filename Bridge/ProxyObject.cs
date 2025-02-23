@@ -39,18 +39,17 @@ namespace Bridge
 			_entries = [];
 		}
 
-		~ProxyObject()
-		{
-			_controller?.Dispose();
-		}
-
+		private bool _disposed;
 		public void Dispose()
 		{
+			if (_disposed)
+			{
+				return;
+			}
 			_controller?.Dispose();
 			_controller = null;
-			_entries.Clear();
-			_assemblyList.Clear();
 			GC.SuppressFinalize(this);
+			_disposed = true;
 		}
 
 		public static void Unload(ProxyObject domain)
