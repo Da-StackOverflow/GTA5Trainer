@@ -236,7 +236,6 @@ namespace Player
 				menu.AddItem(new SubMenu("核废料", GetOrCreatePlayerTeleport30NuclearWaste));
 				menu.AddItem(new SubMenu("潜水艇碎片", GetOrCreatePlayerTeleport30Submarine));
 				menu.AddItem(new SubMenu("跳伞活动", GetOrCreatePlayerTeleport13Parachuting));
-				menu.AddItem(new SubMenu("跳伞活动", GetOrCreatePlayerTeleport13Parachuting));
 				menu.AddItem(new SubMenu("飞车地点", GetOrCreatePlayerTeleport50FlyCar));
 				menu.AddItem(new SubMenu("飞行穿桥地点", GetOrCreatePlayerTeleport50Bridge));
 				_controller.Register(menu);
@@ -441,6 +440,21 @@ namespace Player
 				menu.AddItem(new Teleport("10", -116.108f, 1428.394f, 294.490f));
 				menu.AddItem(new Teleport("11", -1038.720f, 881.173f, 162.099f));
 				menu.AddItem(new Teleport("12", -1615.821f, 2072.709f, 78.071f));
+				menu.AddItem(new Teleport("13", -2873.429f, 2593.548f, -11.039f));
+				menu.AddItem(new Teleport("14", - 2001.754f, 3519.026f, 57.070f));
+				menu.AddItem(new Teleport("15", - 529.781f, 4188.246f, 192.756f));
+				menu.AddItem(new Teleport("16", 87.124f, 4316.454f, 21.371f));
+				menu.AddItem(new Teleport("17", - 1002.579f, 4499.720f, 158.042f));
+				menu.AddItem(new Teleport("18", 502.215f, 5506.009f, 774.611f));
+				menu.AddItem(new Teleport("19", - 780.295f, 6620.090f, -19.124f));
+				menu.AddItem(new Teleport("20", 142.315f, 6866.061f, 28.408f));
+				menu.AddItem(new Teleport("21", 1483.049f, 6029.155f, 311.870f));
+				menu.AddItem(new Teleport("22", 2592.171f, 6156.809f, 166.152f));
+				menu.AddItem(new Teleport("23", 4165.172f, 3570.439f, -47.958f));
+				menu.AddItem(new Teleport("24", 2347.416f, 2551.110f, 46.668f));
+				menu.AddItem(new Teleport("25", 513.781f, 3010.229f, 40.799f));
+				menu.AddItem(new Teleport("26", 1306.229f, 2105.450f, 83.048f));
+				menu.AddItem(new Teleport("27", 3336.353f, -274.804f, 5.026f));
 				_controller.Register(menu);
 			}
 			return menu;
@@ -448,9 +462,9 @@ namespace Player
 
 		private Menu GetOrCreatePlayerTeleport11PackageMenu()
 		{
-			if (!_controller.TryGetMenu("11海上隐藏包裹", out Menu menu))
+			if (!_controller.TryGetMenu("海上隐藏包裹", out Menu menu))
 			{
-				menu = new Menu("11海上隐藏包裹");
+				menu = new Menu("海上隐藏包裹");
 				_controller.Register(menu);
 			}
 			return menu;
@@ -458,9 +472,10 @@ namespace Player
 
 		private Menu GetOrCreatePlayerTeleport10Leaflets()
 		{
-			if (!_controller.TryGetMenu("海上隐藏包裹", out Menu menu))
+			if (!_controller.TryGetMenu("埃普西隆宣传单", out Menu menu))
 			{
-				menu = new Menu("海上隐藏包裹");
+				menu = new Menu("埃普西隆宣传单");
+				menu.AddItem(new Teleport("", 502.016f, 5604.236f, 797.910f));
 				_controller.Register(menu);
 			}
 			return menu;
