@@ -227,10 +227,18 @@ namespace Player
 				menu.AddItem(new Teleport("花园银行顶部", -79.241f, -821.336f, 326.175f));
 				menu.AddItem(new Teleport("在建大楼顶部", -148.989f, -962.854f, 269.135f));
 				menu.AddItem(new Teleport("塔吊顶部", -119.054f, -976.211f, 296.197f));
-				menu.AddItem(new SubMenu("50封信", GetOrCreatePlayerTeleport50LetterMenu));
-				menu.AddItem(new SubMenu("50UFO碎片", GetOrCreatePlayerTeleport50UFOMenu));
-				menu.AddItem(new SubMenu("50猴子马赛克", GetOrCreatePlayerTeleport50MonkeyMenu));
-				menu.AddItem(new SubMenu("27迷幻仙人掌", GetOrCreatePlayerTeleport27CactusMenu));
+				menu.AddItem(new SubMenu("信碎片", GetOrCreatePlayerTeleport50LetterMenu));
+				menu.AddItem(new SubMenu("UFO碎片", GetOrCreatePlayerTeleport50UFOMenu));
+				menu.AddItem(new SubMenu("猴子马赛克", GetOrCreatePlayerTeleport50MonkeyMenu));
+				menu.AddItem(new SubMenu("迷幻仙人掌", GetOrCreatePlayerTeleport27CactusMenu));
+				menu.AddItem(new SubMenu("海上隐藏包裹", GetOrCreatePlayerTeleport11PackageMenu));
+				menu.AddItem(new SubMenu("埃普西隆宣传单", GetOrCreatePlayerTeleport10Leaflets));
+				menu.AddItem(new SubMenu("核废料", GetOrCreatePlayerTeleport30NuclearWaste));
+				menu.AddItem(new SubMenu("潜水艇碎片", GetOrCreatePlayerTeleport30Submarine));
+				menu.AddItem(new SubMenu("跳伞活动", GetOrCreatePlayerTeleport13Parachuting));
+				menu.AddItem(new SubMenu("跳伞活动", GetOrCreatePlayerTeleport13Parachuting));
+				menu.AddItem(new SubMenu("飞车地点", GetOrCreatePlayerTeleport50FlyCar));
+				menu.AddItem(new SubMenu("飞行穿桥地点", GetOrCreatePlayerTeleport50Bridge));
 				_controller.Register(menu);
 			}
 			return menu;
@@ -238,9 +246,9 @@ namespace Player
 
 		private Menu GetOrCreatePlayerTeleport50LetterMenu()
 		{
-			if (!_controller.TryGetMenu("50封信", out Menu menu))
+			if (!_controller.TryGetMenu("信碎片", out Menu menu))
 			{
-				menu = new Menu("50封信");
+				menu = new Menu("信碎片");
 				menu.AddItem(new Teleport("1",  -916.934f,  -2529.692f,  23.321f));
 				menu.AddItem(new Teleport("2",  1026.478f,  -3026.476f,  14.327f));
 				menu.AddItem(new Teleport("3",  1509.027f,  -2121.209f,  76.565f));
@@ -298,9 +306,9 @@ namespace Player
 
 		private Menu GetOrCreatePlayerTeleport50UFOMenu()
 		{
-			if (!_controller.TryGetMenu("50UFO碎片", out Menu menu))
+			if (!_controller.TryGetMenu("UFO碎片", out Menu menu))
 			{
-				menu = new Menu("50UFO碎片");
+				menu = new Menu("UFO碎片");
 				menu.AddItem(new Teleport("1", 338.332f, -2761.779f, 43.702f));
 				menu.AddItem(new Teleport("2", 634.114f, -3233.189f, -15.123f));
 				menu.AddItem(new Teleport("3", 1590.641f, -2810.470f, 4.422f));
@@ -358,9 +366,9 @@ namespace Player
 
 		private Menu GetOrCreatePlayerTeleport50MonkeyMenu()
 		{
-			if (!_controller.TryGetMenu("50猴子马赛克", out Menu menu))
+			if (!_controller.TryGetMenu("猴子马赛克", out Menu menu))
 			{
-				menu = new Menu("50猴子马赛克");
+				menu = new Menu("猴子马赛克");
 				menu.AddItem(new Teleport("1", 2544.579f, 394.264f, 108.617f));
 				menu.AddItem(new Teleport("2", 1121.041f, -1274.365f, 20.711f));
 				menu.AddItem(new Teleport("3", 1150.290f, -666.602f, 57.437f));
@@ -418,9 +426,9 @@ namespace Player
 
 		private Menu GetOrCreatePlayerTeleport27CactusMenu()
 		{
-			if (!_controller.TryGetMenu("27迷幻仙人掌", out Menu menu))
+			if (!_controller.TryGetMenu("迷幻仙人掌", out Menu menu))
 			{
-				menu = new Menu("27迷幻仙人掌");
+				menu = new Menu("迷幻仙人掌");
 				menu.AddItem(new Teleport("1", 1328.583f, -607.034f, 74.508f));
 				menu.AddItem(new Teleport("2", 1422.989f, -2615.264f, 47.779f));
 				menu.AddItem(new Teleport("3", -563.629f, -2481.061f, -17.189f));
@@ -433,6 +441,76 @@ namespace Player
 				menu.AddItem(new Teleport("10", -116.108f, 1428.394f, 294.490f));
 				menu.AddItem(new Teleport("11", -1038.720f, 881.173f, 162.099f));
 				menu.AddItem(new Teleport("12", -1615.821f, 2072.709f, 78.071f));
+				_controller.Register(menu);
+			}
+			return menu;
+		}
+
+		private Menu GetOrCreatePlayerTeleport11PackageMenu()
+		{
+			if (!_controller.TryGetMenu("11海上隐藏包裹", out Menu menu))
+			{
+				menu = new Menu("11海上隐藏包裹");
+				_controller.Register(menu);
+			}
+			return menu;
+		}
+
+		private Menu GetOrCreatePlayerTeleport10Leaflets()
+		{
+			if (!_controller.TryGetMenu("海上隐藏包裹", out Menu menu))
+			{
+				menu = new Menu("海上隐藏包裹");
+				_controller.Register(menu);
+			}
+			return menu;
+		}
+
+		private Menu GetOrCreatePlayerTeleport30NuclearWaste()
+		{
+			if (!_controller.TryGetMenu("核废料", out Menu menu))
+			{
+				menu = new Menu("核废料");
+				_controller.Register(menu);
+			}
+			return menu;
+		}
+
+		private Menu GetOrCreatePlayerTeleport30Submarine()
+		{
+			if (!_controller.TryGetMenu("潜水艇碎片", out Menu menu))
+			{
+				menu = new Menu("潜水艇碎片");
+				_controller.Register(menu);
+			}
+			return menu;
+		}
+
+		private Menu GetOrCreatePlayerTeleport13Parachuting()
+		{
+			if (!_controller.TryGetMenu("跳伞活动", out Menu menu))
+			{
+				menu = new Menu("跳伞活动");
+				_controller.Register(menu);
+			}
+			return menu;
+		}
+
+		private Menu GetOrCreatePlayerTeleport50FlyCar()
+		{
+			if (!_controller.TryGetMenu("飞车地点", out Menu menu))
+			{
+				menu = new Menu("飞车地点");
+				_controller.Register(menu);
+			}
+			return menu;
+		}
+
+		private Menu GetOrCreatePlayerTeleport50Bridge()
+		{
+			if (!_controller.TryGetMenu("飞行穿桥地点", out Menu menu))
+			{
+				menu = new Menu("飞行穿桥地点");
 				_controller.Register(menu);
 			}
 			return menu;
