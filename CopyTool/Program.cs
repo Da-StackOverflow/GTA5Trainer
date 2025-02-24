@@ -18,7 +18,7 @@ namespace CopyTool
 				Directory.CreateDirectory(GameScriptDirectory);
 			}
 
-			bool gameRunning = false;
+			bool gameRunning = true;
 
 			if (!gameRunning)
 			{

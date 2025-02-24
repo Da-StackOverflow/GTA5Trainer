@@ -119,6 +119,8 @@ namespace ScriptUI
 				Functions.SET_TEXT_COLOR(255, 255, 255, 255);
 				Functions.SET_TEXT_OUTLINE();
 				Functions.BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
+				Functions.SET_TEXT_CENTRE(false);
+				Functions.SET_TEXT_JUSTIFICATION(0);
 				fixed (byte* ptr = _statusTextBytes)
 				{
 					Functions.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(ptr);

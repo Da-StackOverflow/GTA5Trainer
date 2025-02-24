@@ -58,7 +58,7 @@ namespace Player
 			}
 			SetTips(coords.ToString(), 10000);
 			SET_ENTITY_COORDS_NO_OFFSET(e, preCoords.X, preCoords.Y, preCoords.Z, false, false, true);
-			Log.Info($"GetTeleportMarkerCords {coords}");
+			Log.Info($"menu.AddItem(new Teleport(\"\", {coords}));");
 		}
 	}
 }

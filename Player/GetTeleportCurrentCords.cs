@@ -18,7 +18,7 @@ namespace Player
 			}
 			Vector3 coords = GET_ENTITY_COORDS(e, true);
 			SetTips(coords.ToString(), 10000);
-			Log.Info($"GetTeleportCurrentCords {coords}");
+			Log.Info($"menu.AddItem(new Teleport(\"\", {coords}));");
 		}
 	}
 }

@@ -230,6 +230,7 @@ namespace Player
 				menu.AddItem(new SubMenu("50封信", GetOrCreatePlayerTeleport50LetterMenu));
 				menu.AddItem(new SubMenu("50UFO碎片", GetOrCreatePlayerTeleport50UFOMenu));
 				menu.AddItem(new SubMenu("50猴子马赛克", GetOrCreatePlayerTeleport50MonkeyMenu));
+				menu.AddItem(new SubMenu("27迷幻仙人掌", GetOrCreatePlayerTeleport27CactusMenu));
 				_controller.Register(menu);
 			}
 			return menu;
@@ -410,6 +411,28 @@ namespace Player
 				menu.AddItem(new Teleport("48", 204.611f, -2029.215f, 18.275f));
 				menu.AddItem(new Teleport("49", 473.342f, -1472.637f, 35.091f));
 				menu.AddItem(new Teleport("50", 151.102f, -1186.161f, 31.320f));
+				_controller.Register(menu);
+			}
+			return menu;
+		}
+
+		private Menu GetOrCreatePlayerTeleport27CactusMenu()
+		{
+			if (!_controller.TryGetMenu("27迷幻仙人掌", out Menu menu))
+			{
+				menu = new Menu("27迷幻仙人掌");
+				menu.AddItem(new Teleport("1", 1328.583f, -607.034f, 74.508f));
+				menu.AddItem(new Teleport("2", 1422.989f, -2615.264f, 47.779f));
+				menu.AddItem(new Teleport("3", -563.629f, -2481.061f, -17.189f));
+				menu.AddItem(new Teleport("4", -320.367f, -1652.291f, 31.849f));
+				menu.AddItem(new Teleport("5", -1162.365f, -1998.343f, 13.247f));
+				menu.AddItem(new Teleport("6", -1334.917f, -1066.365f, 12.591f));
+				menu.AddItem(new Teleport("7", -1845.693f, -1257.988f, -23.040f));
+				menu.AddItem(new Teleport("8", -94.765f, 321.992f, 142.835f));
+				menu.AddItem(new Teleport("9", 437.636f, 782.727f, 193.241f));
+				menu.AddItem(new Teleport("10", -116.108f, 1428.394f, 294.490f));
+				menu.AddItem(new Teleport("11", -1038.720f, 881.173f, 162.099f));
+				menu.AddItem(new Teleport("12", -1615.821f, 2072.709f, 78.071f));
 				_controller.Register(menu);
 			}
 			return menu;
