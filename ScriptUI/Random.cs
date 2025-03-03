@@ -114,6 +114,8 @@ namespace ScriptUI
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static long NextInt64() => (long)(NextUInt64() >> 1);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static long NextInt64(long maxValue) => (long)NextUInt64((ulong)maxValue);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
