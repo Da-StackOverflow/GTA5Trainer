@@ -15,6 +15,11 @@ namespace ScriptUI
 			}
 		}
 
+		static Random()
+		{
+			ResetSeed((ulong)System.DateTime.Now.Ticks);
+		}
+
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static ulong SplitMix64(ref ulong x)
 		{
