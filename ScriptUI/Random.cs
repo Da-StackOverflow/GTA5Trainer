@@ -119,17 +119,32 @@ namespace ScriptUI
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static long NextInt64(long minValue, long maxValue) => (long)NextUInt64((ulong)(maxValue - minValue)) + minValue;
 
-		// As described in http://prng.di.unimi.it/:
-		// "A standard double (64-bit) floating-point number in IEEE floating point format has 52 bits of significand,
-		//  plus an implicit bit at the left of the significand. Thus, the representation can actually store numbers with
-		//  53 significant binary digits. Because of this fact, in C99 a 64-bit unsigned integer x should be converted to
-		//  a 64-bit double using the expression
-		//  (x >> 11) * 0x1.0p-53"
+		/// <summary>
+		/// 64 位整数有 64 位二进制精度，但double只能精确表示 53 位。
+		/// </summary>
+		/// <returns>[0, 1]</returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static double NextDouble() => (NextUInt64() >> 11) * (1.0 / (1ul << 53));
+		public static double NextDouble() => (NextUInt64() >> 11) * (1.0 / (1ul << 53 - 1));
 
-		// Same as above, but with 24 bits instead of 53.
+		/// <summary>
+		/// 64 位整数有 64 位二进制精度，但double只能精确表示 53 位。
+		/// </summary>
+		/// <returns>[0, 1)</returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static float NextFloat() => (NextUInt64() >> 40) * (1.0f / (1u << 24));
+		public static double NextDouble2() => (NextUInt64() >> 11) * (1.0 / (1ul << 53));
+
+		/// <summary>
+		/// 64 位整数有 64 位二进制精度，但double只能精确表示 24 位。
+		/// </summary>
+		/// <returns>[0, 1]</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static float NextFloat() => (NextUInt64() >> 40) * (1.0f / (1u << 24 - 1));
+
+		/// <summary>
+		/// 64 位整数有 64 位二进制精度，但double只能精确表示 24 位。
+		/// </summary>
+		/// <returns>[0, 1)</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static float NextFloat2() => (NextUInt64() >> 40) * (1.0f / (1u << 24));
 	}
 }
