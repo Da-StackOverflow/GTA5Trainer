@@ -253,6 +253,7 @@ namespace Vehicle
 			{
 				menu = new Menu("车辆系统");
 				menu.AddItem(new SubMenu("生成车辆", GetOrCreateSpawnVehicleMenu));
+				menu.AddItem(new GetInCar("进入瞄准的汽车"));
 				menu.AddItem(new RandomPaintCar("改变车辆颜色"));
 				menu.AddItem(new FixCar("修理车辆"));
 				menu.AddItem(new SafeBelt("安全带"));

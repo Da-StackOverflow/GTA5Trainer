@@ -568,6 +568,7 @@ namespace Player
 			if (!_controller.TryGetMenu("生成NPC", out Menu menu))
 			{
 				menu = new Menu("生成NPC");
+				menu.AddItem(new SpawnEnemy("生成敌人"));
 				menu.AddItem(new SubMenu("生成动物", GetOrCreatePlayerSpawnAnimalMenu));
 				menu.AddItem(new SubMenu("生成男人", GetOrCreatePlayerSpawnMaleMenu));
 				menu.AddItem(new SubMenu("生成女人", GetOrCreatePlayerSpawnFemalMenu));

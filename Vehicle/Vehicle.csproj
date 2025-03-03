@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="Entry.cs" />
     <Compile Include="FixCar.cs" />
+    <Compile Include="GetInCar.cs" />
     <Compile Include="InvincibleCar.cs" />
     <Compile Include="InvincibleWheel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

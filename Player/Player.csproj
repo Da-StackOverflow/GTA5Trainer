@@ -58,6 +58,7 @@
     <Compile Include="RestoreAbility.cs" />
     <Compile Include="RestoreBreath.cs" />
     <Compile Include="RestoreStamina.cs" />
+    <Compile Include="SpawnEnemy.cs" />
     <Compile Include="SpawnPed.cs" />
     <Compile Include="SuperJump.cs" />
     <Compile Include="Teleport.cs" />
