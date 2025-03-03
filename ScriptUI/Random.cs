@@ -1,96 +1,130 @@
-﻿using System;
+﻿using System.Runtime.CompilerServices;
 
 namespace ScriptUI
 {
 	public static class Random
 	{
-		private const int N = 624;
-		private const int M = 397;
-		private const uint MATRIX_A = 0x9908b0df; // logical right shift
-		private const uint UPPER_MASK = 0x80000000; // most significant w-bit
-		private const uint LOWER_MASK = 0x7fffffff; // least significant w-bit
+		private static readonly ulong[] state = new ulong[4];
 
-		private static readonly uint[] mt = new uint[N]; // the array for the state vector
-		private static int mti = N + 1; // mti==N+1 means mt[N] is not initialized
-
-		static Random()
+		public static void ResetSeed(ulong seed)
 		{
-			Initialize((uint)Environment.TickCount);
-		}
-
-		public static void Initialize(uint seed)
-		{
-			mt[0] = seed & 0xffffffff; // for >32 bit machines
-			for (int i = 1; i < N; i++)
+			ulong sm64 = seed;
+			for (int i = 0; i < 4; i++)
 			{
-				mt[i] = (1812433299U * (mt[i - 1] ^ (mt[i - 1] >> 30)) + (uint)i);
-				mt[i] &= 0xffffffff; // for >32 bit machines
+				state[i] = SplitMix64(ref sm64);
 			}
-			mti = N;
 		}
 
-		private static void GenerateNumbers()
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static ulong SplitMix64(ref ulong x)
 		{
-			for (int i = 0; i < N - M; i++)
+			ulong z = x += 0x9E3779B97F4A7C15;
+			z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9;
+			z = (z ^ (z >> 27)) * 0x94D049BB133111EB;
+			return z ^ (z >> 31);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static ulong RotateLeft(ulong value, int offset) => (value << offset) | (value >> (64 - offset));
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static ulong BigMul(ulong a, ulong b, out ulong low)
+		{
+			low = a * b;
+			return ((a >> 32) * (b >> 32)) + ((a >> 32) * (uint)b) + ((b >> 32) * (uint)a);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ulong NextUInt64()
+		{
+			ulong result = RotateLeft(state[1] * 5, 7) * 9;
+			ulong t = state[1] << 17;
+
+			state[2] ^= state[0];
+			state[3] ^= state[1];
+			state[1] ^= state[2];
+			state[0] ^= state[3];
+
+			state[2] ^= t;
+			state[3] = RotateLeft(state[3], 45);
+
+			return result;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ulong NextUInt64(ulong maxValue)
+		{
+			ulong randomProduct = BigMul(maxValue, NextUInt64(), out ulong lowPart);
+
+			if (lowPart < maxValue)
 			{
-				uint y = (mt[i] & UPPER_MASK) | (mt[i + 1] & LOWER_MASK);
-				mt[i] = mt[i + M] ^ (y >> 1) ^ (y % 2 == 0 ? 0 : MATRIX_A);
+				ulong remainder = (0ul - maxValue) % maxValue;
+
+				while (lowPart < remainder)
+				{
+					randomProduct = BigMul(maxValue, NextUInt64(), out lowPart);
+				}
 			}
-			for (int i = N - M; i < N - 1; i++)
+
+			return randomProduct;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ulong NextUInt64(ulong minValue, ulong maxValue) => NextUInt64(maxValue - minValue) + minValue;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static uint NextUInt32() => (uint)(NextUInt64() >> 32);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static uint NextUInt32(uint maxValue)
+		{
+			ulong randomProduct = (ulong)maxValue * NextUInt32();
+			uint lowPart = (uint)randomProduct;
+
+			if (lowPart < maxValue)
 			{
-				uint y = (mt[i] & UPPER_MASK) | (mt[i + 1] & LOWER_MASK);
-				mt[i] = mt[i + (M - N)] ^ (y >> 1) ^ (y % 2 == 0 ? 0 : MATRIX_A);
-			}
-			uint y1 = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-			mt[N - 1] = mt[M - 1] ^ (y1 >> 1) ^ (y1 % 2 == 0 ? 0 : MATRIX_A);
-			mti = 0;
-		}
+				uint remainder = (0u - maxValue) % maxValue;
 
-		/// <summary>
-		/// [0, uint.MaxValue]
-		/// </summary>
-		/// <returns></returns>
-		private static uint Generate()
-		{
-			if (mti >= N) // generate N numbers at one time
-			{
-				if (mti == N + 1) // if init_genrand() has not been called,
-					Initialize(5489U); // a default initial seed is used
-
-				GenerateNumbers();
+				while (lowPart < remainder)
+				{
+					randomProduct = (ulong)maxValue * NextUInt32();
+					lowPart = (uint)randomProduct;
+				}
 			}
 
-			uint y = mt[mti++];
-			// Tempering
-			y ^= (y >> 11);
-			y ^= (y << 7) & 0x9d2c5680;
-			y ^= (y << 15) & 0xefc60000;
-			y ^= (y >> 18);
-			return y;
+			return (uint)(randomProduct >> 32);
 		}
 
-		public static int Next()
-		{
-			return (int)Generate();
-		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static uint NextUInt32(uint minValue, uint maxValue) => (NextUInt32(maxValue - minValue) + minValue);
 
-		public static int Next(int minValue, int maxValue)
-		{
-			if (minValue > maxValue)
-			{
-				(minValue, maxValue) = (maxValue, minValue);
-			}
-			return minValue + (int)(Generate() % (maxValue - minValue + 1));
-		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int Next() => (int)(NextUInt64() >> 33);
 
-		public static int Next(uint maxValue)
-		{
-			return (int)(Generate() % (maxValue + 1));
-		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int Next(int maxValue) => (int)NextUInt32((uint)maxValue);
 
-		public static double NextDouble()
-		{
-			return Generate() / (double)uint.MaxValue;
-		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int Next(int minValue, int maxValue) => (int)NextUInt32((uint)(maxValue - minValue)) + minValue;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static long NextInt64() => (long)(NextUInt64() >> 1);
+		public static long NextInt64(long maxValue) => (long)NextUInt64((ulong)maxValue);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static long NextInt64(long minValue, long maxValue) => (long)NextUInt64((ulong)(maxValue - minValue)) + minValue;
+
+		// As described in http://prng.di.unimi.it/:
+		// "A standard double (64-bit) floating-point number in IEEE floating point format has 52 bits of significand,
+		//  plus an implicit bit at the left of the significand. Thus, the representation can actually store numbers with
+		//  53 significant binary digits. Because of this fact, in C99 a 64-bit unsigned integer x should be converted to
+		//  a 64-bit double using the expression
+		//  (x >> 11) * 0x1.0p-53"
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static double NextDouble() => (NextUInt64() >> 11) * (1.0 / (1ul << 53));
+
+		// Same as above, but with 24 bits instead of 53.
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static float NextFloat() => (NextUInt64() >> 40) * (1.0f / (1u << 24));
 	}
 }
