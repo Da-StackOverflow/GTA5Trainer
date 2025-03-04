@@ -231,13 +231,13 @@ namespace Player
 				menu.AddItem(new SubMenu("UFO碎片", GetOrCreatePlayerTeleport50UFOMenu));
 				menu.AddItem(new SubMenu("猴子马赛克", GetOrCreatePlayerTeleport50MonkeyMenu));
 				menu.AddItem(new SubMenu("迷幻仙人掌", GetOrCreatePlayerTeleport27CactusMenu));
-				menu.AddItem(new SubMenu("海上隐藏包裹", GetOrCreatePlayerTeleport11PackageMenu));
-				menu.AddItem(new SubMenu("埃普西隆宣传单", GetOrCreatePlayerTeleport10Leaflets));
-				menu.AddItem(new SubMenu("核废料", GetOrCreatePlayerTeleport30NuclearWaste));
-				menu.AddItem(new SubMenu("潜水艇碎片", GetOrCreatePlayerTeleport30Submarine));
-				menu.AddItem(new SubMenu("跳伞活动", GetOrCreatePlayerTeleport13Parachuting));
-				menu.AddItem(new SubMenu("飞车地点", GetOrCreatePlayerTeleport50FlyCar));
-				menu.AddItem(new SubMenu("飞行穿桥地点", GetOrCreatePlayerTeleport50Bridge));
+				//menu.AddItem(new SubMenu("海上隐藏包裹", GetOrCreatePlayerTeleport11PackageMenu));
+				//menu.AddItem(new SubMenu("埃普西隆宣传单", GetOrCreatePlayerTeleport10Leaflets));
+				//menu.AddItem(new SubMenu("核废料", GetOrCreatePlayerTeleport30NuclearWaste));
+				//menu.AddItem(new SubMenu("潜水艇碎片", GetOrCreatePlayerTeleport30Submarine));
+				//menu.AddItem(new SubMenu("跳伞活动", GetOrCreatePlayerTeleport13Parachuting));
+				//menu.AddItem(new SubMenu("飞车地点", GetOrCreatePlayerTeleport50FlyCar));
+				//menu.AddItem(new SubMenu("飞行穿桥地点", GetOrCreatePlayerTeleport50Bridge));
 				_controller.Register(menu);
 			}
 			return menu;
