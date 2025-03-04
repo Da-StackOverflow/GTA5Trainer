@@ -22,6 +22,11 @@ namespace ScriptUI
 			Caption.OnDraw();
 		}
 
+		internal void SetDirty()
+		{
+			Caption.SetModified();
+		}
+
 		public abstract void AddItem<T>(T item) where T : ExecuteItem;
 
 		internal void OnInput(KeyCode key)

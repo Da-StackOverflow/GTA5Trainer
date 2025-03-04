@@ -61,6 +61,7 @@ namespace ScriptUI
 			if (menu is not null)
 			{
 				_menuStack.Push(menu);
+				menu.SetDirty();
 			}
 		}
 
@@ -203,6 +204,7 @@ namespace ScriptUI
 			if (Input.IsBack())
 			{
 				PopMenu();
+				GetShowingMenu()?.SetDirty();
 				return 100;
 			}
 			if (Input.IsUp())

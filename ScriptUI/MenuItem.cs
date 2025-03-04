@@ -113,13 +113,18 @@ namespace ScriptUI
 				_modified = true;
 			}
 		}
-		
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal void SetModified()
+		{
+			_modified = true;
+		}
+
 		public Caption(string title) : base(title, 60, Color.Cyan)
 		{
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-
 		internal unsafe override void OnDraw(bool isSelected = false)
 		{
 			base.OnDraw(isSelected);
