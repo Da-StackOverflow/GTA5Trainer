@@ -1,4 +1,6 @@
-﻿namespace ScriptUI
+﻿using System.Runtime.CompilerServices;
+
+namespace ScriptUI
 {
 	internal struct KeyState
 	{
@@ -58,61 +60,73 @@
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void OnKeyDown(uint key)
 		{
 			_keyStates[key].IsDown = true;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void OnKeyUp(uint key)
 		{
 			_keyStates[key].IsDown = false;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsKeyDown(KeyCode keyCode)
 		{
 			return _keyStates[(uint)keyCode].IsDown;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsAccept()
 		{
 			return IsKeyDown(KeyCode.Num5); // || IsKeyDown(KeyCode.Return);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsBack()
 		{
 			return IsKeyDown(KeyCode.Num0); // || IsKeyDown(KeyCode.Back);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsUp()
 		{
 			return IsKeyDown(KeyCode.Num8); // || IsKeyDown(KeyCode.Up);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsDown()
 		{
 			return IsKeyDown(KeyCode.Num2); // || IsKeyDown(KeyCode.Down);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsLeft()
 		{
 			return IsKeyDown(KeyCode.Num4); // || IsKeyDown(KeyCode.Left);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsRight()
 		{
 			return IsKeyDown(KeyCode.Num6); // || IsKeyDown(KeyCode.Right);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsShift()
 		{
 			return IsKeyDown(KeyCode.Shift);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsSpace()
 		{
 			return IsKeyDown(KeyCode.Space);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool MenuSwitchPressed()
 		{
 			return IsKeyDown(KeyCode.F4);

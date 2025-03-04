@@ -15,6 +15,7 @@ namespace Other
 			if (!_controller.TryGetMenu("其他系统", out Menu menu))
 			{
 				menu = new Menu("其他系统");
+				menu.AddItem(new BigMiniMap("小地图范围放大"));
 				menu.AddItem(new MoonGravity("月球引力"));
 				menu.AddItem(new RandomCops("随机警察"));
 				menu.AddItem(new RandomTrains("随机火车"));

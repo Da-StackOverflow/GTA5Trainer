@@ -3,15 +3,15 @@ using static ScriptUI.Functions;
 
 namespace Vehicle
 {
-	internal sealed class SpeedBoost : UpdateableItem
+	internal sealed class SetSpeed : UpdateableItem
 	{
-		public SpeedBoost(string caption) : base(caption)
+		public SetSpeed(string caption) : base(caption)
 		{
 		}
 
 		protected override void OnActive()
 		{
-			SetTips("小键盘9加速, 小键盘3减速", 10000);
+			SetTips("小键盘9加速, 小键盘3停止", 10000);
 		}
 
 		protected override void OnUpdate()

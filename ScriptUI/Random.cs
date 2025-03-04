@@ -6,6 +6,7 @@ namespace ScriptUI
 	{
 		private static readonly ulong[] state = new ulong[4];
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ResetSeed(ulong seed)
 		{
 			ulong sm64 = seed;

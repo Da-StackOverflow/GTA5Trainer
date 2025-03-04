@@ -46,6 +46,7 @@
     <Compile Include="RandomCops.cs" />
     <Compile Include="RandomGarbageTrucks.cs" />
     <Compile Include="RandomTrains.cs" />
+    <Compile Include="BigMiniMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bridge\Bridge.csproj">

@@ -1,6 +1,7 @@
 ﻿using Bridge;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace ScriptUI
 {
@@ -38,6 +39,8 @@ namespace ScriptUI
 		}
 
 		private bool _isDisposed = false;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void OnRelease(bool isDisposeCall)
 		{
 			if (_isDisposed)
@@ -52,6 +55,7 @@ namespace ScriptUI
 			_isDisposed = true;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal void PushMenu(AMenu menu)
 		{
 			if (menu is not null)
@@ -60,11 +64,13 @@ namespace ScriptUI
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal void PopMenu()
 		{
 			_menuStack.Pop();
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Register(AMenu menu)
 		{
 			if (_menuList.ContainsKey(menu.Caption.Text))
@@ -78,6 +84,7 @@ namespace ScriptUI
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool TryGetMenu<T>(string caption, out T menu) where T : AMenu
 		{
 			var result = _menuList.TryGetValue(caption, out var m);
@@ -91,11 +98,13 @@ namespace ScriptUI
 			return result;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public AMenu GetShowingMenu()
 		{
 			return _menuStack.Count > 0 ? _menuStack.Peek() : null;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void SetTips(string text, long ms = 3000)
 		{
 			var count = System.Text.Encoding.UTF8.GetBytes(text, 0, text.Length, _statusTextBytes, 0);
@@ -110,6 +119,7 @@ namespace ScriptUI
 			_statusTextMaxTicks = Time.Now + ms;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private unsafe void DrawTips()
 		{
 			if (Time.Now < _statusTextMaxTicks)
@@ -129,6 +139,7 @@ namespace ScriptUI
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void SetInputWaitTime(long ms)
 		{
 			if (ms <= 0)
@@ -138,17 +149,20 @@ namespace ScriptUI
 			_nextCanInputTime = Time.Now + ms;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private bool IsInputIsOnWait()
 		{
 			return _nextCanInputTime > Time.Now;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void ProcessUI()
 		{
 			GetShowingMenu()?.OnDraw();
 			DrawTips();
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void ProcessInput()
 		{
 			if (IsInputIsOnWait())
@@ -178,6 +192,7 @@ namespace ScriptUI
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private int ExcuteInput(AMenu menu)
 		{
 			if (Input.IsAccept())
@@ -213,6 +228,7 @@ namespace ScriptUI
 			return 50;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void ProcessScript()
 		{
 			var length = _updateList.Count;
@@ -222,6 +238,7 @@ namespace ScriptUI
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected override void Update()
 		{
 			if (_isReload)
@@ -234,6 +251,7 @@ namespace ScriptUI
 			ProcessScript();
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected override void OnInput(uint key, bool isUpNow)
 		{
 			if (isUpNow)

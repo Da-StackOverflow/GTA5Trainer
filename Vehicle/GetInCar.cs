@@ -17,7 +17,7 @@ namespace Vehicle
 			{
 				for(int i = -1; i <= 4; ++i)
 				{
-					if(!IS_VEHICLE_SEAT_FREE(entity, i, false))
+					if(IS_VEHICLE_SEAT_FREE(entity, i, true))
 					{
 						SET_PED_INTO_VEHICLE(PlayerPed, entity, i);
 						return;

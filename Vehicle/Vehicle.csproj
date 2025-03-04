@@ -46,7 +46,7 @@
     <Compile Include="SafeBelt.cs" />
     <Compile Include="SetSpawnCarAndWarpInFlag.cs" />
     <Compile Include="SpawnCar.cs" />
-    <Compile Include="SpeedBoost.cs" />
+    <Compile Include="SetSpeed.cs" />
     <Compile Include="VehicleResources.cs" />
     <Compile Include="VehicleRockets.cs" />
   </ItemGroup>

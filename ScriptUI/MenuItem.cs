@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace ScriptUI
 {
@@ -31,6 +32,8 @@ namespace ScriptUI
 			FontSize = height / 150.0f;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+
 		internal void SetPosition(float x, float y)
 		{
 			Position.X = x;
@@ -44,6 +47,7 @@ namespace ScriptUI
 			Functions.DRAW_RECT(Position.X, Position.Y, Size.X, Size.Y, BGColor.R, BGColor.G, BGColor.B, BGColor.A);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void PaintText(string text, float x, float y, float fontSize, int r, int g, int b, int a)
 		{
 			Functions.SET_TEXT_FONT(0);
@@ -55,6 +59,7 @@ namespace ScriptUI
 			Functions.END_TEXT_COMMAND_DISPLAY_TEXT(x, y);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal unsafe static void PaintText(byte* text, float x, float y, float fontSize, int r, int g, int b, int a)
 		{
 			Functions.SET_TEXT_FONT(0);
@@ -66,6 +71,7 @@ namespace ScriptUI
 			Functions.END_TEXT_COMMAND_DISPLAY_TEXT(x, y);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected static void Wait(uint ms)
 		{
 			Native.Sleep(ms);
@@ -112,6 +118,8 @@ namespace ScriptUI
 		{
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+
 		internal unsafe override void OnDraw(bool isSelected = false)
 		{
 			base.OnDraw(isSelected);
@@ -148,10 +156,11 @@ namespace ScriptUI
 
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal void Execute()
 		{
 			OnExecute();
-			Functions.PLAY_SOUND_FRONTEND(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
+			//Functions.PLAY_SOUND_FRONTEND(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
 		}
 
 		protected void SetTips(string tips, long ms = 3000)
@@ -183,6 +192,7 @@ namespace ScriptUI
 			
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal sealed override void OnDraw(bool isSelected = false)
 		{
 			base.OnDraw(isSelected);
@@ -205,6 +215,7 @@ namespace ScriptUI
 			_menuGetter = menuGetter;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected sealed override void OnExecute()
 		{
 			MenuController.Instance.PushMenu(_menuGetter?.Invoke());
@@ -219,6 +230,7 @@ namespace ScriptUI
 			_menuGetter = menuGetter;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected sealed override void OnExecute()
 		{
 			MenuController.Instance.PushMenu(_menuGetter?.Invoke());
@@ -249,6 +261,7 @@ namespace ScriptUI
 			
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected sealed override void OnExecute()
 		{
 			IsActive = !IsActive;
@@ -261,10 +274,13 @@ namespace ScriptUI
 				OnInactive();
 			}
 		}
-
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected abstract void OnActive();
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected abstract void OnInactive();
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal sealed override void OnDraw(bool isSelected = false)
 		{
 			base.OnDraw(isSelected);
@@ -300,6 +316,7 @@ namespace ScriptUI
 		{
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal void Update()
 		{
 			if (IsActive)
@@ -308,13 +325,16 @@ namespace ScriptUI
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected abstract void OnUpdate();
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected override void OnActive()
 		{
 
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected override void OnInactive()
 		{
 

@@ -259,7 +259,7 @@ namespace Vehicle
 				menu.AddItem(new SafeBelt("安全带"));
 				menu.AddItem(new InvincibleCar("车辆无敌"));
 				menu.AddItem(new InvincibleWheel("防弹车轮"));
-				menu.AddItem(new SpeedBoost("车辆加速"));
+				menu.AddItem(new SetSpeed("车辆加速"));
 				menu.AddItem(new VehicleRockets("车载火箭炮"));
 				_controller.Register(menu);
 			}
